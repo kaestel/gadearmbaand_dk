@@ -5,16 +5,16 @@ global $model;
 global $itemtype;
 
 $item_id = $action[1];
-$item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true, "mediae" => true)));
+$item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true)));
 
 ?>
 <div class="scene defaultEdit <?= $itemtype ?>Edit">
-	<h1>Edit post</h1>
+	<h1>Edit event</h1>
 
 	<?= $JML->editGlobalActions($item) ?>
 
 	<div class="item i:defaultEdit">
-		<h2>Post content</h2>
+		<h2>Event details</h2>
 		<?= $model->formStart("update/".$item["id"], array("class" => "labelstyle:inject")) ?>
 
 			<fieldset>
