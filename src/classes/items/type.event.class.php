@@ -44,24 +44,46 @@ class TypeEvent extends Itemtype {
 			"hint_message" => "Location of Event", 
 			"error_message" => "Location must be filled out."
 		));
-
-		// Longitude
-		$this->addToModel("longitude", array(
-			"type" => "number",
-			"label" => "Longitude",
-			"required" => true,
-			"hint_message" => "Longitude of Event", 
-			"error_message" => "Longitude must be filled out."
-		));
-
-		// Latitude
+		// latitude
 		$this->addToModel("latitude", array(
 			"type" => "number",
 			"label" => "Latitude",
-			"required" => true,
-			"hint_message" => "Latitude of Event", 
-			"error_message" => "Latitude must be filled out."
+			"required" => true
 		));
+		// longitude
+		$this->addToModel("longitude", array(
+			"type" => "number",
+			"label" => "Longitude",
+			"required" => true
+		));
+
+
+		// // Location
+		// $this->addToModel("location", array(
+		// 	"type" => "string",
+		// 	"label" => "Location",
+		// 	"required" => true,
+		// 	"hint_message" => "Location of Event",
+		// 	"error_message" => "Location must be filled out."
+		// ));
+		//
+		// // Longitude
+		// $this->addToModel("longitude", array(
+		// 	"type" => "number",
+		// 	"label" => "Longitude",
+		// 	"required" => true,
+		// 	"hint_message" => "Longitude of Event",
+		// 	"error_message" => "Longitude must be filled out."
+		// ));
+		//
+		// // Latitude
+		// $this->addToModel("latitude", array(
+		// 	"type" => "number",
+		// 	"label" => "Latitude",
+		// 	"required" => true,
+		// 	"hint_message" => "Latitude of Event",
+		// 	"error_message" => "Latitude must be filled out."
+		// ));
 
 		// description
 		$this->addToModel("description", array(

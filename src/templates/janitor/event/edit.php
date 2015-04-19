@@ -21,8 +21,7 @@ $item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true, "
 				
 				<?= $model->input("name", array("value" => $item["name"])) ?>
 				<?= $model->input("host", array("value" => $item["host"])) ?>
-				<?= $model->input("location", array("value" => $item["location"])) ?>
-				<?= $model->input("latitude", array("value" => $item["latitude"])) ?>
+				<?= $model->inputLocation("location", "latitude", "longitude", array("value_loc" => $item["location"], "value_lat" => $item["latitude"], "value_lon" => $item["longitude"])) ?>
 				<?= $model->input("description", array("class" => "autoexpand short", "value" => $item["description"])) ?>
 				<?= $model->input("facebook_link", array("value" => $item["facebook_link"])) ?>
 			</fieldset>
@@ -35,6 +34,6 @@ $item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true, "
 
 	<?= $JML->editTags($item) ?>
 
-	<?= $JML->editMedia($item) ?>
+	<?//= $JML->editMedia($item) ?>
 
 </div>

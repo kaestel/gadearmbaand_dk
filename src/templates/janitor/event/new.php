@@ -15,11 +15,6 @@ global $itemtype;
 		<fieldset>
 			<?= $model->input("name") ?>
 			<?= $model->input("host") ?>
-			<?= $model->input("location") ?>
-			<?= $model->input("longitude") ?>
-			<?= $model->input("latitude") ?>
-			<?= $model->input("description", array("class" => "autoexpand short")) ?>
-			<?= $model->input("facebook_link") ?>
 		</fieldset>
 
 		<?= $JML->newActions() ?>
