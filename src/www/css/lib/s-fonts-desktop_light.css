@@ -1,41 +1,71 @@
 @font-face {
-	font-family: 'OpenSans';
-	src: url('/css/fonts/opensans-regular-webfont.eot');
-	src: url('/css/fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('/css/fonts/opensans-regular-webfont.woff') format('woff'),
-		 url('/css/fonts/opensans-regular-webfont.ttf') format('truetype'),
-		 url('/css/fonts/opensans-regular-webfont.svg#OpenSansRegular') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'OpenSans';
-	src: url('/css/fonts/opensans-bold-webfont.eot');
-	src: url('/css/fonts/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('/css/fonts/opensans-bold-webfont.woff') format('woff'),
-		 url('/css/fonts/opensans-bold-webfont.ttf') format('truetype'),
-		 url('/css/fonts/opensans-bold-webfont.svg#open_sansbold') format('svg');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'OpenSans';
-	src: url('/css/fonts/opensans-italic-webfont.eot');
-	src: url('/css/fonts/opensans-italic-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('/css/fonts/opensans-italic-webfont.woff') format('woff'),
-		 url('/css/fonts/opensans-italic-webfont.ttf') format('truetype'),
-		 url('/css/fonts/opensans-italic-webfont.svg#open_sansitalic') format('svg');
-	font-weight: normal;
-	font-style: italic;
+	font-family: 'DINPro';
+	src: url('DINPro-Black.eot');
+	src: url('DINPro-Black.eot?#iefix') format('embedded-opentype'),
+		url('DINPro-Black.woff') format('woff'),
+		url('DINPro-Black.ttf')  format('truetype'),
+		url('DINPro-Black.svg#b5903bd095f61bee9157f723f08708b0') format('svg');
+
+	font-style:   normal;
+	font-weight:  900;
 }
 
 @font-face {
-	font-family: 'PT Serif';
-	src: url('/css/fonts/pt_serif-regular-webfont.eot');
-	src: url('/css/fonts/pt_serif-regular-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('/css/fonts/pt_serif-regular-webfont.woff') format('woff'),
-		 url('/css/fonts/pt_serif-regular-webfont.ttf') format('truetype'),
-		 url('/css/fonts/pt_serif-regular-webfont.svg#pt_serifregular') format('svg');
-	font-weight: normal;
-	font-style: normal;
+	font-family: 'DINPro';
+	src: url('DINPro-Bold.eot');
+	src: url('DINPro-Bold.eot?#iefix') format('embedded-opentype'),
+		url('DINPro-Bold.woff') format('woff'),
+		url('DINPro-Bold.ttf')  format('truetype'),
+		url('DINPro-Bold.svg#f72eedb964480472218d30fa54520bd8') format('svg');
+
+	font-style:   normal;
+	font-weight:  800;
+}
+
+@font-face {
+	font-family: 'DINPro';
+	src: url('DINPro-Medium.eot');
+	src: url('DINPro-Medium.eot?#iefix') format('embedded-opentype'),
+		url('DINPro-Medium.woff') format('woff'),
+		url('DINPro-Medium.ttf')  format('truetype'),
+		url('DINPro-Medium.svg#43a856eecb2199e640a1a5bf1dc4a1e7') format('svg');
+
+	font-style:   normal;
+	font-weight:  600;
+}
+
+@font-face {
+	font-family: 'DINPro';
+	src: url('DINPro-Regular.eot');
+	src: url('DINPro-Regular.eot?#iefix') format('embedded-opentype'),
+		url('DINPro-Regular.woff') format('woff'),
+		url('DINPro-Regular.ttf')  format('truetype'),
+		url('DINPro-Regular.svg#57984163b7a8df750038d0f2b70383f2') format('svg');
+
+	font-style:   normal;
+	font-weight:  400;
+}
+
+@font-face {
+	font-family: 'DINPro';
+	src: url('DINPro-Light.eot');
+	src: url('DINPro-Light.eot?#iefix') format('embedded-opentype'),
+		url('DINPro-Light.woff') format('woff'),
+		url('DINPro-Light.ttf')  format('truetype'),
+		url('DINPro-Light.svg#62f75ccd04c776030ca293d074e92944') format('svg');
+
+	font-style:   normal;
+	font-weight:  200;
+}
+
+@font-face {
+	font-family: 'Flood';
+	src: url('Flood.eot');
+	src: url('Flood.eot?#iefix') format('embedded-opentype'),
+		url('Flood.woff') format('woff'),
+		url('Flood.ttf')  format('truetype'),
+		url('Flood.svg#6593d0aaf3950a1fdf50f35584657fcd') format('svg');
+
+	font-style:   normal;
+	font-weight:  400;
 }
