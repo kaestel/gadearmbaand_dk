@@ -1,3 +1,14 @@
+<?php
+global $action;
+
+$IC = new Items();
+$itemtype = "instagram";
+
+$instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
+
+
+
+?>
 
 <!-- Fonts in - Regular / Black -->
 <div class="scene front i:front">
@@ -16,7 +27,7 @@
 		</li>
 		<!-- item: istagram -->
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty">
