@@ -9,17 +9,17 @@ $items = $IC->getItems(array("itemtype" => $itemtype, "order" => "status DESC, p
 ?>
 
 <div class="scene defaultList <?= $itemtype ?>List">
-	<h1>Posts</h1>
+	<h1>Events</h1>
 
 	<ul class="actions">
-		<?= $JML->listNew(array("label" => "New post")) ?>
+		<?= $JML->listNew(array("label" => "New event")) ?>
 	</ul>
 
 	<div class="all_items i:defaultList taggable filters"<?= $JML->jsData() ?>>
 <?		if($items): ?>
 		<ul class="items">
 <?			foreach($items as $item): ?>
-			<li class="item image item_id:<?= $item["id"] ?> width:160<?= $JML->jsMedia($item) ?>">
+			<li class="item item_id:<?= $item["id"] ?>">
 				<h3><?= $item["name"] ?></h3>
 
 				<?= $JML->tagList($item["tags"]) ?>
@@ -29,7 +29,7 @@ $items = $IC->getItems(array("itemtype" => $itemtype, "order" => "status DESC, p
 <?			endforeach; ?>
 		</ul>
 <?		else: ?>
-		<p>No posts.</p>
+		<p>No events.</p>
 <?		endif; ?>
 	</div>
 

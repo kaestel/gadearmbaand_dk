@@ -5,7 +5,7 @@ global $model;
 global $itemtype;
 ?>
 <div class="scene defaultNew">
-	<h1>New post</h1>
+	<h1>New event</h1>
 
 	<ul class="actions">
 		<?= $JML->newList(array("label" => "List")) ?>
@@ -13,10 +13,13 @@ global $itemtype;
 
 	<?= $model->formStart("save", array("class" => "i:defaultNew labelstyle:inject")) ?>
 		<fieldset>
-			<?= $model->input("published_at", array("value" => date("Y-m-d H:i", time()))) ?>
 			<?= $model->input("name") ?>
+			<?= $model->input("host") ?>
+			<?= $model->input("location") ?>
+			<?= $model->input("longitude") ?>
+			<?= $model->input("latitude") ?>
 			<?= $model->input("description", array("class" => "autoexpand short")) ?>
-			<?= $model->inputHTML("html") ?>
+			<?= $model->input("facebook_link") ?>
 		</fieldset>
 
 		<?= $JML->newActions() ?>

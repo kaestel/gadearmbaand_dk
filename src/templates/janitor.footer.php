@@ -2,7 +2,7 @@
 
 	<div id="navigation">
 		<ul>
-			<?= $HTML->link("Posts", "/janitor/post/list", array("wrapper" => "li.post")) ?>
+			<?= $HTML->link("Events", "/janitor/event/list", array("wrapper" => "li.event")) ?>
 
 			<?= $HTML->link("Navigations", "/janitor/admin/navigation/list", array("wrapper" => "li.navigation")) ?>
 			<?= $HTML->link("Users", "/janitor/admin/user/list", array("wrapper" => "li.user")) ?>

@@ -9,48 +9,24 @@ include_once($_SERVER["FRAMEWORK_PATH"]."/config/init.php");
 
 $action = $page->actions();
 $IC = new Items();
-$itemtype = "post";
+$itemtype = "event";
 $model = $IC->typeObject($itemtype);
 
 
 $page->bodyClass($itemtype);
-$page->pageTitle("Posts");
+$page->pageTitle("Events");
 
 
 if(is_array($action) && count($action)) {
 
-	// LIST ITEM
-	if(count($action) == 1 && $action[0] == "list") {
+	// LIST/EDIT/NEW ITEM
+	if(preg_match("/^(list|edit|new)$/", $action[0])) {
 
 		$page->page(array(
 			"type" => "janitor",
-			"templates" => "janitor/".$itemtype."/list.php"
-			)
-		);
+			"templates" => "janitor/".$itemtype."/".$action[0].".php"
+		));
 		exit();
-
-	}
-	// NEW ITEM
-	else if(count($action) == 1 && $action[0] == "new") {
-
-		$page->page(array(
-			"type" => "janitor",
-			"templates" => "janitor/".$itemtype."/new.php"
-			)
-		);
-		exit();
-
-	}
-	// EDIT ITEM
-	else if(count($action) == 2 && $action[0] == "edit") {
-
-		$page->page(array(
-			"type" => "janitor",
-			"templates" => "janitor/".$itemtype."/edit.php"
-			)
-		);
-		exit();
-
 	}
 
 	// Class interface
@@ -69,7 +45,6 @@ if(is_array($action) && count($action)) {
 
 $page->page(array(
 	"templates" => "pages/404.php"
-	)
-);
+));
 
 ?>
