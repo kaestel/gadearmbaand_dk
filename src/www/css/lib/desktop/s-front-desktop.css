@@ -1,0 +1,23 @@
+
+/* BASIC CONTENT */
+#content .scene.front {background:grey;}
+#content .scene.front ul {width:100%; font-size:0;}
+#content .scene.front ul li {
+    display: inline-block; vertical-align:top;
+    background:darkgrey;
+    width:20%;
+    box-sizing:border-box;
+
+}
+
+/* instagram */
+#content .scene.front ul li.instagram {}
+#content .scene.front ul li.instagram div.image {}
+/*#content .scene.front ul li.instagram div.image {}*/
+
+/* tweet */
+#content .scene.front ul li.tweet {}
+#content .scene.front ul li.article {background:#000000; padding:20px;}
+#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:400; color:#0c9a15; font-size:14px;}
+#content .scene.front ul li.article h2 { font-family: 'Flood'; color:#ffffff; font-size:40px;}
+#content .scene.front ul li.article h2 { }
