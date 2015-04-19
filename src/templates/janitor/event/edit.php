@@ -7,7 +7,7 @@ global $itemtype;
 $item_id = $action[1];
 $item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true, "mediae" => true)));
 
-print_r($item) ?>
+?>
 <div class="scene defaultEdit <?= $itemtype ?>Edit">
 	<h1>Edit post</h1>
 
@@ -19,10 +19,12 @@ print_r($item) ?>
 
 			<fieldset>
 				
-				<?= $model->input("name") ?>
 				<?= $model->input("name", array("value" => $item["name"])) ?>
+				<?= $model->input("host", array("value" => $item["host"])) ?>
+				<?= $model->input("location", array("value" => $item["location"])) ?>
+				<?= $model->input("latitude", array("value" => $item["latitude"])) ?>
 				<?= $model->input("description", array("class" => "autoexpand short", "value" => $item["description"])) ?>
-				<?= $model->inputHTML("html", array("value" => $item["html"])) ?>
+				<?= $model->input("facebook_link", array("value" => $item["facebook_link"])) ?>
 			</fieldset>
 
 			<?= $JML->editActions($item) ?>
