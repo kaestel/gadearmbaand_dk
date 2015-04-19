@@ -4,38 +4,66 @@ global $action;
 global $itemtype;
 
 $items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true)));
+$tags = $IC->getTags(array("context" => $itemtype)); 
+$days = $IC->getTags(array("context" => "day")); 
+
 
 ?>
 
-<div class="scene people i:generic">
-	<h1>People</h1>
-<?	if(!$items): ?>
-	<ul class="items">
-<?		foreach($items as $item):
-		
-?>
-		<li class="item person id:<?= $item["item_id"] ?> i:article" itemscope itemtype="http://schema.org/Person">
+<div class="scene event i:event">
+	
+	<h2>Days</h2>
+	<ul class="days">
+<?		if($days): ?>
+<?			foreach($days as $day): ?>
 
+				<li><?= $day["value"] ?></li>
 
-			<ul class="tags">
-<?		if($item["tags"]): ?>
-<?			foreach($item["tags"] as $item_tag): ?>
-<?				if($item_tag["context"] == $itemtype): ?>
-				<li><?= $item_tag["value"] ?></li>
-<?				endif; ?>
 <?			endforeach; ?>
 <?		endif; ?>
-			</ul>
-			<h2 itemprop="name"><?= $item["name"] ?></h2>
+	</ul>
+	
+	<h2>Days</h2>
+	<ul class="tags">
+<?		if($tags): ?>
+<?			foreach($tags as $tag): ?>
+
+				<li><?= $tag["value"] ?></li>
+
+<?			endforeach; ?>
+<?		endif; ?>
+	</ul>
+
+
+<?	if($items): ?>
+	<ul class="items">
+<?		foreach($items as $item): ?>
+
+		<li class="item person id:<?= $item["item_id"] ?> i:article" itemscope itemtype="http://schema.org/Person">
+
+			<h3 class="host"><?= $item["host"] ?></h3>
+			<h2 class="name"><?= $item["name"] ?></h2>
+			<p class="location"><?= $item["location"] ?></p>
+
+<?			if($item["tags"]): ?>
+<?				foreach($item["tags"] as $item_tag): ?>
+<?					if($item_tag["context"] == $itemtype): ?>
+					<li><?= $item_tag["value"] ?></li>
+<?					endif; ?>
+<?				endforeach; ?>
+<?			endif; ?>
+
 			<p class="description" itemprop="description">
 				<?= $item["description"] ?>
 			</p>
-			<ul class="info">
-				<li itemprop="jobtitle"><?= stringOr($item["job_title"], "N/A") ?></li>	
-				<li itemprop="email"><?= stringOr($item["email"], "N/A") ?></li>
-				<li itemprop="telephone"><?= stringOr($item["tel"], "N/A") ?></li>
+
+			<ul class="action">
+				<li>
+					<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
+				</li>
 			</ul>
 		</li>
+
 <?		endforeach; ?>
 	</ul>
 <?	endif; ?>
