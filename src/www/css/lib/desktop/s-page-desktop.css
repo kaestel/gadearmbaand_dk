@@ -1,4 +1,4 @@
-* {font-family: "OpenSans", Verdana, Arial, sans-serif; color: #000000;
+* {font-family: "DINPro", Verdana, Arial, sans-serif; color: #000000; font-weight: 400;
 	-webkit-text-size-adjust: none;
 	-webkit-font-smoothing: antialiased;
 }
@@ -24,27 +24,23 @@ input, textarea {outline: none;}
 a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 
-h1 {padding: 0 50px 30px; font-size: 48px; line-height: 1.05em;
-	font-family: "PT Serif", Times, serif;
-}
-h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;
-	font-family: "PT Serif", Times, serif;
-}
-h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
-h4 {padding: 0 50px 5px; font-size: 14px; line-height: 1em; font-weight: bold;}
-h5 {padding: 0 50px 2px; font-size: 14px; line-height: 1em; font-weight: bold;}
-h6 {padding: 0 50px 2px; font-size: 14px; line-height: 1em; font-weight: bold;}
 
-p {padding: 0 50px 20px; font-size: 14px; line-height: 1.38em;} 
+h1 {font-size: 48px; line-height: 1.3em;
+	font-family: "Flood", Verdana, Arial, sans-serif
+}
+h2 {font-size: 30px; line-height: 1.1em; font-weight: 800;
+	font-family: "DINPro", Verdana, Arial, sans-serif
+}
+h3 {font-size: 20px; line-height: 1.25em; font-weight: 800;}
+h4 {font-size: 14px; line-height: 1em;}
+
+
+p {font-size: 14px; line-height: 1.38em;} 
 
 
 ul,
 ol {font-size: 0;}
-li {font-size: 13px; line-height: 1.25em;}
-
-dl {font-size: 0;} 
-dt, 
-dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.25em;}
+li {font-size: 14px; line-height: 1.25em;}
 
 
 #page {position: relative; min-height: 100%; min-width: 600px;}
