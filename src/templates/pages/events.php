@@ -10,28 +10,30 @@ $days = $IC->getTags(array("context" => "day"));
 
 ?>
 
-<div class="scene event i:event">
+<div class="scene event i:events">
 	
-	<h2>Days</h2>
 	<ul class="days">
 <?		if($days): ?>
 <?			foreach($days as $day): ?>
-
 				<li><?= $day["value"] ?></li>
-
 <?			endforeach; ?>
 <?		endif; ?>
 	</ul>
-	
-	<h2>Days</h2>
-	<ul class="tags">
+
+	<h2>Filter by tags</h2>
+	<ul class="tag_list">
 <?		if($tags): ?>
 <?			foreach($tags as $tag): ?>
-
 				<li><?= $tag["value"] ?></li>
-
 <?			endforeach; ?>
 <?		endif; ?>
+	</ul>
+
+	<ul class="legend">
+		<li>Host</li>
+		<li>Event</li>
+		<li>Location</li>
+		<li>Tags</li>
 	</ul>
 
 
@@ -46,22 +48,26 @@ $days = $IC->getTags(array("context" => "day"));
 			<p class="location"><?= $item["location"] ?></p>
 
 <?			if($item["tags"]): ?>
-<?				foreach($item["tags"] as $item_tag): ?>
-<?					if($item_tag["context"] == $itemtype): ?>
-					<li><?= $item_tag["value"] ?></li>
-<?					endif; ?>
-<?				endforeach; ?>
+				<ul class="tags">
+<?					foreach($item["tags"] as $item_tag): ?>
+<?						if($item_tag["context"] == $itemtype): ?>
+							<li><?= $item_tag["value"] ?></li>
+<?						endif; ?>
+<?					endforeach; ?>
+				</ul>
 <?			endif; ?>
 
-			<p class="description" itemprop="description">
-				<?= $item["description"] ?>
-			</p>
+			<div class="description">
+				<p><?= $item["description"] ?></p>
+				
+				<ul class="action">
+					<li>
+						<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
+					</li>
+				</ul>
 
-			<ul class="action">
-				<li>
-					<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
-				</li>
-			</ul>
+			</div>
+
 		</li>
 
 <?		endforeach; ?>

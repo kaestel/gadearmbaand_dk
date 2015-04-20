@@ -6,3 +6,5 @@ document.write('<script type="text/javascript" src="/js/manipulator/v0_9/src/u-g
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-login-desktop.js"></script>');
 
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-events-desktop.js"></script>');
+
