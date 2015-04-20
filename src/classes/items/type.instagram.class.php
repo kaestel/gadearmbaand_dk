@@ -211,7 +211,7 @@ class TypeInstagram extends Itemtype {
 			message()->addMessage("Item could not be saved", array("type" => "error"));
 		}
 		global $page;
-		$page->mail(array("subject" => "Instagram fetch failed: ".$_SERVER["SERVER_NAME"], "message" => "Check admin at: http://" . $_SERVER["SERVER_NAME"]."/admin"));
+		$page->mail(array("subject" => "Instagram fetch failed: ".SITE_URL, "message" => "Check admin at: ".SITE_URL."/janitor"));
 		return false;
 	}
 
