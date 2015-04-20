@@ -54,19 +54,25 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 			<a href="#">Læs hvorfor</a>
 		</li>
 
-		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
-		</li>
-		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
-		</li>
-
-
 		<!-- item: tweet -->
 		<li class="tweet">
 			<h2 class="author">@twitter_user</h2>
 			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
 		</li>
+
+		<!--li class="blank twenty"></li-->
+		<li class="instagram twenty plus_twenty">
+			<div class="image image_id:frontpage2_new format:jpg"></div>
+		</li>
+
+		<li class="instagram">
+			<div class="image image_id:frontpage1_new format:jpg"></div>
+		</li>
+		<li class="instagram">
+			<div class="image image_id:frontpage1_new format:jpg"></div>
+		</li>
+
+
 
 		<li class="instagram">
 			<div class="image image_id:frontpage1_new format:jpg"></div>
