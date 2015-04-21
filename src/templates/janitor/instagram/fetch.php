@@ -206,7 +206,7 @@ function getSet($max_id = false) {
 
 ?>
 <div class="scene defaultList fetchInstagrams">
-	<h1>Fetching instagrams</h1>
+	<h1>Fetching Instagrams</h1>
 
 	<ul class="actions">
 		<?= $HTML->link("Back", "/janitor/".$itemtype."/list", array("class" => "button", "wrapper" => "li.cancel")) ?>

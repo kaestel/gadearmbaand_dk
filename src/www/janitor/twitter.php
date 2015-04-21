@@ -10,12 +10,12 @@ include_once($_SERVER["FRAMEWORK_PATH"]."/config/init.php");
 
 $action = $page->actions();
 $IC = new Items();
-$itemtype = "instagram";
+$itemtype = "twitter";
 $model = $IC->typeObject($itemtype);
 
 
-$page->bodyClass("instagram");
-$page->pageTitle("Instagrams");
+$page->bodyClass("twitter");
+$page->pageTitle("Tweets");
 
 
 if(is_array($action) && count($action)) {
