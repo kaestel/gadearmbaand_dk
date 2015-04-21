@@ -27,26 +27,26 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 		<!-- item: istagram -->
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[1]["item_id"] ?> format:<?= $instagrams[1]["image"] ?>"></div>
 		</li>
 		<li class="blank sixty"></li>
 		<li class="instagram forty negative_twenty">
-			<div class="image image_id:frontpage3_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> format:<?= $instagrams[2]["image"] ?>"></div>
 		</li>
 		<li class="instagram twenty negative_twenty">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[3]["item_id"] ?> format:<?= $instagrams[3]["image"] ?>"></div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty negative_twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[4]["item_id"] ?> format:<?= $instagrams[4]["image"] ?>"></div>
 		</li>
 
-		<li class="blank forty"></li>
-
+		<li class="blank forty">
+		</li>
 		<!-- item: article page -->
 		<li class="article forty">
 			<h3>Gadeårmband</h3>
@@ -55,38 +55,30 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 
 		<!-- item: tweet -->
-		<li class="tweet forty">
+		<li class="tweet">
 			<h2 class="author">@twitter_user</h2>
 			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
 		</li>
 
-		<li class="blank twenty"></li>
-
-		<li class="blank twenty"></li>
-		
+		<!--li class="blank twenty"></li-->
 		<li class="instagram twenty plus_twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
-		</li>
-
-		<li class="tweet forty">
-			<h2 class="author">@twitter_user</h2>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[5]["image"] ?>"></div>
 		</li>
 
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> format:<?= $instagrams[6]["image"] ?>"></div>
 		</li>
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[7]["item_id"] ?> format:<?= $instagrams[7]["image"] ?>"></div>
 		</li>
 
 
 
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[8]["item_id"] ?> format:<?= $instagrams[8]["image"] ?>"></div>
 		</li>
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> format:<?= $instagrams[9]["image"] ?>"></div>
 		</li>
 
 		<li class="instagram">
