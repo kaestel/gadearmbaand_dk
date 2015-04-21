@@ -50,3 +50,6 @@
     font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#0c9a15; text-align:center;
 }
 
+@media screen and (max-width:800px) {
+	#content .scene.front {width:800px;}
+}

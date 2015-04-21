@@ -3,6 +3,8 @@ Util.Objects["manifest"] = new function() {
 
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
+			u.as(this, "height", page.browser_h + "px");
+
 		}
 
 		scene.scrolled = function() {
@@ -13,9 +15,10 @@ Util.Objects["manifest"] = new function() {
 			u.bug("scene.ready:" + u.nodeId(this));
 
 
+			page.resized();
+
 			this.is_ready = true;
 			page.cN.ready();
-
 		}
 
 

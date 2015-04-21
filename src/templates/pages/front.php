@@ -27,22 +27,22 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 		<!-- item: istagram -->
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
+			<div class="image image_id:frontpage2 format:jpg"></div>
 		</li>
 		<li class="blank sixty"></li>
 		<li class="instagram forty negative_twenty">
-			<div class="image image_id:frontpage3_new format:jpg"></div>
+			<div class="image image_id:frontpage3 format:jpg"></div>
 		</li>
 		<li class="instagram twenty negative_twenty">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty negative_twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
+			<div class="image image_id:frontpage2 format:jpg"></div>
 		</li>
 
 		<li class="blank forty"></li>
@@ -65,7 +65,7 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		<li class="blank twenty"></li>
 		
 		<li class="instagram twenty plus_twenty">
-			<div class="image image_id:frontpage2_new format:jpg"></div>
+			<div class="image image_id:frontpage2 format:jpg"></div>
 		</li>
 
 		<li class="tweet forty">
@@ -74,26 +74,26 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
-		</li>
-
-
-
-		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
-		</li>
-		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 
+
+
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 		<li class="instagram">
-			<div class="image image_id:frontpage1_new format:jpg"></div>
+			<div class="image image_id:frontpage1 format:jpg"></div>
+		</li>
+
+		<li class="instagram">
+			<div class="image image_id:frontpage1 format:jpg"></div>
+		</li>
+		<li class="instagram">
+			<div class="image image_id:frontpage1 format:jpg"></div>
 		</li>
 		<!-- item: article page -->
 		<li class="article">
