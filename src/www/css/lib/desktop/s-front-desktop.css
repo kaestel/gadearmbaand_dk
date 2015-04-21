@@ -26,16 +26,27 @@
 
 
 /* tweet */
-#content .scene.front ul li.tweet {}
-#content .scene.front ul li.article {background:#000000; padding:20px;}
-#content .scene.front ul li.article.twenty {height:100%;}
-#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:800; color:#0c9a15; font-size:12px; padding-bottom:8px;;}
-#content .scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff; padding-bottom:20px;}
-#content .scene.front ul li.article.twenty h2 {font-size:16px;}
-#content .scene.front ul li.article.forty h2 {font-size:32px;}
+#content .scene.front ul li.tweet {background-color:#0c9a15; padding:20px;}
+#content .scene.front ul li.tweet.forty {width:40%; padding:34px 20px 34px 20px;}
+#content .scene.front ul li.tweet h2 {font-family: 'DINPro'; font-weight:400; color:#000000; padding-bottom:8px;}
+#content .scene.front ul li.tweet.twenty h2 {font-size:10px;}
+#content .scene.front ul li.tweet.forty h2 {font-size:12px;}
+#content .scene.front ul li.tweet p {color:#ffffff; font-size:32px; }
+#content .scene.front ul li.tweet p a {color:#000000;}
+
+
+/* article */
+#content .scene.front ul li.article {background:#000000;}
+#content .scene.front ul li.article.twenty {padding:34px 20px 34px 20px; font-size:12px;}
+#content .scene.front ul li.article.forty {padding:34px 20px 34px 20px; font-size:18px;}
+#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:800; color:#0c9a15; font-size:12px; padding-bottom:8px;}
+#content .scene.front ul li.article.twenty h3 {font-size: 10px;}
+#content .scene.front ul li.article.twenty h3 {font-size: 12px;}
+#content .scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff;}
+#content .scene.front ul li.article.twenty h2 {font-size:16px; padding-bottom:10px;}
+#content .scene.front ul li.article.forty h2 {font-size:32px; padding-bottom:20px;}
 #content .scene.front ul li.article.twenty a,
-#content .scene.front ul li.article.forty a {padding:10px 44px 8px 44px; border:1px solid #0c9a15;
+#content .scene.front ul li.article.forty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #0c9a15;
     font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#0c9a15; text-align:center;
 }
-#content .scene.front ul li.article.forty {padding:34px 8px 34px 7px; font-size:18px;}
-#content .scene.front ul li.article.twenty {padding:34px 8px 34px 7px; font-size:12px;}
+

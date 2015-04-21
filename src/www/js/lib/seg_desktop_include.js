@@ -6,7 +6,7 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-naviga
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-animation.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-desktop.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-login-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-front-desktop.js"></script>');
-
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-events-desktop.js"></script>');
-
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-manifest-desktop.js"></script>');

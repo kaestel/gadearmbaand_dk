@@ -48,6 +48,8 @@ Util.Objects["front"] = new function() {
 							}
 							//console.log("/img/temp/" + node.image_id + "." + node.format);
 							node._image_src = "/img/temp/" + node.image_id + "." + node.format;
+							//node._image_src = "/images/" + node.image_id + "/image/x" + node.offsetWidth + "." + node.format;
+							//http://gadearmbaand.local/images/6/image/x200.jpg
 							u.preloader(node, [node._image_src])
 						}
 					}
@@ -61,6 +63,8 @@ Util.Objects["front"] = new function() {
 				// handle article page
 				if (u.hc(li, "article")) {
 					var link = u.qs("a");
+					u.as(li, "height", li.offsetWidth+"px");
+
 					link.clicked = function(event) {
 						u.e.kill();
 						//
@@ -70,6 +74,11 @@ Util.Objects["front"] = new function() {
 
 
 				}
+
+				// handle article page
+				// if (u.hc(li, "blank")) {
+				// 	u.as(li, "height", li.offsetWidth+"px");
+				// };
 			}
 
 
