@@ -23,6 +23,7 @@ Util.Objects["page"] = new function() {
 			page.resized = function(event) {
 //				u.bug("page.resized:" + u.nodeId(this));
 
+				// update global values
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 
@@ -39,6 +40,7 @@ Util.Objects["page"] = new function() {
 			page.scrolled = function(event) {
 //				u.bug("page.scrolled:" + u.nodeId(this))
 
+				// update global values
 				page.scroll_y = u.scrollY();
 
 
@@ -119,6 +121,7 @@ Util.Objects["page"] = new function() {
 //				u.bug("page.cN ready called")
 
 
+				// is page in a state to continue
 				if(!page.intro && page.is_ready && page.cN.scene.is_ready) {
 
 					// if existing scene exists, then destroy it
@@ -133,16 +136,12 @@ Util.Objects["page"] = new function() {
 								destroying = true;
 								scene.destroy();
 							}
-							else {
-								// TODO: Manual removal 
-							}
 						}
 					}
 
-//					u.bug(destroying + "; " + this.scene + "; " + this.scene.built)
 					if(!destroying && this.scene && !this.scene.built && typeof(this.scene.build) == "function") {
-
 //						u.bug("should build")
+
 						// take page back to top
 						window.scrollTo(0, 0);
 
@@ -150,15 +149,14 @@ Util.Objects["page"] = new function() {
 						this.scene.build();
 					}
 
-
 				}
 
 			}
 
+
 			// navigation controller
 			page.cN.navigate = function(url) {
 //				u.bug("cN.navigate:" + url)
-
 
 				// content received
 				this.response = function(response) {
@@ -182,16 +180,14 @@ Util.Objects["page"] = new function() {
 				// request new content
 				u.request(this, u.h.getCleanHash(url));
 
-
 			}
-
-
 
 
 			// initialize header
 			page.initHeader = function() {
 //				u.bug("initHeader")
 
+				// get the navigation node from the servicenavigation
 				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 
 				// very simple navigation toggle
