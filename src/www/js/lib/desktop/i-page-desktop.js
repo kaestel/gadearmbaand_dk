@@ -145,6 +145,8 @@ Util.Objects["page"] = new function() {
 //				u.bug("initHeader")
 
 				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+
+				// very simple navigation toggle
 				u.ce(bn_nav);
 				bn_nav.clicked = function() {
 
@@ -164,29 +166,38 @@ Util.Objects["page"] = new function() {
 			page.initNavigation = function() {
 //				u.bug("initNavigation")
 
-				// navigation list
-				this.nN.list = u.qs("ul", this.nN);
+				var i, node;
+
+				// navigation nodes
+				page.nN.nodes = u.qsa("li", page.nN);
+				for(i = 0; node = page.nN.nodes[i]; i++) {
+					if(!u.hc(node, "buy")) {
+						u.ce(node, {"type":"link"});
+					}
+				}
 
 			}
 
 
 			// initialize intro
 			page.initIntro = function() {
-				u.bug("initIntro")
+//				u.bug("initIntro")
 
 				// create intro layer
-				page.intro = u.ae(document.body, "div", {"id":"intro"});
+				if(u.hc(page, "front")) {
+					page.intro = u.ae(document.body, "div", {"id":"intro"});
 
-				// remove intro
-				u.ce(page.intro);
-				page.intro.clicked = function() {
+					// remove intro
+					u.ce(page.intro);
+					page.intro.clicked = function() {
 
-					this.parentNode.removeChild(this);
-					page.intro = false;
+						this.parentNode.removeChild(this);
+						page.intro = false;
 
-					// notify page.cN.ready to continue content rendering
-					page.cN.ready();
+						// notify page.cN.ready to continue content rendering
+						page.cN.ready();
 
+					}
 				}
 
 			}
