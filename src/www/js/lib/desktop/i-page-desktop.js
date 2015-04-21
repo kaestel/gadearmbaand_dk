@@ -59,11 +59,11 @@ Util.Objects["page"] = new function() {
 
 			// Page is ready
 			page.ready = function() {
-				u.bug("page.ready called:" + u.nodeId(this));
+//				u.bug("page.ready called:" + u.nodeId(this));
 
 				// page is ready to be shown - only initalize if not already shown
 				if(!this.is_ready) {
-					u.bug("page initialization:" + u.nodeId(this));
+//					u.bug("page initialization:" + u.nodeId(this));
 
 					// page is ready
 					this.is_ready = true;
@@ -116,12 +116,10 @@ Util.Objects["page"] = new function() {
 			// Content is ready - called from page.ready, scene and intro to make sure
 			// we are at the correct state before showing the content and starting the scene rendering
 			page.cN.ready = function() {
-				u.bug("page.cN ready called")
+//				u.bug("page.cN ready called")
 
 
-				if(!page.intro && page.is_ready && page.cN.scene.is_ready && !page.cN.is_ready) {
-					u.bug("finally make page.cN ready")
-
+				if(!page.intro && page.is_ready && page.cN.scene.is_ready) {
 
 					// if existing scene exists, then destroy it
 					// destroy will callback to this function and start the build when approriate
@@ -131,7 +129,7 @@ Util.Objects["page"] = new function() {
 					for(i = 0; scene = scenes[i]; i++) {
 						if(scene != this.scene){
 							if(typeof(scene.destroy) == "function") {
-//									u.bug("should destroy first")
+//								u.bug("should destroy first")
 								destroying = true;
 								scene.destroy();
 							}
@@ -143,10 +141,6 @@ Util.Objects["page"] = new function() {
 
 //					u.bug(destroying + "; " + this.scene + "; " + this.scene.built)
 					if(!destroying && this.scene && !this.scene.built && typeof(this.scene.build) == "function") {
-
-						// manually close navigation
-						u.rc(page.nN, "open");
-
 
 //						u.bug("should build")
 						// take page back to top
@@ -163,12 +157,12 @@ Util.Objects["page"] = new function() {
 
 			// navigation controller
 			page.cN.navigate = function(url) {
-				u.bug("cN.navigate:" + url)
+//				u.bug("cN.navigate:" + url)
 
 
 				// content received
 				this.response = function(response) {
-					u.bug("navigate response:" + this.request_url + ", " + response.body_class)
+//					u.bug("navigate response:" + response.body_class)
 
 					// set body class
 					u.setClass(document.body, response.body_class);
@@ -178,8 +172,6 @@ Util.Objects["page"] = new function() {
 					// get .scene content from response
 					this.scene = u.qs(".scene", response);
 
-					// move new scene out of sight
-					//u.a.translate(this.scene, this.offsetWidth, 0);
 					// append new scene to #content
 					this.scene = u.ae(this, this.scene);
 
@@ -206,11 +198,22 @@ Util.Objects["page"] = new function() {
 				u.ce(bn_nav);
 				bn_nav.clicked = function() {
 
+					// close navigation
 					if(u.hc(page.nN, "open")) {
-						u.rc(page.nN, "open");
+
+						page.nN.transitioned = function() {
+							u.rc(this, "open");
+						}
+						u.a.transition(page.nN, "all 0.5s linear");
+						u.a.setOpacity(page.nN, 0);
+
 					}
+					// open navigation
 					else {
 						u.ac(page.nN, "open");
+
+						u.a.transition(page.nN, "all 0.5s linear");
+						u.a.setOpacity(page.nN, 1);
 					}
 
 				}
@@ -227,9 +230,42 @@ Util.Objects["page"] = new function() {
 				// navigation nodes
 				page.nN.nodes = u.qsa("li", page.nN);
 				for(i = 0; node = page.nN.nodes[i]; i++) {
+
+					// all navigation nodes except "buy"
 					if(!u.hc(node, "buy")) {
-						u.ce(node, {"type":"link"});
+						u.ce(node);
+						node.clicked = function(event) {
+
+							// save next url to process after navigation has been removed
+							page.nN.next_url = this.url;
+
+							// remove navigation
+							page.nN.transitioned = function() {
+								u.rc(this, "open");
+								page.navigate(this.next_url);
+							}
+							u.a.transition(page.nN, "all 0.5s linear");
+							u.a.setOpacity(page.nN, 0);
+
+						}
+
 					}
+					// the external buy link
+					else {
+						u.e.click(node);
+						node.clicked = function(event) {
+
+							// remove navigation
+							page.nN.transitioned = function() {
+								u.rc(this, "open");
+							}
+							u.a.transition(page.nN, "all 0.5s linear");
+							u.a.setOpacity(page.nN, 0);
+
+						}
+
+					}
+
 				}
 
 			}

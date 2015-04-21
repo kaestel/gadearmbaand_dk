@@ -12,7 +12,7 @@ Util.Objects["manifest"] = new function() {
 		}
 
 		scene.ready = function() {
-			u.bug("scene.ready:" + u.nodeId(this));
+//			u.bug("scene.ready:" + u.nodeId(this));
 
 
 			page.resized();
@@ -27,7 +27,7 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 
 			if(!this.is_built) {
-				u.bug("scene.build:" + u.nodeId(this));
+//				u.bug("scene.build:" + u.nodeId(this));
 
 				this.is_built = true;
 
@@ -47,6 +47,8 @@ Util.Objects["manifest"] = new function() {
 			this.destroy = null;
 
 
+			// when destruction is done, remove scene from content and notify content.ready
+			// to continue building the new scene
 			this.finalizeDestruction = function() {
 
 				this.parentNode.removeChild(this);
@@ -54,15 +56,15 @@ Util.Objects["manifest"] = new function() {
 
 			}
 
-
 			this.transitioned = function() {
 
-				// do actual destroy rendering
+				// destruction is done
 				this.finalizeDestruction();
 			}
 
+			// make up some page destruction
 			u.a.transition(this, "all 1s linear");
-			u.a.setOpacity(this, 1);
+			u.a.setOpacity(this, 0);
 
 		}
 

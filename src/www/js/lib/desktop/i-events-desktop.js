@@ -178,7 +178,61 @@ Util.Objects["events"] = new function() {
 				u.ce(node)
 				u.ass(node, {"height": "41px"})
 			}
+
+
+			this.is_ready = true;
+			page.cN.ready();
+
 		}
+
+
+
+
+		// build scene - start actual rendering of scene
+		scene.build = function() {
+
+			if(!this.is_built) {
+//				u.bug("scene.build:" + u.nodeId(this));
+
+				this.is_built = true;
+
+
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+
+			}
+		}
+
+
+		// destroy scene - scene needs to be removed
+		scene.destroy = function() {
+//			u.bug("scene.destroy:" + u.nodeId(this))
+
+			// destruction is a one time, oneway street
+			this.destroy = null;
+
+
+			// when destruction is done, remove scene from content and notify content.ready
+			// to continue building the new scene
+			this.finalizeDestruction = function() {
+
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+
+			}
+
+			this.transitioned = function() {
+
+				// destruction is done
+				this.finalizeDestruction();
+			}
+
+			// make up some page destruction
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
+
+		}
+
 
 		// scene is ready
 		scene.ready();

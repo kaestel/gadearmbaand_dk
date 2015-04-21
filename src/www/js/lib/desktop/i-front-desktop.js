@@ -1,5 +1,3 @@
-u.console_only = true;
-
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 
@@ -169,6 +167,8 @@ Util.Objects["front"] = new function() {
 			this.destroy = null;
 
 
+			// when destruction is done, remove scene from content and notify content.ready
+			// to continue building the new scene
 			this.finalizeDestruction = function() {
 
 				this.parentNode.removeChild(this);
@@ -176,15 +176,15 @@ Util.Objects["front"] = new function() {
 
 			}
 
-
 			this.transitioned = function() {
 
-				// do actual destroy rendering
+				// destruction is done
 				this.finalizeDestruction();
 			}
 
+			// make up some page destruction
 			u.a.transition(this, "all 1s linear");
-			u.a.setOpacity(this, 1);
+			u.a.setOpacity(this, 0);
 
 		}
 
