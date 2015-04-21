@@ -20,7 +20,7 @@ Util.Objects["page"] = new function() {
 
 
 			// global resize handler 
-			page.resized = function() {
+			page.resized = function(event) {
 //				u.bug("page.resized:" + u.nodeId(this));
 
 				page.browser_w = u.browserW();
@@ -36,7 +36,7 @@ Util.Objects["page"] = new function() {
 			}
 
 			// global scroll handler 
-			page.scrolled = function() {
+			page.scrolled = function(event) {
 //				u.bug("page.scrolled:" + u.nodeId(this))
 
 				page.scroll_y = u.scrollY();
@@ -49,6 +49,13 @@ Util.Objects["page"] = new function() {
 
 				page.offsetHeight;
 			}
+
+			// global orientation change handler
+			page.orientationchanged = function(event) {
+
+			}
+
+
 
 			// Page is ready
 			page.ready = function() {
@@ -65,10 +72,17 @@ Util.Objects["page"] = new function() {
 					this.cN.scene = u.qs(".scene", this.cN);
 
 
-					// set resize handler
-					u.e.addEvent(window, "resize", page.resized);
 					// set scroll handler
 					u.e.addEvent(window, "scroll", page.scrolled);
+
+					// set orientation change handler
+					if(u.e.event_pref == "touch") {
+						u.e.addEvent(window, "orientationchange", page.orientationchanged);
+					}
+					// set resize handler
+					else {
+						u.e.addEvent(window, "resize", page.resized);
+					}
 
 
 					// start intro
@@ -109,20 +123,38 @@ Util.Objects["page"] = new function() {
 					u.bug("finally make page.cN ready")
 
 
-					this.is_ready = true;
-
-
-					// load remaining pages once current scene is shown
-					page.current_scene.built = function() {
-
-						// only ever run this once
-						page.current_scene.built = null;
-
+					// if existing scene exists, then destroy it
+					// destroy will callback to this function and start the build when approriate
+					// start destroying process for all notes but new scene
+					var destroying = false;
+					var scenes = u.qsa(".scene", this);
+					for(i = 0; scene = scenes[i]; i++) {
+						if(scene != this.scene){
+							if(typeof(scene.destroy) == "function") {
+//									u.bug("should destroy first")
+								destroying = true;
+								scene.destroy();
+							}
+							else {
+								// TODO: Manual removal 
+							}
+						}
 					}
 
-					// build current scene
-//					page.current_scene.scroll_offset = u.scrollY();
-					page.current_scene.build();
+//					u.bug(destroying + "; " + this.scene + "; " + this.scene.built)
+					if(!destroying && this.scene && !this.scene.built && typeof(this.scene.build) == "function") {
+
+						// manually close navigation
+						u.rc(page.nN, "open");
+
+
+//						u.bug("should build")
+						// take page back to top
+						window.scrollTo(0, 0);
+
+						this.scene.built = true;
+						this.scene.build();
+					}
 
 
 				}
@@ -133,6 +165,30 @@ Util.Objects["page"] = new function() {
 			page.cN.navigate = function(url) {
 				u.bug("cN.navigate:" + url)
 
+
+				// content received
+				this.response = function(response) {
+					u.bug("navigate response:" + this.request_url + ", " + response.body_class)
+
+					// set body class
+					u.setClass(document.body, response.body_class);
+					// set title
+					document.title = response.head_title;
+
+					// get .scene content from response
+					this.scene = u.qs(".scene", response);
+
+					// move new scene out of sight
+					//u.a.translate(this.scene, this.offsetWidth, 0);
+					// append new scene to #content
+					this.scene = u.ae(this, this.scene);
+
+					// init content - will callback to ready when done
+					u.init(this);
+
+				}
+				// request new content
+				u.request(this, u.h.getCleanHash(url));
 
 
 			}
@@ -184,7 +240,7 @@ Util.Objects["page"] = new function() {
 //				u.bug("initIntro")
 
 				// create intro layer
-				if(u.hc(page, "front")) {
+				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
 
 					// remove intro

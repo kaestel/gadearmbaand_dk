@@ -1,8 +1,6 @@
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 
-		u.bug("init front")
-
 		// global resize handler
 		scene.resized = function() {
 			u.bug("page.resized:" + u.nodeId(this));
@@ -153,6 +151,10 @@ Util.Objects["front"] = new function() {
 
 				this.is_built = true;
 
+
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+
 			}
 		}
 
@@ -163,6 +165,24 @@ Util.Objects["front"] = new function() {
 
 			// destruction is a one time, oneway street
 			this.destroy = null;
+
+
+			this.finalizeDestruction = function() {
+
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+
+			}
+
+
+			this.transitioned = function() {
+
+				// do actual destroy rendering
+				this.finalizeDestruction();
+			}
+
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 1);
 
 		}
 
