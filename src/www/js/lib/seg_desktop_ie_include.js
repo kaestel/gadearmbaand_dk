@@ -8,3 +8,4 @@ document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-deskt
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-front-desktop.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-events-desktop.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-manifest-desktop.js"></script>');
