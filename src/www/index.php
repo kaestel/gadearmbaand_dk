@@ -15,20 +15,6 @@ $page->pageTitle("Frontpage");
 
 
 
-// news list for tags
-// /blog/tag/#tag#
-// /blog/tag/#tag#/#sindex#/prev|next
-if(count($action) >= 2 && $action[0] == "tag") {
-
-	$page->page(array(
-		"templates" => "pages/posts_tag.php"
-		)
-	);
-	exit();
-
-}
-
-
 $page->page(array(
 	"templates" => "pages/front.php"
 	)
