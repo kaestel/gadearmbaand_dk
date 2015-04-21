@@ -3,8 +3,11 @@
 	<div id="navigation">
 		<ul>
 			<?= $HTML->link("Events", "/janitor/event/list", array("wrapper" => "li.event")) ?>
+			<?= $HTML->link("Instagrams", "/janitor/instagram/list", array("wrapper" => "li.instagram")) ?>
+			<?= $HTML->link("Tweets", "/janitor/twitter/list", array("wrapper" => "li.twitter")) ?>
 
-			<?= $HTML->link("Navigations", "/janitor/admin/navigation/list", array("wrapper" => "li.navigation")) ?>
+
+			<?//= $HTML->link("Navigations", "/janitor/admin/navigation/list", array("wrapper" => "li.navigation")) ?>
 			<?= $HTML->link("Users", "/janitor/admin/user/list", array("wrapper" => "li.user")) ?>
 			<?= $HTML->link("Tags", "/janitor/admin/tag/list", array("wrapper" => "li.tags")) ?>
 

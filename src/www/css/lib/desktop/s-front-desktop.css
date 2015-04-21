@@ -1,0 +1,38 @@
+
+/* BASIC CONTENT */
+#content .scene.front h1 {font-size:40px; padding:60px 0; text-align:center;}
+#content .scene.front {}
+#content .scene.front ul {width:100%; font-size:0;}
+#content .scene.front ul li {
+    display: inline-block; vertical-align:top;
+    box-sizing:border-box;
+
+}
+#content .scene.front ul li.blank {background:red;}
+
+/* widths */
+#content .scene.front ul li.twenty {width:20%;}
+#content .scene.front ul li.forty {width:40%;}
+#content .scene.front ul li.sixty {width:60%;}
+#content .scene.front ul li.eighty {width:80%;}
+
+#content .scene.front ul li.negative_twenty {margin-top:-20%;}
+
+
+/* instagram */
+#content .scene.front ul li.instagram {}
+#content .scene.front ul li.instagram div.image {}
+#content .scene.front ul li.instagram div.image img {width:100%;}
+
+
+/* tweet */
+#content .scene.front ul li.tweet {}
+#content .scene.front ul li.article {background:#000000; padding:20px;}
+#content .scene.front ul li.article.twenty {height:100%;}
+#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:800; color:#0c9a15; font-size:12px; padding-bottom:8px;;}
+#content .scene.front ul li.article.twenty h2 { font-family: 'Flood'; color:#ffffff; font-size:16px;}
+#content .scene.front ul li.article.forty h2 { font-family: 'Flood'; color:#ffffff; font-size:32px;}
+#content .scene.front ul li.article.twenty a {margin:0 auto; padding:34px 8px 34px 7px; font-size:24px; }
+#content .scene.front ul li.article.forty a {display:block; margin:0 auto; padding:34px 8px 34px 7px;
+    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400;
+}

@@ -26,7 +26,7 @@ Util.Objects["events"] = new function() {
 					// close li before filtering
 					for(i = 0; node = scene.items[i]; i++) {
 						if(u.hc(node, "selected")) {
-							u.a.transition(node, "all 0.2s ease-out");
+							u.a.transition(node, "all 0.3s ease-out");
 							u.rc(node, "selected");
 							u.as(node, "height", "41px");
 						}
@@ -94,10 +94,21 @@ Util.Objects["events"] = new function() {
 				
 				if(hasTag == selected_tags.length) {
 					
+					node.transitioned = function() {
+						
+					}
+
+					u.a.transition(node, "all 0.3s ease-out");
 					u.as(node, "display", "block");
+					u.as(node, "height", "41px");
+
 				} else {
-					
-					u.as(node, "display", "none");
+					node.transitioned = function() {
+						u.as(this, "display", "none");
+					}
+
+					u.a.transition(node, "all 0.3s ease-out");
+					u.as(node, "height", "0px");
 				}
 
 			}
@@ -123,11 +134,11 @@ Util.Objects["events"] = new function() {
 				node.clicked = function() {
 
 					if(u.hc(this, "selected")) {
-						u.a.transition(this, "all 0.2s ease-out");
+						u.a.transition(this, "all 0.3s ease-out");
 						u.rc(this, "selected");
 						u.as(this, "height", "41px");
 					}else {
-						u.a.transition(this, "all 0.6s ease-out");
+						u.a.transition(this, "all 0.5s ease-out");
 						u.ac(this, "selected");
 						u.as(this, "height", this._height + "px");
 					}
@@ -137,7 +148,7 @@ Util.Objects["events"] = new function() {
 						
 						if(u.hc(node, "selected") && node != this) {
 							
-							u.a.transition(node, "all 0.2s ease-out");
+							u.a.transition(node, "all 0.3s ease-out");
 							u.rc(node, "selected");
 							u.as(node, "height", "41px");
 						}
