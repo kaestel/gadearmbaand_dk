@@ -1,7 +1,7 @@
-u.bug_console_only = true;
-
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
+
+		u.bug("init front")
 
 		// global resize handler
 		scene.resized = function() {
@@ -21,8 +21,10 @@ Util.Objects["front"] = new function() {
 
 		// Page is ready
 		scene.ready = function() {
-			//alert("front ready");
-			// u.bug("page.ready:" + u.nodeId(this));
+			u.bug("scene.ready:" + u.nodeId(this));
+
+
+
 			var ul = u.qs("#grid");
 			var lis = u.qsa("li", ul);
 			var i, li;
@@ -79,6 +81,40 @@ Util.Objects["front"] = new function() {
 				// };
 			}
 
+
+			u.textscaler(this, {
+				"min_height":400,
+				"max_height":1000,
+				"min_width":600,
+				"max_width":1300,
+				"unit":"rem",
+				"h1":{
+					"min_size":4,
+					"max_size":8
+				},
+				"h2":{
+					"min_size":2,
+					"max_size":4
+				},
+				"h3":{
+					"min_size":1.4,
+					"max_size":2.8
+				},
+				"p":{
+					"min_size":1,
+					"max_size":2
+				},
+				"p span.s2":{
+					"min_size":1.4,
+					"max_size":2.8
+				}
+			});
+
+
+			this.is_ready = true;
+			page.cN.ready();
+
+
 		}
 		//
 		// // add main instagram image
@@ -106,6 +142,31 @@ Util.Objects["front"] = new function() {
 			// 	u.ce(logo, {"type":"link"});
 			// }
 		}
+
+
+
+		// build scene - start actual rendering of scene
+		scene.build = function() {
+
+			if(!this.is_built) {
+//				u.bug("scene.build:" + u.nodeId(this));
+
+				this.is_built = true;
+
+			}
+		}
+
+
+		// destroy scene - scene needs to be removed
+		scene.destroy = function() {
+//			u.bug("scene.destroy:" + u.nodeId(this))
+
+			// destruction is a one time, oneway street
+			this.destroy = null;
+
+		}
+
+
 
 		// ready to start page builing process
 		scene.ready();

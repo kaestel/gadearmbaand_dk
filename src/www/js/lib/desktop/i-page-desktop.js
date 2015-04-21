@@ -1,72 +1,187 @@
+u.bug_console_only = true;
+
+
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
 
-		// header reference
-		page.hN = u.qs("#header");
+		if(u.hc(page, "i:page")) {
 
-		// content reference
-		page.cN = u.qs("#content", page);
+			// header reference
+			page.hN = u.qs("#header");
 
-		// navigation reference
-		page.nN = u.qs("#navigation", page);
-		page.nN = u.ie(page.hN, page.nN);
+			// content reference
+			page.cN = u.qs("#content", page);
 
-		// footer reference
-		page.fN = u.qs("#footer");
+			// navigation reference
+			page.nN = u.qs("#navigation", page);
+			page.nN = u.ie(page.hN, page.nN);
+
+			// footer reference
+			page.fN = u.qs("#footer");
 
 
-		// global resize handler 
-		page.resized = function() {
-//			u.bug("page.resized:" + u.nodeId(this));
+			// global resize handler 
+			page.resized = function() {
+//				u.bug("page.resized:" + u.nodeId(this));
 
-			// forward scroll event to current scene
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
-				page.cN.scene.resized();
-			}
-		}
+				page.browser_w = u.browserW();
+				page.browser_h = u.browserH();
 
-		// global scroll handler 
-		page.scrolled = function() {
-//			u.bug("page.scrolled:" + u.nodeId(this))
 
-			// forward scroll event to current scene
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
-				page.cN.scene.scrolled();
-			}
-		}
+				// forward scroll event to current scene
+				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
+					page.cN.scene.resized();
+				}
 
-		// Page is ready
-		page.ready = function() {
-//			u.bug("page.ready:" + u.nodeId(this));
-
-			// page is ready to be shown - only initalize if not already shown
-			if(!this.is_ready) {
-
-				// page is ready
-				this.is_ready = true;
-
-				// set resize handler
-				u.e.addEvent(window, "resize", page.resized);
-				// set scroll handler
-				u.e.addEvent(window, "scroll", page.scrolled);
-
-				this.initHeader();
+				page.offsetHeight;
 			}
 
-		}
+			// global scroll handler 
+			page.scrolled = function() {
+//				u.bug("page.scrolled:" + u.nodeId(this))
 
-		// initialize header
-		page.initHeader = function() {
-			var frontpage_link = u.qs("li.front a", this.nN);
-			if(frontpage_link) {
-				var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
-				u.ce(logo, {"type":"link"});
+				page.scroll_y = u.scrollY();
+
+
+				// forward scroll event to current scene
+				if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
+					page.cN.scene.scrolled();
+				}
+
+				page.offsetHeight;
 			}
+
+			// Page is ready
+			page.ready = function() {
+				u.bug("page.ready called:" + u.nodeId(this));
+
+				// page is ready to be shown - only initalize if not already shown
+				if(!this.is_ready) {
+					u.bug("page initialization:" + u.nodeId(this));
+
+					// page is ready
+					this.is_ready = true;
+
+
+					this.cN.scene = u.qs(".scene", this.cN);
+
+
+					// set resize handler
+					u.e.addEvent(window, "resize", page.resized);
+					// set scroll handler
+					u.e.addEvent(window, "scroll", page.scrolled);
+
+
+					// start intro
+					this.initIntro();
+
+
+					// build navigation
+					this.initNavigation();
+
+
+					// build header
+					this.initHeader();
+
+
+					// resize / scroll straight away to adjust widths
+					this.resized();
+					this.scrolled();
+
+
+					// enable ajax navigation
+					u.navigation();
+
+
+					// initialize current scene
+					u.init(this.cN.scene);
+				}
+
+			}
+
+
+			// Content is ready - called from page.ready, scene and intro to make sure
+			// we are at the correct state before showing the content and starting the scene rendering
+			page.cN.ready = function() {
+				u.bug("page.cN ready called")
+
+
+				if(!page.intro && page.is_ready && page.scene.is_ready && !this.is_ready) {
+					u.bug("finally make page.cN ready")
+
+
+					this.is_ready = true;
+
+
+					// load remaining pages once current scene is shown
+					page.current_scene.built = function() {
+
+						// only ever run this once
+						page.current_scene.built = null;
+
+					}
+
+					// build current scene
+//					page.current_scene.scroll_offset = u.scrollY();
+					page.current_scene.build();
+
+
+				}
+
+			}
+
+			// navigation controller
+			page.cN.navigate = function(url) {
+				u.bug("cN.navigate:" + url)
+
+
+
+			}
+
+
+
+
+			// initialize header
+			page.initHeader = function() {
+				u.bug("initHeader")
+
+				var frontpage_link = u.qs("li.front a", this.nN);
+				if(frontpage_link) {
+					var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
+					u.ce(logo, {"type":"link"});
+				}
+			}
+
+
+			// setup and activate Navigation
+			page.initNavigation = function() {
+				u.bug("initNavigation")
+
+				// navigation list
+				this.nN.list = u.qs("ul", this.nN);
+
+			}
+
+
+			// initialize intro
+			page.initIntro = function() {
+				u.bug("initIntro")
+
+			}
+
+
+
+			// ready to start page builing process
+			page.ready();
+
 		}
 
-		// ready to start page builing process
-		page.ready();
 	}
 }
 
-u.e.addDOMReadyEvent(u.init);
+
+// Controlled initialization
+function static_init() {
+	u.o.page.init(u.qs("#page"));
+}
+u.e.addDOMReadyEvent(static_init);

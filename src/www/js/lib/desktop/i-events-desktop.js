@@ -8,18 +8,18 @@ Util.Objects["events"] = new function() {
 		scene.scrolled = function() {
 //			u.bug("scene.scrolled:" + u.nodeId(this))
 		}
-
-		scene.tags = function() {
+		
+		scene.init_tags = function() {
 			
-			scene._tag = u.qs(".tag_list");
-			scene._tagsAll = u.ie(scene._tag, "li", {"class":"all selected","html":"All"});
+			this._tag = u.qs(".tag_list");
+			this._tagsAll = u.ie(this._tag, "li", {"class":"all selected","html":"All"});
+			this._tags = u.qsa("li", this._tag);
 
-			scene._tags = u.qsa("li", scene._tag);
-
-			scene.selected_tags = [];
+			this.selected_tags = [];
 
 			var i, node;
-			for(i = 0; node = scene._tags[i]; i++) {
+			for(i = 0; node = this._tags[i]; i++) {
+
 
 				node.clicked = function() {
 
@@ -31,33 +31,33 @@ Util.Objects["events"] = new function() {
 							u.as(node, "height", "41px");
 						}
 					}
-
-
+					// we clicked on ALL 
 					if(u.hc(this, "all")) {
 						
 						var i, node;
 						for(i = 0; node = scene._tags[i]; i++) {
-							if(node != this) {
-								u.rc(node, "selected");
-							} else {
-								u.ac(node, "selected");
-							}
+
+							u.rc(node, "selected");
 							
 						}
 
+						u.ac(scene._tagsAll, "selected")
 						scene.selected_tags = [];
 
-					} else if(u.hc(this, "selected")){
+					} 
+					// node is already selected
+					else if(u.hc(this, "selected")){
 
 						u.rc(this, "selected");
-						
 						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
 
-						if(scene.selected_tags.length == 0) {
-							u.ac(scene._tags[0], "selected");	
+						if(scene.selected_tags.length == 0) { // no more node selected? highlight ALL again
+							u.ac(scene._tagsAll, "selected");	
 						}
 
-					} else {
+					} 
+					// click on unselected node
+					else {
 						u.rc(scene._tagsAll, "selected")
 						u.ac(this, "selected");
 
@@ -69,75 +69,95 @@ Util.Objects["events"] = new function() {
 
 				u.ce(node)
 			}
-
 		}
+
 
 		scene.filter = function(selected_tags) {
 
 			var i, node;
-			for(i = 0; node = scene.items[i]; i++) { // looping the list itmes (li)
-				node._tags = u.qsa("ul.tags li", node);
-
-				var hasTag = 0;
-
-				var j, node_tag;
-				for(j = 0; node_tag = node._tags[j]; j++) { // looping the tags in li
-
-					var k, list_tag;
-					for(k = 0; list_tag = selected_tags[k]; k++) { // loop the selected tags
-
-						if(node_tag.innerHTML == list_tag) {
-							hasTag++;
-						}
-					}
-				}
+			for(i = 0; node = this.items[i]; i++) { // looping the list itmes (li)
 				
-				if(hasTag == selected_tags.length) {
-					
+				var has_tags = true
+
+				// the arrey is empty
+				if(selected_tags.length == 0) {
+
 					node.transitioned = function() {
-						
+						u.a.transition(this, "none");
 					}
 
 					u.a.transition(node, "all 0.3s ease-out");
 					u.as(node, "display", "block");
 					u.as(node, "height", "41px");
 
-				} else {
-					node.transitioned = function() {
-						u.as(this, "display", "none");
+				} 
+
+				// we have a tag selected
+				else {
+
+					for(k = 0; list_tag = selected_tags[k]; k++) { // loop the selected tags
+
+						if(node.node_tags_array.indexOf(list_tag) == -1) { // check if node doesn't has tag
+
+							has_tags = false;
+
+							node.transitioned = function() {
+								u.as(this, "display", "none");
+							}
+
+							u.a.transition(node, "all 0.3s ease-out");
+							u.as(node, "height", "0px");
+
+							break;
+						}
 					}
+					
+					if(has_tags) {
 
-					u.a.transition(node, "all 0.3s ease-out");
-					u.as(node, "height", "0px");
+						node.transitioned = function() {
+							u.a.transition(this, "none");
+						}
+
+						u.a.transition(node, "all 0.3s ease-out");
+						u.as(node, "display", "block");
+						u.as(node, "height", "41px");
+					}
 				}
-
 			}
-
 		}
 
 		scene.ready = function() {
 //			u.bug("scene.ready:" + u.nodeId(this));
 
 			scene.items = u.qsa(".item");
+			scene.item_tags = u.qsa("ul.tags li");
 			
 
-
 			// filtering of tags
-			scene.tags();
+			scene.init_tags();
 
 			// opne close navigation on click
 			var i, node;
 			for(i = 0; node = scene.items[i]; i++) {
 
+				node.tag_values = u.qsa("ul.tags li", node);
+				node.node_tags_array = [];
+
+				var j, node_tag;
+				for(j = 0; node_tag = node.tag_values[j]; j++) {
+					node.node_tags_array.push(node_tag.innerHTML);
+				}
+
 				node._height = node.offsetHeight;
-				
+
 				node.clicked = function() {
 
 					if(u.hc(this, "selected")) {
 						u.a.transition(this, "all 0.3s ease-out");
 						u.rc(this, "selected");
 						u.as(this, "height", "41px");
-					}else {
+
+					} else {
 						u.a.transition(this, "all 0.5s ease-out");
 						u.ac(this, "selected");
 						u.as(this, "height", this._height + "px");
@@ -158,7 +178,6 @@ Util.Objects["events"] = new function() {
 				u.ce(node)
 				u.ass(node, {"height": "41px"})
 			}
-
 		}
 
 		// scene is ready
