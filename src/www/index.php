@@ -10,8 +10,8 @@ include_once($_SERVER["FRAMEWORK_PATH"]."/config/init.php");
 $action = $page->actions();
 
 
-$page->bodyClass("post");
-$page->pageTitle("Posts");
+$page->bodyClass("front");
+$page->pageTitle("Frontpage");
 
 
 
@@ -30,7 +30,7 @@ if(count($action) >= 2 && $action[0] == "tag") {
 
 
 $page->page(array(
-	"templates" => "pages/posts.php"
+	"templates" => "pages/front.php"
 	)
 );
 exit();
