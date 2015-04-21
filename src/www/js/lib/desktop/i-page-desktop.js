@@ -14,7 +14,6 @@ Util.Objects["page"] = new function() {
 
 			// navigation reference
 			page.nN = u.qs("#navigation", page);
-			page.nN = u.ie(page.hN, page.nN);
 
 			// footer reference
 			page.fN = u.qs("#footer");
@@ -106,7 +105,7 @@ Util.Objects["page"] = new function() {
 				u.bug("page.cN ready called")
 
 
-				if(!page.intro && page.is_ready && page.scene.is_ready && !this.is_ready) {
+				if(!page.intro && page.is_ready && page.cN.scene.is_ready && !page.cN.is_ready) {
 					u.bug("finally make page.cN ready")
 
 
@@ -143,19 +142,27 @@ Util.Objects["page"] = new function() {
 
 			// initialize header
 			page.initHeader = function() {
-				u.bug("initHeader")
+//				u.bug("initHeader")
 
-				var frontpage_link = u.qs("li.front a", this.nN);
-				if(frontpage_link) {
-					var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
-					u.ce(logo, {"type":"link"});
+				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				u.ce(bn_nav);
+				bn_nav.clicked = function() {
+
+					if(u.hc(page.nN, "open")) {
+						u.rc(page.nN, "open");
+					}
+					else {
+						u.ac(page.nN, "open");
+					}
+
 				}
+
 			}
 
 
 			// setup and activate Navigation
 			page.initNavigation = function() {
-				u.bug("initNavigation")
+//				u.bug("initNavigation")
 
 				// navigation list
 				this.nN.list = u.qs("ul", this.nN);
@@ -166,6 +173,21 @@ Util.Objects["page"] = new function() {
 			// initialize intro
 			page.initIntro = function() {
 				u.bug("initIntro")
+
+				// create intro layer
+				page.intro = u.ae(document.body, "div", {"id":"intro"});
+
+				// remove intro
+				u.ce(page.intro);
+				page.intro.clicked = function() {
+
+					this.parentNode.removeChild(this);
+					page.intro = false;
+
+					// notify page.cN.ready to continue content rendering
+					page.cN.ready();
+
+				}
 
 			}
 
