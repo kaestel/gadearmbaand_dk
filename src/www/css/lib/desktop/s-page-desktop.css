@@ -1,4 +1,4 @@
-* {font-family: "DINPro", Verdana, Arial, sans-serif; color: #180619; font-weight: 600;
+* {font-family: "DINPro", Verdana, Arial, sans-serif; color: #2D2D2D; font-weight: 400;
 	-webkit-text-size-adjust: none;
 	-webkit-font-smoothing: antialiased;
 }
@@ -48,7 +48,7 @@ li {font-size: 14px; line-height: 1.25em;}
 #intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0;}
 #intro svg line {stroke-width: 3px; stroke: #ffffff;}
 #intro svg circle {stroke-width: 3px; stroke: #ffffff;}
-#intro svg path {stroke-width: 3px; stroke: #ffffff;}
+#intro svg path {stroke-width: 3px; stroke: #ffffff; fill: none;}
 
 
 #content .scene {opacity: 0;}

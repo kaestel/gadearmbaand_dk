@@ -307,7 +307,7 @@ Util.Objects["page"] = new function() {
 
 							u.svgShape(page.intro.svg, {
 								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 135 1 1 "+(page.browser_w/2 + 100)+" "+(page.browser_h/2)
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 90 1 1 200 0"
 							});
 
 							// u.svgShape(page.intro.svg, {
