@@ -22,14 +22,27 @@ $days = $IC->getTags(array("context" => "day"));
 <?		endif; ?>
 	</ul>
 
-	<h2>Filter by tags</h2>
-	<ul class="tag_list">
-<?		if($tags): ?>
-<?			foreach($tags as $tag): ?>
-				<li><?= $tag["value"] ?></li>
-<?			endforeach; ?>
-<?		endif; ?>
-	</ul>
+	<h2>Advanced search</h2>
+	<div class="filter">
+		
+		<h3>Filter by tags</h3>
+		<ul class="tag_list">
+		<?		if($tags): ?>
+		<?			foreach($tags as $tag): ?>
+					<li><?= $tag["value"] ?></li>
+		<?			endforeach; ?>
+		<?		endif; ?>
+		</ul>
+		
+		<form class="search">
+			<h3>Search</h3>
+			<fieldset>
+				<div class="field string">
+					<input type="text" value="Type here" />
+				</div>
+			</fieldset>
+		</form>
+	</div>
 
 	<ul class="legend">
 		<li>Host</li>
