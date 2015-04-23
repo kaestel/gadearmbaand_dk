@@ -6,6 +6,9 @@ Util.Objects["page"] = new function() {
 
 		if(u.hc(page, "i:page")) {
 
+			// remove initializer class
+			u.rc(page, "i:page");
+
 			// header reference
 			page.hN = u.qs("#header");
 
@@ -17,6 +20,7 @@ Util.Objects["page"] = new function() {
 
 			// footer reference
 			page.fN = u.qs("#footer");
+
 
 
 			// global resize handler 
@@ -71,6 +75,7 @@ Util.Objects["page"] = new function() {
 					this.is_ready = true;
 
 
+					// map the current scene
 					this.cN.scene = u.qs(".scene", this.cN);
 
 
