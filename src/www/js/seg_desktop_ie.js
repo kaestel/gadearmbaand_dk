@@ -5287,11 +5287,11 @@ Util.Objects["page"] = new function() {
 					else {
 						u.e.addEvent(window, "resize", page.resized);
 					}
+					this.resized();
+					this.scrolled();
 					this.initIntro();
 					this.initNavigation();
 					this.initHeader();
-					this.resized();
-					this.scrolled();
 					u.navigation();
 					u.init(this.cN.scene);
 				}
@@ -5374,6 +5374,32 @@ Util.Objects["page"] = new function() {
 			page.initIntro = function() {
 				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
+					page.intro.svg = u.svg({
+						"node":page.intro,
+						"width":page.browser_w,
+						"height":page.browser_h,
+						"class":"intro",
+						"shapes":[
+							{
+								"type":"line",
+								"x1":-10,
+								"y1":page.browser_h/2,
+								"x2":-8,
+								"y2":page.browser_h/2
+							}
+						]
+					});
+					page.intro.line1 = u.qs("line", page.intro.svg);
+					page.intro.line1.transitioned = function() {
+						page.intro.line1.transitioned = function() {
+							u.svgShape(page.intro.svg, {
+								"type":"path",
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 135 1 1 "+(page.browser_w/2 + 100)+" "+(page.browser_h/2)
+							});
+						}
+						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
+					}
+					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
 					u.ce(page.intro);
 					page.intro.clicked = function() {
 						this.parentNode.removeChild(this);
