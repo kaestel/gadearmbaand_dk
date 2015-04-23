@@ -5271,7 +5271,7 @@ Util.Objects["page"] = new function() {
 						page.intro.line1.transitioned = function() {
 							u.svgShape(page.intro.svg, {
 								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 135 1 1 "+(page.browser_w/2 + 100)+" "+(page.browser_h/2)
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 90 1 1 200 0"
 							});
 						}
 						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
