@@ -151,11 +151,18 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > ul.days {width: 100%; text-align: center;}
 .scene.event > ul.days li {padding: 8px 16px; margin: 0 10px; border: 1px solid #70B857; display: inline-block; color: #70B857; cursor: pointer;}
 .scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
-.scene.event > h2 {width: 100%; text-align: center; font-size: 14px; padding: 30px 0 20px;}
-.scene.event > ul.tag_list {width: 100%; text-align: center;}
-.scene.event > ul.tag_list li {padding: 8px 16px; margin: 0 10px; border: 1px solid #70B857; display: inline-block; color: #70B857; cursor: pointer;}
-.scene.event > ul.tag_list li:hover {background-color: #70B857; color: #FFFFFF;}
-.scene.event > ul.tag_list li.selected {background-color: #70B857; color: #FFFFFF;}
+.scene.event > h2 {width: 100%; text-align: center;}
+.scene.event > .filter {margin: 0 auto; text-align: center; padding: 0 0 50px;}
+.scene.event > .filter h3 {font-size: 14px; padding: 0 0 20px;}
+.scene.event > .filter ul.tag_list {width: 100%; text-align: center;}
+.scene.event > .filter ul.tag_list li {padding: 8px 16px; margin: 0 10px; border: 1px solid #70B857; display: inline-block; color: #70B857; cursor: pointer;}
+.scene.event > .filter ul.tag_list li:hover {background-color: #70B857; color: #FFFFFF;}
+.scene.event > .filter ul.tag_list li.selected {background-color: #70B857; color: #FFFFFF;}
+.scene.event > .filter .search {}
+.scene.event > .filter .search h3 {width: 100%; text-align: center; font-size: 14px; padding: 30px 0 20px;}
+.scene.event > .filter .search fieldset {}
+.scene.event > .filter .search fieldset .field {}
+.scene.event > .filter .search fieldset .field input {background-color: transparent; border: 1px solid #70B857; width: 230px; padding: 8px 16px;}
 .scene.event > ul.legend {padding: 80px 50px 0; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
