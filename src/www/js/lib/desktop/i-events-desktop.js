@@ -52,7 +52,7 @@ Util.Objects["events"] = new function() {
 						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
 
 						if(scene.selected_tags.length == 0) { // no more node selected? highlight ALL again
-							u.ac(scene._tagsAll, "selected");	
+							u.ac(scene._tagsAll, "selected");
 						}
 
 					} 
