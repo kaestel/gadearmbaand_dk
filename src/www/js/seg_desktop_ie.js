@@ -5254,6 +5254,7 @@ u.bug_console_only = true;
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
 		if(u.hc(page, "i:page")) {
+			u.rc(page, "i:page");
 			page.hN = u.qs("#header");
 			page.cN = u.qs("#content", page);
 			page.nN = u.qs("#navigation", page);
@@ -5527,7 +5528,7 @@ Util.Objects["events"] = new function() {
 						u.rc(this, "selected");
 						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
 						if(scene.selected_tags.length == 0) { 
-							u.ac(scene._tagsAll, "selected");	
+							u.ac(scene._tagsAll, "selected");
 						}
 					} 
 					else {

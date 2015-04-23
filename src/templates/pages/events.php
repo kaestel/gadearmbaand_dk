@@ -11,7 +11,9 @@ $days = $IC->getTags(array("context" => "day"));
 ?>
 
 <div class="scene event i:events">
-	
+
+	<h1>Events</h1>
+
 	<ul class="days">
 <?		if($days): ?>
 <?			foreach($days as $day): ?>
