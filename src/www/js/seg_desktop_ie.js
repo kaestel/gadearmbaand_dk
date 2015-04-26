@@ -5158,55 +5158,609 @@ if(u.ga_account) {
 }
 
 
-/*i-page-desktop.js*/
-Util.Objects["page"] = new function() {
-	this.init = function(page) {
-		page.hN = u.qs("#header");
-		page.cN = u.qs("#content", page);
-		page.nN = u.qs("#navigation", page);
-		page.nN = u.ie(page.hN, page.nN);
-		page.fN = u.qs("#footer");
-		page.resized = function() {
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
-				page.cN.scene.resized();
+/*u-navigation.js*/
+u.navigation = function(_options) {
+	var callback_navigate = "navigate";
+	var navigation_node = page;
+	if(typeof(_options) == "object") {
+		var argument;
+		for(argument in _options) {
+			switch(argument) {
+				case "callback"       : callback_navigate      = _options[argument]; break;
+				case "node"           : navigation_node        = _options[argument]; break;
 			}
 		}
-		page.scrolled = function() {
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
-				page.cN.scene.scrolled();
+	}
+	navigation_node._nav_path = navigation_node._nav_path ? navigation_node._nav_path : u.h.getCleanUrl(location.href, 1);
+	navigation_node._nav_history = navigation_node._nav_history ? navigation_node._nav_history : [];
+	navigation_node._navigate = function(url) {
+		url = u.h.getCleanUrl(url);
+		navigation_node._nav_history.unshift(url);
+		u.stats.pageView(url);
+		if(!this._nav_path || ((this._nav_path != u.h.getCleanHash(location.hash, 1) && !u.h.popstate) || (this._nav_path != u.h.getCleanUrl(location.href, 1) && u.h.popstate))) {
+			if(this.cN && typeof(this.cN.navigate) == "function") {
+				this.cN.navigate(url);
 			}
 		}
-		page.ready = function() {
-			if(!this.is_ready) {
-				this.is_ready = true;
-				u.e.addEvent(window, "resize", page.resized);
-				u.e.addEvent(window, "scroll", page.scrolled);
-				this.initHeader();
+		else {
+			if(this.cN.scene && this.cN.scene.parentNode && typeof(this.cN.scene.navigate) == "function") {
+				this.cN.scene.navigate(url);
+			}
+			else if(this.cN && typeof(this.cN.navigate) == "function") {
+				this.cN.navigate(url);
 			}
 		}
-		page.initHeader = function() {
-			var frontpage_link = u.qs("li.front a", this.nN);
-			if(frontpage_link) {
-				var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
-				u.ce(logo, {"type":"link"});
-			}
+		if(!u.h.popstate) {
+			this._nav_path = u.h.getCleanHash(location.hash, 1);
 		}
-		page.ready();
+		else {
+			this._nav_path = u.h.getCleanUrl(location.href, 1);
+		}
+	}
+	navigation_node.navigate = function(url, node) {
+		this.history_node = node ? node : false;
+		if(u.h.popstate) {
+			history.pushState({}, url, url);
+			navigation_node._navigate(url);
+		}
+		else {
+			location.hash = u.h.getCleanUrl(url);
+		}
+	}
+	if(location.hash.length && location.hash.match(/^#!/)) {
+		location.hash = location.hash.replace(/!/, "");
+	}
+	if(!u.h.popstate) {
+		if(location.hash.length < 2) {
+			navigation_node.navigate(location.href, page);
+			navigation_node._nav_path = u.h.getCleanUrl(location.href);
+			u.init(navigation_node.cN);
+		}
+		else if(u.h.getCleanHash(location.hash) != u.h.getCleanUrl(location.href) && location.hash.match(/^#\//)) {
+			navigation_node._nav_path = u.h.getCleanUrl(location.href);
+			navigation_node._navigate(u.h.getCleanHash(location.hash), page);
+		}
+		else {
+			u.init(navigation_node.cN);
+		}
+	}
+	else {
+		if(u.h.getCleanHash(location.hash) != u.h.getCleanUrl(location.href) && location.hash.match(/^#\//)) {
+			navigation_node._nav_path = u.h.getCleanHash(location.hash);
+			navigation_node.navigate(u.h.getCleanHash(location.hash), page);
+		}
+		else {
+			u.init(navigation_node.cN);
+		}
+	}
+	navigation_node._initHistory = function() {
+		u.h.catchEvent(page, {"callback":"_navigate"});
+	}
+	u.t.setTimer(page, navigation_node._initHistory, 100);
+	navigation_node.historyBack = function() {
+		if(this._nav_history.length > 1) {
+			this._nav_history.shift();
+			return this._nav_history.shift();
+		}
+		else {
+			return "/";
+		}
 	}
 }
-u.e.addDOMReadyEvent(u.init);
 
 
-/*i-login-desktop.js*/
-Util.Objects["login"] = new function() {
+/*i-page-desktop.js*/
+u.bug_console_only = true;
+Util.Objects["page"] = new function() {
+	this.init = function(page) {
+		if(u.hc(page, "i:page")) {
+			u.rc(page, "i:page");
+			page.hN = u.qs("#header");
+			page.cN = u.qs("#content", page);
+			page.nN = u.qs("#navigation", page);
+			page.fN = u.qs("#footer");
+			page.resized = function(event) {
+				page.browser_w = u.browserW();
+				page.browser_h = u.browserH();
+				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
+					page.cN.scene.resized();
+				}
+				page.offsetHeight;
+			}
+			page.scrolled = function(event) {
+				page.scroll_y = u.scrollY();
+				if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
+					page.cN.scene.scrolled();
+				}
+				page.offsetHeight;
+			}
+			page.orientationchanged = function(event) {
+			}
+			page.ready = function() {
+				if(!this.is_ready) {
+					this.is_ready = true;
+					this.cN.scene = u.qs(".scene", this.cN);
+					u.e.addEvent(window, "scroll", page.scrolled);
+					if(u.e.event_pref == "touch") {
+						u.e.addEvent(window, "orientationchange", page.orientationchanged);
+					}
+					else {
+						u.e.addEvent(window, "resize", page.resized);
+					}
+					this.resized();
+					this.scrolled();
+					this.initIntro();
+					this.initNavigation();
+					this.initHeader();
+					u.navigation();
+					u.init(this.cN.scene);
+				}
+			}
+			page.cN.ready = function() {
+				if(!page.intro && page.is_ready && page.cN.scene.is_ready) {
+					var destroying = false;
+					var scenes = u.qsa(".scene", this);
+					for(i = 0; scene = scenes[i]; i++) {
+						if(scene != this.scene){
+							if(typeof(scene.destroy) == "function") {
+								destroying = true;
+								scene.destroy();
+							}
+						}
+					}
+					if(!destroying && this.scene && !this.scene.built && typeof(this.scene.build) == "function") {
+						window.scrollTo(0, 0);
+						this.scene.built = true;
+						this.scene.build();
+					}
+				}
+			}
+			page.cN.navigate = function(url) {
+				this.response = function(response) {
+					u.setClass(document.body, response.body_class);
+					document.title = response.head_title;
+					this.scene = u.qs(".scene", response);
+					this.scene = u.ae(this, this.scene);
+					u.init(this);
+				}
+				u.request(this, u.h.getCleanHash(url));
+			}
+			page.initHeader = function() {
+				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				u.ce(bn_nav);
+				bn_nav.clicked = function() {
+					if(u.hc(page.nN, "open")) {
+						page.nN.transitioned = function() {
+							u.rc(this, "open");
+						}
+						u.a.transition(page.nN, "all 0.5s linear");
+						u.a.setOpacity(page.nN, 0);
+					}
+					else {
+						u.ac(page.nN, "open");
+						u.a.transition(page.nN, "all 0.5s linear");
+						u.a.setOpacity(page.nN, 1);
+					}
+				}
+			}
+			page.initNavigation = function() {
+				var i, node;
+				page.nN.nodes = u.qsa("li", page.nN);
+				for(i = 0; node = page.nN.nodes[i]; i++) {
+					if(!u.hc(node, "buy")) {
+						u.ce(node);
+						node.clicked = function(event) {
+							page.nN.next_url = this.url;
+							page.nN.transitioned = function() {
+								u.rc(this, "open");
+								page.navigate(this.next_url);
+							}
+							u.a.transition(page.nN, "all 0.5s linear");
+							u.a.setOpacity(page.nN, 0);
+						}
+					}
+					else {
+						u.e.click(node);
+						node.clicked = function(event) {
+							page.nN.transitioned = function() {
+								u.rc(this, "open");
+							}
+							u.a.transition(page.nN, "all 0.5s linear");
+							u.a.setOpacity(page.nN, 0);
+						}
+					}
+				}
+			}
+			page.initIntro = function() {
+				if(u.hc(document.body, "front")) {
+					page.intro = u.ae(document.body, "div", {"id":"intro"});
+					page.intro.svg = u.svg({
+						"node":page.intro,
+						"width":page.browser_w,
+						"height":page.browser_h,
+						"class":"intro",
+						"shapes":[
+							{
+								"type":"line",
+								"x1":-10,
+								"y1":page.browser_h/2,
+								"x2":-8,
+								"y2":page.browser_h/2
+							}
+						]
+					});
+					page.intro.line1 = u.qs("line", page.intro.svg);
+					page.intro.line1.transitioned = function() {
+						page.intro.line1.transitioned = function() {
+							u.svgShape(page.intro.svg, {
+								"type":"path",
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 90 1 1 200 0"
+							});
+						}
+						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
+					}
+					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
+					u.ce(page.intro);
+					page.intro.clicked = function() {
+						this.parentNode.removeChild(this);
+						page.intro = false;
+						page.cN.ready();
+					}
+				}
+			}
+			page.ready();
+		}
+	}
+}
+function static_init() {
+	u.o.page.init(u.qs("#page"));
+}
+u.e.addDOMReadyEvent(static_init);
+
+
+/*i-front-desktop.js*/
+Util.Objects["front"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+			u.bug("page.resized:" + u.nodeId(this));
+		}
+		scene.scrolled = function() {
+			u.bug("page.scrolled:" + u.nodeId(this))
+			// 
+		}
+		scene.ready = function() {
+			u.bug("scene.ready:" + u.nodeId(this));
+			var ul = u.qs("#grid");
+			var lis = u.qsa("li", ul);
+			var i, li;
+			for (i = 0; li = lis[i]; i++) {
+				if (u.hc(li, "instagram")) {
+					var node = u.qs("div.image", li);
+					if (node) {
+						node.image_id = u.cv(node, "image_id");
+						node.format = u.cv(node, "format");
+						if (node.image_id && node.format) {
+							node.loaded = function(queue) {
+								console.log(queue[0]._image);
+								u.ae(this, "img", {"src": queue[0]._image.src});
+							}
+							node._image_src = "/img/temp/" + node.image_id + "." + node.format;
+							u.preloader(node, [node._image_src])
+						}
+					}
+				}
+				if (u.hc(li, "tweet")) {
+				}
+				if (u.hc(li, "article")) {
+					var link = u.qs("a");
+					u.as(li, "height", li.offsetWidth+"px");
+					link.clicked = function(event) {
+						u.e.kill();
+						console.log("TODO: ajax load this page");
+					}
+					u.ce(link);
+				}
+			}
+			u.textscaler(this, {
+				"min_height":400,
+				"max_height":1000,
+				"min_width":600,
+				"max_width":1300,
+				"unit":"rem",
+				"h1":{
+					"min_size":4,
+					"max_size":8
+				},
+				"h2":{
+					"min_size":2,
+					"max_size":4
+				},
+				"h3":{
+					"min_size":1.4,
+					"max_size":2.8
+				},
+				"p":{
+					"min_size":1,
+					"max_size":2
+				},
+				"p span.s2":{
+					"min_size":1.4,
+					"max_size":2.8
+				}
+			});
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		// 
+		// 	
+		// 		
+		scene.initGrid = function() {
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			this.transitioned = function() {
+				this.finalizeDestruction();
+			}
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
+		}
+		scene.ready();
+	}
+}
+
+
+/*i-events-desktop.js*/
+Util.Objects["events"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
 		}
 		scene.scrolled = function() {
 		}
+		scene.init_tags = function() {
+			this._tag = u.qs(".tag_list");
+			this._tagsAll = u.ie(this._tag, "li", {"class":"all selected","html":"All"});
+			this._tags = u.qsa("li", this._tag);
+			this.selected_tags = [];
+			var i, node;
+			for(i = 0; node = this._tags[i]; i++) {
+				node.clicked = function() {
+					for(i = 0; node = scene.items[i]; i++) {
+						if(u.hc(node, "selected")) {
+							u.a.transition(node, "all 0.3s ease-out");
+							u.rc(node, "selected");
+							u.as(node, "height", "41px");
+						}
+					}
+					if(u.hc(this, "all")) {
+						var i, node;
+						for(i = 0; node = scene._tags[i]; i++) {
+							u.rc(node, "selected");
+						}
+						u.ac(scene._tagsAll, "selected")
+						scene.selected_tags = [];
+					} 
+					else if(u.hc(this, "selected")){
+						u.rc(this, "selected");
+						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
+						if(scene.selected_tags.length == 0) { 
+							u.ac(scene._tagsAll, "selected");
+						}
+					} 
+					else {
+						u.rc(scene._tagsAll, "selected")
+						u.ac(this, "selected");
+						scene.selected_tags.push(this.innerHTML)
+					}
+					scene.filter(scene.selected_tags)
+				}
+				u.ce(node)
+			}
+		}
+		scene.filter = function(selected_tags) {
+			var i, node;
+			for(i = 0; node = this.items[i]; i++) { 
+				var has_tags = true
+				if(selected_tags.length == 0) {
+					if(!node._shown) {
+						u.a.transition(node, "all 0.3s ease-out");
+						u.as(node, "display", "block");
+						u.as(node, "height", "41px");
+						node._shown = true;
+					}
+				} 
+				else {
+					for(k = 0; list_tag = selected_tags[k]; k++) { 
+						if(node.node_tags_array.indexOf(list_tag) == -1) { 
+							has_tags = false;
+							if(node._shown) {
+								node.transitioned = function() {
+									u.as(this, "display", "none");
+								}
+								u.a.transition(node, "all 0.3s ease-out");
+								u.as(node, "height", "0px");
+								node._shown = false;
+							}
+							break;
+						}
+					}
+					if(has_tags) {
+						if(!node._shown) {
+							u.a.transition(node, "all 0.3s ease-out");
+							u.as(node, "display", "block");
+							u.as(node, "height", "41px");
+							node._shown = true;
+						}
+					}
+				}
+			}
+		}
 		scene.ready = function() {
-			this._form = u.qs("form", this);
-			u.f.init(this._form);
+			scene.items = u.qsa(".item");
+			scene.item_tags = u.qsa("ul.tags li");
+			scene.init_tags();
+			var i, node;
+			for(i = 0; node = scene.items[i]; i++) {
+				node.tag_values = u.qsa("ul.tags li", node);
+				node.node_tags_array = [];
+				var j, node_tag;
+				for(j = 0; node_tag = node.tag_values[j]; j++) {
+					node.node_tags_array.push(node_tag.innerHTML);
+				}
+				node._shown = true;
+				node._height = node.offsetHeight;
+				node.clicked = function() {
+					if(u.hc(this, "selected")) {
+						u.a.transition(this, "all 0.3s ease-out");
+						u.rc(this, "selected");
+						u.as(this, "height", "41px");
+					} else {
+						u.a.transition(this, "all 0.5s ease-out");
+						u.ac(this, "selected");
+						u.as(this, "height", this._height + "px");
+					}
+					var i, node;
+					for(i = 0; node = scene.items[i]; i++) {
+						if(u.hc(node, "selected") && node != this) {
+							u.a.transition(node, "all 0.3s ease-out");
+							u.rc(node, "selected");
+							u.as(node, "height", "41px");
+						}
+					}
+				}
+				u.ce(node)
+				u.ass(node, {"height": "41px"})
+			}
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			this.transitioned = function() {
+				this.finalizeDestruction();
+			}
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
+		}
+		scene.ready();
+	}
+}
+
+
+/*i-manifest-desktop.js*/
+Util.Objects["manifest"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+			u.as(this, "height", page.browser_h + "px");
+		}
+		scene.scrolled = function() {
+		}
+		scene.ready = function() {
+			page.resized();
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			var lines = 50;
+			var svg_object = {
+				"name":"destruction",
+				"width":page.browser_w,
+				"height":page.browser_h,
+				"shapes":[]
+			};
+			var i, shape, x1, new_coords = [];
+			for(i = 0; i < lines; i++) {
+				var x1 = (i*page.browser_w/lines) - 10 + u.random(5, 10);
+				shape = {
+					"type":"line",
+					"class":"id"+i,
+					"x1":x1,
+					"x2":x1,
+					"y1":-10,
+					"y2":-8,
+					"stroke-width":2
+				}
+				svg_object.shapes.push(shape);
+			}
+			for(i = 0; i < lines; i++) {
+				shape = {
+					"x2":(i*page.browser_w/lines) + u.random(-35, 35),
+					"y1":-10,
+					"y2":page.browser_h + 10
+				}
+				new_coords[i] = shape;
+			}
+			var svg = u.svg(svg_object);
+			svg.scene = this;
+			svg._c = u.qs(".content");
+			u.ae(this, svg);
+			lines = u.qsa("line", svg);
+			new_lines = [];
+			for(i = 0; i < lines.length; i++) {
+				new_lines.push(lines[i]);
+			}
+			j = 0;
+			svg._animate = function() {
+				j++;
+				if(new_lines.length) {
+					i = u.random(0, new_lines.length-1);
+					line = new_lines[i];
+					new_lines.splice(i, 1);
+					new_coords[i]["stroke-width"] = u.random(2+j*0.5, 28+(Math.pow(j*0.5, 2)));
+					u.a.to(line, "all 0.3s linear", new_coords[i]);
+					new_coords.splice(i, 1);
+					if(j == 15) {
+						u.a.transition(this._c, "all 0.2s ease-out");
+						u.a.scaleRotateTranslate(this._c, 1, 5, 5, 100);
+					}
+					if(j == 20) {
+						u.a.transition(this._c, "all 0.3s ease-out");
+						u.a.scaleRotateTranslate(this._c, 0.8, -13, -5, 300);
+					}
+					if(j == 27) {
+						u.a.transition(this._c, "all 0.3s ease-out");
+						u.a.scaleRotateTranslate(this._c, 0.7, -3, 0, 1000);
+					}
+					u.t.setTimer(this, "_animate", 10);
+				}
+				else {
+					this.scene.finalizeDestruction();
+				}
+			}
+			svg._animate();
 		}
 		scene.ready();
 	}

@@ -2,11 +2,13 @@
 global $action;
 
 $IC = new Items();
-$itemtype = "instagram";
 
+
+$itemtype = "instagram";
 $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
 
-
+$itemtype = "twitter";
+$tweets = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true)));
 
 ?>
 
@@ -56,8 +58,8 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 
 		<!-- item: tweet -->
 		<li class="tweet">
-			<h2 class="author">@twitter_user</h2>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<h2 class="author"><?= $tweets[0]["username"] ?></h2>
+			<p><?= $tweets[0]["text"] ?></p>
 		</li>
 
 		<!--li class="blank twenty"></li-->
@@ -79,6 +81,12 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 		<li class="instagram">
 			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> format:<?= $instagrams[9]["image"] ?>"></div>
+		</li>
+
+		<!-- item: tweet -->
+		<li class="tweet">
+			<h2 class="author"><?= $tweets[1]["username"] ?></h2>
+			<p><?= $tweets[1]["text"] ?></p>
 		</li>
 
 		<li class="instagram">

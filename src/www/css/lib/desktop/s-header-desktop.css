@@ -7,7 +7,7 @@
 #header .servicenavigation li.navigation a {display: none;}
 
 
-#navigation {display: none; z-index: 5; position: fixed; top: 0; left: 0; height: 100%; width: 100%;
+#navigation {display: none; z-index: 5; position: fixed; top: 0; left: 0; height: 100%; width: 100%; opacity: 0;
 	background: green;
 }
 

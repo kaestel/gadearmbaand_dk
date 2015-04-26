@@ -52,7 +52,7 @@ Util.Objects["events"] = new function() {
 						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
 
 						if(scene.selected_tags.length == 0) { // no more node selected? highlight ALL again
-							u.ac(scene._tagsAll, "selected");	
+							u.ac(scene._tagsAll, "selected");
 						}
 
 					} 
@@ -79,16 +79,16 @@ Util.Objects["events"] = new function() {
 				
 				var has_tags = true
 
-				// the arrey is empty
+				// the array is empty
 				if(selected_tags.length == 0) {
 
-					node.transitioned = function() {
-						u.a.transition(this, "none");
+					// only apply transition if needed
+					if(!node._shown) {
+						u.a.transition(node, "all 0.3s ease-out");
+						u.as(node, "display", "block");
+						u.as(node, "height", "41px");
+						node._shown = true;
 					}
-
-					u.a.transition(node, "all 0.3s ease-out");
-					u.as(node, "display", "block");
-					u.as(node, "height", "41px");
 
 				} 
 
@@ -101,26 +101,28 @@ Util.Objects["events"] = new function() {
 
 							has_tags = false;
 
-							node.transitioned = function() {
-								u.as(this, "display", "none");
+							// only apply transition if needed
+							if(node._shown) {
+								node.transitioned = function() {
+									u.as(this, "display", "none");
+								}
+								u.a.transition(node, "all 0.3s ease-out");
+								u.as(node, "height", "0px");
+								node._shown = false;
+								
 							}
-
-							u.a.transition(node, "all 0.3s ease-out");
-							u.as(node, "height", "0px");
-
 							break;
 						}
 					}
 					
 					if(has_tags) {
 
-						node.transitioned = function() {
-							u.a.transition(this, "none");
+						if(!node._shown) {
+							u.a.transition(node, "all 0.3s ease-out");
+							u.as(node, "display", "block");
+							u.as(node, "height", "41px");
+							node._shown = true;
 						}
-
-						u.a.transition(node, "all 0.3s ease-out");
-						u.as(node, "display", "block");
-						u.as(node, "height", "41px");
 					}
 				}
 			}
@@ -148,6 +150,7 @@ Util.Objects["events"] = new function() {
 					node.node_tags_array.push(node_tag.innerHTML);
 				}
 
+				node._shown = true;
 				node._height = node.offsetHeight;
 
 				node.clicked = function() {
@@ -178,7 +181,60 @@ Util.Objects["events"] = new function() {
 				u.ce(node)
 				u.ass(node, {"height": "41px"})
 			}
+
+
+			this.is_ready = true;
+			page.cN.ready();
+
 		}
+
+
+
+
+		// build scene - start actual rendering of scene
+		scene.build = function() {
+
+			if(!this.is_built) {
+//				u.bug("scene.build:" + u.nodeId(this));
+
+				this.is_built = true;
+
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+
+			}
+		}
+
+
+		// destroy scene - scene needs to be removed
+		scene.destroy = function() {
+//			u.bug("scene.destroy:" + u.nodeId(this))
+
+			// destruction is a one time, oneway street
+			this.destroy = null;
+
+
+			// when destruction is done, remove scene from content and notify content.ready
+			// to continue building the new scene
+			this.finalizeDestruction = function() {
+
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+
+			}
+
+			this.transitioned = function() {
+
+				// destruction is done
+				this.finalizeDestruction();
+			}
+
+			// make up some page destruction
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
+
+		}
+
 
 		// scene is ready
 		scene.ready();
