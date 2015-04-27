@@ -5,24 +5,56 @@ Util.Objects["front"] = new function() {
 		scene.resized = function() {
 			u.bug("page.resized:" + u.nodeId(this));
 
+			var i, li;
+			for (i = 0; li = this.lis[i]; i++) {
+				// handle article page
+				if (u.hc(li, "article")) {
+					u.as(li, "height", li.offsetWidth+2+"px");
+				}
+
+				// handle instagram
+				if (u.hc(li, "instagram")) {
+					u.as(li, "height", li.offsetWidth+2+"px");
+				}
+
+				// handle tweet
+				if (u.hc(li, "tweet")) {
+					u.as(li, "height", li.offsetWidth/2+2+"px");
+				}
+
+				// handle ambassador
+				if (u.hc(li, "ambassador")) {
+
+					// video height
+					var video = u.qs("li.video");
+					u.as(video, "height", video.offsetWidth/3*2+2+"px");
+
+					// article height
+					var article = u.qs("li.article");
+					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+					//console.log("video width: " + video.offsetWidth);
+				}
+
+				// handle margins
+				if (u.hc(li, "push_up")) {
+					u.as(li, "marginTop", -li.offsetWidth-1+"px");
+				}
+				if (u.hc(li, "push_up_half")) {
+					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
+				}
+				if (u.hc(li, "push_down")) {
+					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				}
+			}
+
+
+
 		}
 
 		// global scroll handler
 		scene.scrolled = function() {
 			u.bug("page.scrolled:" + u.nodeId(this))
 
-			var i, li;
-			for (i = 0; li = this.lis[i]; i++) {
-				// handle article page
-				if (u.hc(li, "article")) {
-					u.as(li, "height", li.offsetWidth+"px");
-				}
-
-				// handle tweet
-				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+"px");
-				}
-			}
 		}
 
 		// Page is ready
@@ -31,8 +63,8 @@ Util.Objects["front"] = new function() {
 
 
 
-			this.ul = u.qs("#grid");
-			this.lis = u.qsa("li", this.ul);
+			//this.ul = u.qs(".grid");
+			this.lis = u.qsa("li", this);
 			var i, li;
 
 			for (i = 0; li = this.lis[i]; i++) {
@@ -59,17 +91,19 @@ Util.Objects["front"] = new function() {
 							u.preloader(node, [node._image_src])
 						}
 					}
+					// set height, so we can oversize image
+					u.as(li, "height", li.offsetWidth+2+"px");
 				}
 
 				// handle tweet
 				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+"px");
+					u.as(li, "height", li.offsetWidth/2+2+"px");
 				}
 
 				// handle article page
 				if (u.hc(li, "article")) {
 					var link = u.qs("a");
-					u.as(li, "height", li.offsetWidth+"px");
+					u.as(li, "height", li.offsetWidth+2+"px");
 
 					link.clicked = function(event) {
 						u.e.kill();
@@ -86,20 +120,25 @@ Util.Objects["front"] = new function() {
 				if (u.hc(li, "ambassador")) {
 					//u.as(li, "height", li.offsetWidth+"px");
 
+					// article
+					var article = u.qs("li.article", li);
+					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+
 					// video
-					var video = u.qs("li.video");
-					
+					var video = u.qs("li.video", li);
+					u.as(video, "height", video.offsetWidth/3*2+2+"px");
+
 					video.video_id = u.cv(node, "video_id");
 					video.format = u.cv(node, "format");
 
 					if (video.video_id && video.format) {
-					
+
 
 						video._video_url = "/videos/" + video.video_id + "/video/510x." + video._video_format;
 
 						// inject video_wrapper
 						//this.item.video_wrapper = u.ae(node, "div", {"class":"video_wrapper"});
-						
+
 						video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
 						//this.item.play_bn.url = this.item._video_url;
 
@@ -111,26 +150,31 @@ Util.Objects["front"] = new function() {
 								//console.log("video player is done playing. LOOOP!");
 								page.videoPlayer.play();
 							}
-							
+
 							this.player = u.ae(this._image, page.videoPlayer);
 							this.player = page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
 						}
 
-						// // desktop
-						// if(u.e.event_pref == "mouse") {
-						// }
-						// // tablet
-						// else {
-						// }
 					}
-					
+
 				};
-					
+
 
 				// handle article page
 				// if (u.hc(li, "blank")) {
 				// 	u.as(li, "height", li.offsetWidth+"px");
 				// };
+
+				// handle tweet
+				if (u.hc(li, "push_up")) {
+					u.as(li, "marginTop", -li.offsetWidth-1+"px");
+				}
+				if (u.hc(li, "push_up_half")) {
+					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
+				}
+				if (u.hc(li, "push_down")) {
+					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				}
 			}
 
 
@@ -146,20 +190,19 @@ Util.Objects["front"] = new function() {
 				// },
 				".twenty h2":{
 					"min_size":16,
-					"max_size":40
+					"max_size":24
 				},
 				".forty h2":{
-					"min_size":40,
-					"max_size":62
+					"min_size":28,
+					"max_size":48
 				},
-				
+				".tweet p":{
+					"min_size":14,
+					"max_size":26
+				},
 				// "h3":{
 				// 	"min_size":1.4,
 				// 	"max_size":2.8
-				// },
-				// "p":{
-				// 	"min_size":1,
-				// 	"max_size":2
 				// },
 				// "p span.s2":{
 				// 	"min_size":1.4,
