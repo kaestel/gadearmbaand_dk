@@ -5,6 +5,7 @@
 			<?= $HTML->link("Events", "/janitor/event/list", array("wrapper" => "li.event")) ?>
 			<?= $HTML->link("Instagrams", "/janitor/instagram/list", array("wrapper" => "li.instagram")) ?>
 			<?= $HTML->link("Tweets", "/janitor/twitter/list", array("wrapper" => "li.twitter")) ?>
+			<?= $HTML->link("Videos", "/janitor/media/list", array("wrapper" => "li.media")) ?>
 
 
 			<?//= $HTML->link("Navigations", "/janitor/admin/navigation/list", array("wrapper" => "li.navigation")) ?>
