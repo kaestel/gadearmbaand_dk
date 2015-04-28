@@ -1,3 +1,8 @@
+/* EVENTS */
+
+#content .scene.defaultEdit.eventEdit > div.single_media form.upload label {margin-top: 175px;}
+#content .scene.defaultEdit.eventEdit > div.single_media form.upload input[type="file"] {height: 374px;}
+
 
 /* INSTAGRAMS */
 #content .fetchInstagrams p {padding-top: 10px;}

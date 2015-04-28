@@ -58,6 +58,15 @@ class TypeEvent extends Itemtype {
 		));
 
 
+		$this->addToModel("single_media", array(
+			"label" => "Add media here",
+			"allowed_formats" => "png,jpg",
+			"allowed_sizes" => "500x500",
+			"hint_message" => "Add image here. Use png or jpg in 500x500.",
+			"error_message" => "Media does not fit requirements."
+		));
+
+
 		// // Location
 		// $this->addToModel("location", array(
 		// 	"type" => "string",

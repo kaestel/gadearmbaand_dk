@@ -13,6 +13,8 @@ $item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true)))
 
 	<?= $JML->editGlobalActions($item) ?>
 
+	<?= $JML->editSingleMedia($item) ?>
+
 	<div class="item i:defaultEdit">
 		<h2>Event details</h2>
 		<?= $model->formStart("update/".$item["id"], array("class" => "labelstyle:inject")) ?>
@@ -34,6 +36,5 @@ $item = $IC->getItem(array("id" => $item_id, "extend" => array("tags" => true)))
 
 	<?= $JML->editTags($item) ?>
 
-	<?//= $JML->editMedia($item) ?>
 
 </div>
