@@ -3,50 +3,54 @@ Util.Objects["front"] = new function() {
 
 		// global resize handler
 		scene.resized = function() {
-			u.bug("page.resized:" + u.nodeId(this));
+			u.bug("scene.resized:" + u.nodeId(this));
+
+			var block_height = Math.ceil(this.offsetWidth/5);
+
 
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
-				// handle article page
-				if (u.hc(li, "article")) {
-					u.as(li, "height", li.offsetWidth+2+"px");
+
+				// handle article and instagram items
+				if(u.hc(li, "article|instagram")) {
+					if(li._forty) {
+						u.as(li, "height", (block_height*2)+"px", false);
+					}
+					else {
+						u.as(li, "height", block_height+"px", false);
+					}
 				}
 
-				// handle instagram
-				if (u.hc(li, "instagram")) {
-					u.as(li, "height", li.offsetWidth+2+"px");
+				// handle tweet items
+				if(u.hc(li, "tweet")) {
+					u.as(li, "height", block_height+"px", false);
 				}
 
-				// handle tweet
-				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+2+"px");
-				}
 
 				// handle ambassador
-				if (u.hc(li, "ambassador")) {
-
+				if(u.hc(li, "ambassador")) {
 					// video height
-					var video = u.qs("li.video");
-					u.as(video, "height", video.offsetWidth/3*2+2+"px");
-
+					u.as(li.video, "height", (block_height*2)+"px", false);
 					// article height
-					var article = u.qs("li.article");
-					u.as(article, "height", article.offsetWidth/3*2+2+"px");
-					//console.log("video width: " + video.offsetWidth);
+					u.as(li.article, "height", (block_height*2)+"px", false);
 				}
+
 
 				// handle margins
-				if (u.hc(li, "push_up")) {
-					u.as(li, "marginTop", -li.offsetWidth-1+"px");
+				if(u.hc(li, "push_up|push_up_half")) {
+					u.as(li, "marginTop", -(block_height)+"px", false);
 				}
-				if (u.hc(li, "push_up_half")) {
-					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
-				}
-				if (u.hc(li, "push_down")) {
-					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				if(u.hc(li, "push_down")) {
+					u.as(li, "marginTop", block_height+"px", false);
 				}
 			}
 
+
+			// adjust grid padding
+			var factor = (this.offsetWidth - 600) / 600;
+			var padding = (10 + (factor * 30))+"px "+(10 + (factor * 20))+"px";
+			this.article_rule.style.setProperty("padding", padding, "important");
+			this.tweet_rule.style.setProperty("padding", padding, "important");
 
 
 		}
@@ -62,6 +66,18 @@ Util.Objects["front"] = new function() {
 			u.bug("scene.ready:" + u.nodeId(this));
 
 
+			// create padding rule for grid
+			this.style_tag = document.createElement("style");
+			this.style_tag.setAttribute("media", "all")
+			this.style_tag.setAttribute("type", "text/css")
+			this.style_tag = u.ae(document.head, this.style_tag);
+
+			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
+			this.article_rule = this.style_tag.sheet.cssRules[0];
+
+			this.style_tag.sheet.insertRule("#content .scene.front li.tweet {}", 0);
+			this.tweet_rule = this.style_tag.sheet.cssRules[0];
+
 
 			//this.ul = u.qs(".grid");
 			this.lis = u.qsa("li", this);
@@ -69,77 +85,82 @@ Util.Objects["front"] = new function() {
 
 			for (i = 0; li = this.lis[i]; i++) {
 
+				// pre-index
+				if(u.hc(li, "forty")) {
+					li._forty = true;
+				}
+				else if(u.hc(li, "sixty")) {
+					li._sixty = true;
+				}
+				else {
+					li._twenty = true;
+				}
+
+
 				// handle instagram images
-				if (u.hc(li, "instagram")) {
+				if(u.hc(li, "instagram")) {
 
 					// img
 					var node = u.qs("div.image", li);
-					if (node) {
+					if(node) {
 						node.image_id = u.cv(node, "image_id");
 						node.format = u.cv(node, "format");
 
-						if (node.image_id && node.format) {
-							//console.log("we have all variables to load node");
+						if(node.image_id && node.format) {
 							node.loaded = function(queue) {
-								console.log(queue[0].image);
 								u.ae(this, "img", {"src": queue[0].image.src});
 							}
-							//console.log("/img/temp/" + node.image_id + "." + node.format);
 							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
-							//node._image_src = "/images/" + node.image_id + "/image/x" + node.offsetWidth + "." + node.format;
-							//http://gadearmbaand.local/images/6/image/x200.jpg
 							u.preloader(node, [node._image_src])
 						}
 					}
-					// set height, so we can oversize image
-					u.as(li, "height", li.offsetWidth+2+"px");
 				}
 
 				// handle tweet
-				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+2+"px");
-				}
+				if(u.hc(li, "tweet")) {}
 
 				// handle article page
-				if (u.hc(li, "article")) {
-					var link = u.qs("a");
-					u.as(li, "height", li.offsetWidth+2+"px");
+				if(u.hc(li, "article")) {
 
-					link.clicked = function(event) {
-						u.e.kill();
-						//
-						console.log("TODO: ajax load this page");
-					}
-					u.ce(link);
-
+					var link = u.qs("a", li);
+					u.ce(link, {"type":"link"});
 
 				}
 
 
 				// handle ambassador
-				if (u.hc(li, "ambassador")) {
+				if(u.hc(li, "ambassador")) {
 					//u.as(li, "height", li.offsetWidth+"px");
 
 					// article
-					var article = u.qs("li.article", li);
-					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+					li.article = u.qs("li.article", li);
 
 					// video
-					var video = u.qs("li.video", li);
-					u.as(video, "height", video.offsetWidth/3*2+2+"px");
+					li.video = u.qs("li.video", li);
 
-					video.video_id = u.cv(node, "video_id");
-					video.format = u.cv(node, "format");
+					li.video.video_id = u.cv(node, "video_id");
+					li.video.video_format = u.cv(node, "video_format");
 
-					if (video.video_id && video.format) {
+					li.video.image_id = u.cv(node, "image_id");
+					li.video.image_format = u.cv(node, "image_format");
+
+					if(li.video.image_id && li.video.image_format) {
+						node.loaded = function(queue) {
+							u.ae(this, "img", {"src": queue[0].image.src});
+						}
+						node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
+						u.preloader(node, [node._image_src])
+					}
 
 
-						video._video_url = "/videos/" + video.video_id + "/video/510x." + video._video_format;
+					if(li.video.video_id && li.video.format) {
+
+						li.video._video_url = "/videos/" + li.video.video_id + "/video/510x." + li.video._video_format;
 
 						// inject video_wrapper
 						//this.item.video_wrapper = u.ae(node, "div", {"class":"video_wrapper"});
 
-						video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
+						li.video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
 						//this.item.play_bn.url = this.item._video_url;
 
 						u.e.click(this.item);
@@ -159,90 +180,35 @@ Util.Objects["front"] = new function() {
 
 				};
 
-
-				// handle article page
-				// if (u.hc(li, "blank")) {
-				// 	u.as(li, "height", li.offsetWidth+"px");
-				// };
-
-				// handle tweet
-				if (u.hc(li, "push_up")) {
-					u.as(li, "marginTop", -li.offsetWidth-1+"px");
-				}
-				if (u.hc(li, "push_up_half")) {
-					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
-				}
-				if (u.hc(li, "push_down")) {
-					u.as(li, "marginTop", li.offsetWidth+1+"px");
-				}
 			}
+
+			// resize grid
+			this.resized();
 
 
 			u.textscaler(this, {
-				// "min_height":400,
-				// "max_height":1000,
 				"min_width":800,
 				"max_width":1400,
 				"unit":"px",
-				// "h1":{
-				// 	"min_size":4,
-				// 	"max_size":8
-				// },
 				".twenty h2":{
 					"min_size":16,
 					"max_size":24
 				},
 				".forty h2":{
-					"min_size":28,
+					"min_size":24,
 					"max_size":48
 				},
 				".tweet p":{
 					"min_size":14,
 					"max_size":26
-				},
-				// "h3":{
-				// 	"min_size":1.4,
-				// 	"max_size":2.8
-				// },
-				// "p span.s2":{
-				// 	"min_size":1.4,
-				// 	"max_size":2.8
-				// }
+				}
 			});
 
 
 			this.is_ready = true;
 			page.cN.ready();
 
-
 		}
-		//
-		// // add main instagram image
-		// this.item._image.loaded = function(queue) {
-		// 	//u.as(this, "backgroundImage", "url("+queue[0]._image.src+")");
-		//
-		// 	this.transitioned = function() {
-		// 		u.a.transition(this, "none");
-		//
-		// 		// remove preloader bg
-		// 		u.as(scene.item, "backgroundImage", "none");
-		// 	}
-		// 	u.ae(this, "img", {"src": queue[0]._image.src});
-		// 	u.a.transition(this, "all 1s ease-out 0.1s");
-		// 	u.a.setOpacity(this, 1);
-		// }
-		// u.preloader(this.item._image, ["/images/" + this.item._image_id + "/image/510x." + this.item._image_format]);
-
-
-		// initialize header
-		scene.initGrid = function() {
-			// var frontpage_link = u.qs("li.front a", this.nN);
-			// if(frontpage_link) {
-			// 	var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
-			// 	u.ce(logo, {"type":"link"});
-			// }
-		}
-
 
 
 		// build scene - start actual rendering of scene
@@ -272,6 +238,10 @@ Util.Objects["front"] = new function() {
 			// when destruction is done, remove scene from content and notify content.ready
 			// to continue building the new scene
 			this.finalizeDestruction = function() {
+
+				// remove style tag
+				this.style_tag.parentNode.removeChild(this.style_tag);
+
 
 				this.parentNode.removeChild(this);
 				page.cN.ready();
