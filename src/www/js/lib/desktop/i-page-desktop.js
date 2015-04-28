@@ -32,6 +32,13 @@ Util.Objects["page"] = new function() {
 				page.browser_h = u.browserH();
 
 
+				if(page.browser_w >= 1200) {
+					u.ac(document.body, "fixed");
+				}
+				else {
+					u.rc(document.body, "fixed");
+				}
+
 				// forward scroll event to current scene
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
