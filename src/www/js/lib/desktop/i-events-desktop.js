@@ -2,185 +2,307 @@ Util.Objects["events"] = new function() {
 	this.init = function(scene) {
 
 		scene.resized = function() {
-//			u.bug("scene.resized:" + u.nodeId(this));
+			// u.bug("scene.resized:" + u.nodeId(this));
 		}
 
 		scene.scrolled = function() {
-//			u.bug("scene.scrolled:" + u.nodeId(this))
+			// u.bug("scene.scrolled:" + u.nodeId(this))
+		}
+
+		scene._filter = function() {
+
+			var i, _event;
+			for(i = 0; _event = this._events[i]; i++) {
+
+				// close all open events
+				if(u.hc(_event, "selected")) {
+					u.a.transition(_event, "all 0.5s ease-out");
+					u.rc(_event, "selected");
+					u.as(_event, "height", "41px");
+				}
+
+				if(this.checkDays(_event) && this.checkTags(_event) && this.checkSearch(_event)) {
+					
+					if(!_event._shown) {
+						u.a.transition(_event, "all 0.5s ease-out");
+						u.as(_event, "display", "block");
+						u.as(_event, "height", "41px");
+						
+						_event._shown = true;
+					}
+
+				} else {
+
+					if(_event._shown) {
+						
+						_event.transitioned = function() {
+							u.as(this, "display", "none");
+						}
+						u.a.transition(_event, "all 0.5s ease-out");
+						u.as(_event, "height", "0px");
+						
+						_event._shown = false;
+					}
+				}
+			}
 		}
 		
-		scene.init_tags = function() {
+		scene.checkDays = function(event_node) {
+
+			if(!this._selected_day || this._selected_day == event_node._day) {
+				return true;
+
+			} else {
+				return false;
+			}
+		}
+
+		scene.checkTags = function(event_node) {
+
+			if(this._selected_tags.length == 0) {
+
+				return true;
+
+			} else {
+
+				var k, tag;
+				for(k = 0; tag = this._selected_tags[k]; k++) { // loop the selected tags
+
+					if(event_node._event_tags_array.indexOf(tag) == -1) { // check if node doesn't has tag
+
+						return false;
+
+					}
+				}
+			}
 			
-			this._tag = u.qs(".tag_list");
-			this._tagsAll = u.ie(this._tag, "li", {"class":"all selected","html":"All"});
-			this._tags = u.qsa("li", this._tag);
-
-			this.selected_tags = [];
-
-			var i, node;
-			for(i = 0; node = this._tags[i]; i++) {
-
-
-				node.clicked = function() {
-
-					// close li before filtering
-					for(i = 0; node = scene.items[i]; i++) {
-						if(u.hc(node, "selected")) {
-							u.a.transition(node, "all 0.3s ease-out");
-							u.rc(node, "selected");
-							u.as(node, "height", "41px");
-						}
-					}
-					// we clicked on ALL 
-					if(u.hc(this, "all")) {
-						
-						var i, node;
-						for(i = 0; node = scene._tags[i]; i++) {
-
-							u.rc(node, "selected");
-							
-						}
-
-						u.ac(scene._tagsAll, "selected")
-						scene.selected_tags = [];
-
-					} 
-					// node is already selected
-					else if(u.hc(this, "selected")){
-
-						u.rc(this, "selected");
-						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
-
-						if(scene.selected_tags.length == 0) { // no more node selected? highlight ALL again
-							u.ac(scene._tagsAll, "selected");
-						}
-
-					} 
-					// click on unselected node
-					else {
-						u.rc(scene._tagsAll, "selected")
-						u.ac(this, "selected");
-
-						scene.selected_tags.push(this.innerHTML)
-					}
-
-					scene.filter(scene.selected_tags)
-				}
-
-				u.ce(node)
-			}
+			return true;	
 		}
 
+		scene.checkSearch = function(event_node) {
 
-		scene.filter = function(selected_tags) {
+			if(!this._selected_search || event_node._host._string.match(this._selected_search.toLowerCase()) || event_node._name._string.match(this._selected_search.toLowerCase()) || event_node._location._string.match(this._selected_search.toLowerCase())) {
 
-			var i, node;
-			for(i = 0; node = this.items[i]; i++) { // looping the list itmes (li)
-				
-				var has_tags = true
+				return true;
 
-				// the array is empty
-				if(selected_tags.length == 0) {
+			} else {
 
-					// only apply transition if needed
-					if(!node._shown) {
-						u.a.transition(node, "all 0.3s ease-out");
-						u.as(node, "display", "block");
-						u.as(node, "height", "41px");
-						node._shown = true;
-					}
-
-				} 
-
-				// we have a tag selected
-				else {
-
-					for(k = 0; list_tag = selected_tags[k]; k++) { // loop the selected tags
-
-						if(node.node_tags_array.indexOf(list_tag) == -1) { // check if node doesn't has tag
-
-							has_tags = false;
-
-							// only apply transition if needed
-							if(node._shown) {
-								node.transitioned = function() {
-									u.as(this, "display", "none");
-								}
-								u.a.transition(node, "all 0.3s ease-out");
-								u.as(node, "height", "0px");
-								node._shown = false;
-								
-							}
-							break;
-						}
-					}
-					
-					if(has_tags) {
-
-						if(!node._shown) {
-							u.a.transition(node, "all 0.3s ease-out");
-							u.as(node, "display", "block");
-							u.as(node, "height", "41px");
-							node._shown = true;
-						}
-					}
-				}
-			}
+				return false;
+			}	
 		}
+		
 
 		scene.ready = function() {
-//			u.bug("scene.ready:" + u.nodeId(this));
 
-			scene.items = u.qsa(".item");
-			scene.item_tags = u.qsa("ul.tags li");
+			// global variables
+			this._selected_day = "";
+			this._selected_tags = [];
+			this._selected_search = "";
 			
+			
+			this.initEvents = function() {
 
-			// filtering of tags
-			scene.init_tags();
+				this._events = u.qsa(".item");
 
-			// opne close navigation on click
-			var i, node;
-			for(i = 0; node = scene.items[i]; i++) {
+				var i, _event;
+				for(i = 0; _event = this._events[i]; i++) {
 
-				node.tag_values = u.qsa("ul.tags li", node);
-				node.node_tags_array = [];
+					_event._tags = u.qsa("ul.tags li", _event);
+					_event._event_tags_array = [];
 
-				var j, node_tag;
-				for(j = 0; node_tag = node.tag_values[j]; j++) {
-					node.node_tags_array.push(node_tag.innerHTML);
-				}
-
-				node._shown = true;
-				node._height = node.offsetHeight;
-
-				node.clicked = function() {
-
-					if(u.hc(this, "selected")) {
-						u.a.transition(this, "all 0.3s ease-out");
-						u.rc(this, "selected");
-						u.as(this, "height", "41px");
-
-					} else {
-						u.a.transition(this, "all 0.5s ease-out");
-						u.ac(this, "selected");
-						u.as(this, "height", this._height + "px");
+					var j, _event_tag;
+					for(j = 0; _event_tag = _event._tags[j]; j++) {
+						_event._event_tags_array.push(_event_tag.innerHTML);
 					}
-					
-					var i, node;
-					for(i = 0; node = scene.items[i]; i++) {
+
+					_event._shown = true;
+					_event._height = _event.offsetHeight;
+
+					_event._day = u.cv(_event, "day").toLowerCase();
+					_event._name = u.qs(".name", _event);
+					_event._host = u.qs(".host", _event);
+					_event._location = u.qs(".location", _event);
+
+					_event._host._string = _event._host.innerHTML.toLowerCase()
+					_event._name._string = _event._name.innerHTML.toLowerCase()
+					_event._location._string = _event._location.innerHTML.toLowerCase()
+
+					_event.clicked = function() {
+
+						if(u.hc(this, "selected")) {
+							u.a.transition(this, "all 0.5s ease-out");
+							u.rc(this, "selected");
+							u.as(this, "height", "41px");
+
+						} else {
+							u.a.transition(this, "all 0.8s ease-out");
+							u.ac(this, "selected");
+							u.as(this, "height", this._height + "px");
+						}
 						
-						if(u.hc(node, "selected") && node != this) {
+						var i, _event;
+						for(i = 0; _event = scene._events[i]; i++) {
 							
-							u.a.transition(node, "all 0.3s ease-out");
-							u.rc(node, "selected");
-							u.as(node, "height", "41px");
+							if(u.hc(_event, "selected") && _event != this) {
+								
+								u.a.transition(_event, "all 0.5s ease-out");
+								u.rc(_event, "selected");
+								u.as(_event, "height", "41px");
+							}
 						}
 					}
+
+					u.ce(_event)
+					u.ass(_event, {"height": "41px"})
+				}
+			}
+
+			this.initDays = function() {
+
+				this._days_list = u.qs("ul.days");
+				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
+				this._days = u.qsa("li", this._days_list);
+
+				var i, day;
+				for(i = 0; day = this._days[i]; i++) {
+
+					day.clicked = function() {
+
+						if(u.hc(this, "selected")){
+
+							if(this != scene._all_days) {
+								u.rc(this, "selected");
+								u.ac(scene._all_days, "selected");
+								scene._selected_day = "";
+							}
+
+						} else {
+
+							var i, day;
+							for(i = 0; day = scene._days[i]; i++) {
+								u.rc(day, "selected");
+							}
+
+							if(this == scene._all_days) {
+								scene._selected_day = "";
+							} else {
+								scene._selected_day = this.innerHTML.toLowerCase();
+							}
+
+							u.ac(this, "selected");
+
+						}
+						scene._filter();
+					}
+
+
+					u.ce(day)
+				}
+			}
+
+			this.initTags = function() {
+
+				this._tags_list = u.qs(".tag_list");
+				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
+				this._tags = u.qsa("li", this._tags_list);
+
+				var i, tag;
+				for(i = 0; tag = this._tags[i]; i++) {
+
+					tag.clicked = function() {
+
+						if(u.hc(this, "all")) {
+				
+							var i, tag;
+							for(i = 0; tag = scene._tags[i]; i++) {
+
+								u.rc(tag, "selected");
+								
+							}
+
+							// reset the search field
+							scene._search_input.value = scene._search_input._default;
+							scene._selected_search = "";
+
+							u.ac(scene._all_tags, "selected")
+							scene._selected_tags = [];
+
+						} else if(u.hc(this, "selected")){
+
+							u.rc(this, "selected");
+							scene._selected_tags.splice(scene._selected_tags.indexOf(this.innerHTML), 1);
+
+							if(scene._selected_tags.length == 0) { // no more node selected? highlight ALL again
+								u.ac(scene._all_tags, "selected");
+							}
+
+						} else {
+							u.rc(scene._all_tags, "selected")
+							u.ac(this, "selected");
+
+							scene._selected_tags.push(this.innerHTML)
+						}
+
+						scene._filter();
+						// console.log(scene._selected_tags)
+					}
+
+
+					u.ce(tag)
+				}
+			}
+
+			this.initSearch = function() {
+
+				this._search = u.qs("form.search", this);
+				this._search_input = u.qs("input", this._search);
+				this._search_input._default = "Type here"
+				
+				// setting default value
+				this._search_input.value = this._search_input._default;
+
+				this._search_input.focused = function() {
+
+					if(this.value == this._default) {
+						this.value = "";
+					} 
 				}
 
-				u.ce(node)
-				u.ass(node, {"height": "41px"})
+				this._search_input.blurred = function() {
+
+					if(this.value == "") {
+						this.value = this._default;
+					} 
+					
+				}
+
+				this._search_input.keySearch = function() {
+
+					
+					scene._selected_search = this.value.toLowerCase();
+					console.log(scene._selected_search);
+					scene._filter();
+				}
+
+
+				this._search_input.keyUp = function(event) {
+
+					u.t.resetTimer(this.t_search)
+					this.t_search = u.t.setTimer(this, this.keySearch, 300);
+				}
+
+				u.e.addEvent(this._search_input, "focus", this._search_input.focused);
+				u.e.addEvent(this._search_input, "blur", this._search_input.blurred);
+				u.e.addEvent(this._search_input, "keyup", this._search_input.keyUp);
 			}
+
+
+			// initializing events
+			this.initEvents();
+			this.initDays();
+			this.initTags();
+			this.initSearch();
+
 
 
 			this.is_ready = true;
@@ -189,13 +311,11 @@ Util.Objects["events"] = new function() {
 		}
 
 
-
-
 		// build scene - start actual rendering of scene
 		scene.build = function() {
 
 			if(!this.is_built) {
-//				u.bug("scene.build:" + u.nodeId(this));
+				// u.bug("scene.build:" + u.nodeId(this));
 
 				this.is_built = true;
 
@@ -208,7 +328,7 @@ Util.Objects["events"] = new function() {
 
 		// destroy scene - scene needs to be removed
 		scene.destroy = function() {
-//			u.bug("scene.destroy:" + u.nodeId(this))
+			// u.bug("scene.destroy:" + u.nodeId(this))
 
 			// destruction is a one time, oneway street
 			this.destroy = null;

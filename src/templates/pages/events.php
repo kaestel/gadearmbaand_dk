@@ -24,7 +24,7 @@ $days = $IC->getTags(array("context" => "day"));
 
 	<h2>Advanced search</h2>
 	<div class="filter">
-		
+
 		<h3>Filter by tags</h3>
 		<ul class="tag_list">
 		<?		if($tags): ?>
@@ -38,7 +38,7 @@ $days = $IC->getTags(array("context" => "day"));
 			<h3>Search</h3>
 			<fieldset>
 				<div class="field string">
-					<input type="text" value="Type here" />
+					<input type="text" />
 				</div>
 			</fieldset>
 		</form>
@@ -56,7 +56,7 @@ $days = $IC->getTags(array("context" => "day"));
 	<ul class="items">
 <?		foreach($items as $item): ?>
 
-		<li class="item person id:<?= $item["item_id"] ?> i:article" itemscope itemtype="http://schema.org/Person">
+		<li class="item person id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
 
 			<h3 class="host"><?= $item["host"] ?></h3>
 			<h2 class="name"><?= $item["name"] ?></h2>
