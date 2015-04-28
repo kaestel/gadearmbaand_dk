@@ -2,9 +2,12 @@
 global $action;
 
 $IC = new Items();
-$itemtype = "instagram";
 
-$instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
+$itemtype = "instagram";
+$instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 15, "extend" => array("tags" => true, "mediae" => true)));
+
+$itemtype = "twitter";
+$tweets = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 10, "extend" => array("tags" => true)));
 
 
 
@@ -25,28 +28,28 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 
 		<!-- item: istagram -->
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<!-- item: blank -->
 		<li class="blank twenty"></li>
 
 		<li class="instagram twenty">
-			<div class="image image_id:frontpage2 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[1]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 		<li class="blank sixty"></li>
 
 		<li class="instagram forty push_up_half">
-			<div class="image image_id:frontpage3 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="instagram twenty push_up">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[3]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 		<li class="blank twenty"></li>
 
 		<li class="instagram twenty push_up">
-			<div class="image image_id:frontpage2 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[4]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="blank forty"></li>
@@ -60,12 +63,12 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 
 		<!-- item: tweet -->
 		<li class="tweet forty">
-			<h3 class="author">@twitter_user</h3>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<h3 class="author"><?= $tweets[0]["username"] ?></h3>
+			<p><?= $tweets[0]["text"] ?></p>
 		</li>
 
 		<li class="instagram twenty push_down">
-			<div class="image image_id:frontpage2 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<!-- item: article page -->
@@ -91,12 +94,12 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 	<ul class="grid">
 
 		<li class="tweet forty">
-			<h3 class="author">@twitter_user</h3>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<h3 class="author"><?= $tweets[1]["username"] ?></h3>
+			<p><?= $tweets[1]["text"] ?></p>
 		</li>
 
 		<li class="instagram forty">
-			<div class="image image_id:frontpage2 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<!-- item: article page -->
@@ -107,22 +110,22 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 
 		<li class="instagram twenty">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[7]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[8]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="blank twenty"></li>
 
 		<li class="instagram twenty ">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="tweet forty float push_up_half">
-			<h3 class="author">@twitter_user</h3>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<h3 class="author"><?= $tweets[2]["username"] ?></h3>
+			<p><?= $tweets[2]["text"] ?></p>
 		</li>
 
 
@@ -149,10 +152,10 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 	<ul class="grid">
 
 		<li class="instagram twenty push_down">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[10]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 		<li class="instagram forty">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[11]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<!-- item: article page -->
@@ -163,18 +166,18 @@ $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order
 		</li>
 
 		<li class="instagram twenty">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[12]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<li class="blank twenty"></li>
 
 		<li class="tweet forty">
-			<h3 class="author">@twitter_user</h3>
-			<p>This is the text from at tweet, it can include links. <a href="http://google.com">Link in tweet</a>. The text is exactly 140 characters long.</p>
+			<h3 class="author"><?= $tweets[3]["username"] ?></h3>
+			<p><?= $tweets[3]["text"] ?></p>
 		</li>
 
 		<li class="instagram forty push_up_half">
-			<div class="image image_id:frontpage1 format:jpg"></div>
+			<div class="image image_id:<?= $instagrams[13]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>"></div>
 		</li>
 
 		<!-- item: article page -->

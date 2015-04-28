@@ -305,10 +305,12 @@ Util.Objects["page"] = new function() {
 
 
 
-							u.svgShape(page.intro.svg, {
+							page.intro.path1 = u.svgShape(page.intro.svg, {
 								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 90 1 1 200 0"
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
+//								"d":"M28.7,83.3c-4.3,4.3-6.9,10.2-6.9,16.7c0,2.9,0.5,5.8,1.5,8.3c1,2.6,2.4,5,4.2,7"
 							});
+							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
 
 							// u.svgShape(page.intro.svg, {
 							// 	"type":"circle",

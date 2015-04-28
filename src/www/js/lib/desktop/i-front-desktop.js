@@ -81,11 +81,11 @@ Util.Objects["front"] = new function() {
 						if (node.image_id && node.format) {
 							//console.log("we have all variables to load node");
 							node.loaded = function(queue) {
-								console.log(queue[0]._image);
-								u.ae(this, "img", {"src": queue[0]._image.src});
+								console.log(queue[0].image);
+								u.ae(this, "img", {"src": queue[0].image.src});
 							}
 							//console.log("/img/temp/" + node.image_id + "." + node.format);
-							node._image_src = "/img/temp/" + node.image_id + "." + node.format;
+							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
 							//node._image_src = "/images/" + node.image_id + "/image/x" + node.offsetWidth + "." + node.format;
 							//http://gadearmbaand.local/images/6/image/x200.jpg
 							u.preloader(node, [node._image_src])
