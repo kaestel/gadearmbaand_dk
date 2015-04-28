@@ -65,10 +65,11 @@ Util.Objects["events"] = new function() {
 
 			} else {
 
-				var k, tag;
-				for(k = 0; tag = this._selected_tags[k]; k++) { // loop the selected tags
+				var i, tag;
+				for(i = 0; tag = this._selected_tags[i]; i++) {
 
-					if(event_node._event_tags_array.indexOf(tag) == -1) { // check if node doesn't has tag
+					// check if node dosen't have tah
+					if(event_node._event_tags_array.indexOf(tag) == -1) {
 
 						return false;
 
@@ -80,8 +81,8 @@ Util.Objects["events"] = new function() {
 		}
 
 		scene.checkSearch = function(event_node) {
-
-			if(!this._selected_search || event_node._host._string.match(this._selected_search.toLowerCase()) || event_node._name._string.match(this._selected_search.toLowerCase()) || event_node._location._string.match(this._selected_search.toLowerCase())) {
+			
+			if(!this._selected_search || event_node._host._string.match(this._selected_search) || event_node._name._string.match(this._selected_search) || event_node._location._string.match(this._selected_search)) {
 
 				return true;
 
@@ -195,7 +196,6 @@ Util.Objects["events"] = new function() {
 						scene._filter();
 					}
 
-
 					u.ce(day)
 				}
 			}
@@ -232,7 +232,8 @@ Util.Objects["events"] = new function() {
 							u.rc(this, "selected");
 							scene._selected_tags.splice(scene._selected_tags.indexOf(this.innerHTML), 1);
 
-							if(scene._selected_tags.length == 0) { // no more node selected? highlight ALL again
+							// no more node selected? highlight ALL again
+							if(scene._selected_tags.length == 0) {
 								u.ac(scene._all_tags, "selected");
 							}
 
@@ -244,7 +245,7 @@ Util.Objects["events"] = new function() {
 						}
 
 						scene._filter();
-						// console.log(scene._selected_tags)
+
 					}
 
 
@@ -278,9 +279,7 @@ Util.Objects["events"] = new function() {
 
 				this._search_input.keySearch = function() {
 
-					
 					scene._selected_search = this.value.toLowerCase();
-					console.log(scene._selected_search);
 					scene._filter();
 				}
 
