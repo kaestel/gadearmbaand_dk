@@ -739,6 +739,35 @@ body #selection_options ul.actions a.button:hover {background-color: #313942;}
 
 
 /*s-content-desktop.css*/
-#content .postList ul.items > li {min-height: 100px; padding-left: 160px;}
-body.post #navigation .post a {padding-left: 35px; color: #ffffff;}
+#content .scene.defaultEdit.eventEdit > div.single_media form.upload label {margin-top: 175px;}
+#content .scene.defaultEdit.eventEdit > div.single_media form.upload input[type="file"] {height: 374px;}
+#content .scene.defaultEdit.mediaEdit > div.single_media form.upload label {margin-top: 105px;}
+#content .scene.defaultEdit.mediaEdit > div.single_media form.upload input[type="file"] {height: 244px;}
+#content .fetchInstagrams p {padding-top: 10px;}
+#content .fetchInstagrams ul.items > li h3 {padding: 7px 30px; font-size: 13px;}
+#content .fetchInstagrams ul.items > li.error h3 {color: #fd0000;}
+#content .instagramList ul.items > li.image {padding: 0 200px 0 100px; background-repeat: no-repeat; background-position: top left; background-color: transparent;}
+#content .instagramList ul.items > li h3 {padding: 10px 30px;}
+#content .instagramList ul.items > li h4 {padding-bottom: 5px;}
+#content .instagramList ul.items > li p {padding-bottom: 5px;}
+#content .instagramList ul.items > li .caption,
+#content .instagramList ul.items > li .location,
+#content .instagramList ul.items > li .hashtags,
+#content .instagramList ul.items > li .username {padding: 0 0 5px; overflow: hidden;}
+#content .instagramList ul.items > li span.emoji {display: none;}
+#content .instagramList .stats {padding: 5px 30px; border-bottom: 1px solid #dedede;}
+#content .instagramList .stats p {padding: 0;}
+#content .instagramEdit div.item img.instagram {padding: 0 30px 20px;}
+#content .instagramEdit div.item p {padding-bottom: 10px;}
+#content .instagramEdit div.item .actions {padding-top: 10px;}
+#content .fetchTweets p {padding-top: 10px;}
+#content .fetchTweets ul.items > li h3 {padding: 7px 30px; font-size: 13px;}
+#content .fetchTweets ul.items > li.error h3 {color: #fd0000;}
+#content .twitterList .stats {padding: 5px 30px; border-bottom: 1px solid #dedede;}
+#content .twitterList .stats p {padding: 0;}
+#content .twitterList ul.items > li h3 {padding-bottom: 16px; font-size: 14px; padding-right: 250px;}
+body.event #navigation .event a,
+body.instagram #navigation .instagram a,
+body.media #navigation .media a,
+body.twitter #navigation .twitter a {padding-left: 35px; color: #ffffff;}
 

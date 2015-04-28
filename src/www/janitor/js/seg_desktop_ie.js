@@ -7138,11 +7138,22 @@ Util.Objects["defaultEdit"] = new function() {
 		form.autosave = function() {
 			for(name in this.fields) {
 				if(this.fields[name].field) {
-					u.f.validate(this.fields[name]);
+					if(!this.fields[name].used) {
+						if(u.hc(this.fields[name].field, "required") && !this.fields[name].val()) {
+							page.t_autosave = u.t.setTimer(this, "autosave", page._autosave_interval);
+							return false;
+						}
+					}
+					else {
+						u.f.validate(this.fields[name]);
+					}
 				}
 			}
 			if(!u.qs(".field.error", this)) {
 				this.submitted();
+			}
+			else {
+				page.t_autosave = u.t.setTimer(this, "autosave", page._autosave_interval);
 			}
 		}
 		page._autosave_node = form;

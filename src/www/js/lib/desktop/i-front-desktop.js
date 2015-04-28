@@ -138,33 +138,34 @@ Util.Objects["front"] = new function() {
 					// video
 					li.video = u.qs("li.video", li);
 
-					li.video.video_id = u.cv(node, "video_id");
-					li.video.video_format = u.cv(node, "video_format");
+					li.video.video_id = u.cv(li.video, "video_id");
+					li.video.video_format = u.cv(li.video, "video_format");
 
-					li.video.image_id = u.cv(node, "image_id");
-					li.video.image_format = u.cv(node, "image_format");
+					li.video.image_id = u.cv(li.video, "image_id");
+					li.video.image_format = u.cv(li.video, "image_format");
 
 					if(li.video.image_id && li.video.image_format) {
-						node.loaded = function(queue) {
+						li.video.loaded = function(queue) {
 							u.ae(this, "img", {"src": queue[0].image.src});
 						}
-						node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
-						u.preloader(node, [node._image_src])
+
+						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
+						u.preloader(li.video, [li.video._image_src])
 					}
 
 
-					if(li.video.video_id && li.video.format) {
+					if(li.video.video_id && li.video.video_format) {
 
-						li.video._video_url = "/videos/" + li.video.video_id + "/video/510x." + li.video._video_format;
+						li.video._video_url = "/videos/" + li.video.video_id + "/video/720x." + li.video.video_format;
 
 						// inject video_wrapper
 						//this.item.video_wrapper = u.ae(node, "div", {"class":"video_wrapper"});
 
-						li.video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
+						li.video.play_bn = u.ae(li.video, "div", {"class": "play"});
 						//this.item.play_bn.url = this.item._video_url;
 
-						u.e.click(this.item);
-						this.item.clicked = function(event) {
+						u.e.click(li.video);
+						li.video.clicked = function(event) {
 
 							//u.as(this.play_bn, "display", "none");
 							page.videoPlayer.ended = function(event) {
@@ -172,8 +173,9 @@ Util.Objects["front"] = new function() {
 								page.videoPlayer.play();
 							}
 
-							this.player = u.ae(this._image, page.videoPlayer);
-							this.player = page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+							u.ae(this, page.videoPlayer);
+							page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+
 						}
 
 					}

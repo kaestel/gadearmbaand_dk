@@ -1,7 +1,11 @@
 /* EVENTS */
-
 #content .scene.defaultEdit.eventEdit > div.single_media form.upload label {margin-top: 175px;}
 #content .scene.defaultEdit.eventEdit > div.single_media form.upload input[type="file"] {height: 374px;}
+
+
+/* MEDIA */
+#content .scene.defaultEdit.mediaEdit > div.single_media form.upload label {margin-top: 105px;}
+#content .scene.defaultEdit.mediaEdit > div.single_media form.upload input[type="file"] {height: 244px;}
 
 
 /* INSTAGRAMS */
@@ -39,5 +43,6 @@
 /* NAVIGATION */
 body.event #navigation .event a,
 body.instagram #navigation .instagram a,
+body.media #navigation .media a,
 body.twitter #navigation .twitter a {padding-left: 35px; color: #ffffff;}
 

@@ -22,6 +22,9 @@ Util.Objects["page"] = new function() {
 			page.fN = u.qs("#footer");
 
 
+			// add global video player
+			page.videoPlayer = u.videoPlayer();
+
 
 			// global resize handler 
 			page.resized = function(event) {

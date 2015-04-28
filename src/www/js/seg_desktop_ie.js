@@ -5259,9 +5259,16 @@ Util.Objects["page"] = new function() {
 			page.cN = u.qs("#content", page);
 			page.nN = u.qs("#navigation", page);
 			page.fN = u.qs("#footer");
+			page.videoPlayer = u.videoPlayer();
 			page.resized = function(event) {
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
+				if(page.browser_w >= 1200) {
+					u.ac(document.body, "fixed");
+				}
+				else {
+					u.rc(document.body, "fixed");
+				}
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
 				}
@@ -5423,101 +5430,110 @@ u.e.addDOMReadyEvent(static_init);
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
-			u.bug("page.resized:" + u.nodeId(this));
+			u.bug("scene.resized:" + u.nodeId(this));
+			var block_height = Math.ceil(this.offsetWidth/5);
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
-				if (u.hc(li, "article")) {
-					u.as(li, "height", li.offsetWidth+2+"px");
+				if(u.hc(li, "article|instagram")) {
+					if(li._forty) {
+						u.as(li, "height", (block_height*2)+"px", false);
+					}
+					else {
+						u.as(li, "height", block_height+"px", false);
+					}
 				}
-				if (u.hc(li, "instagram")) {
-					u.as(li, "height", li.offsetWidth+2+"px");
+				if(u.hc(li, "tweet")) {
+					u.as(li, "height", block_height+"px", false);
 				}
-				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+2+"px");
+				if(u.hc(li, "ambassador")) {
+					u.as(li.video, "height", (block_height*2)+"px", false);
+					u.as(li.article, "height", (block_height*2)+"px", false);
 				}
-				if (u.hc(li, "ambassador")) {
-					var video = u.qs("li.video");
-					u.as(video, "height", video.offsetWidth/3*2+2+"px");
-					var article = u.qs("li.article");
-					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+				if(u.hc(li, "push_up|push_up_half")) {
+					u.as(li, "marginTop", -(block_height)+"px", false);
 				}
-				if (u.hc(li, "push_up")) {
-					u.as(li, "marginTop", -li.offsetWidth-1+"px");
-				}
-				if (u.hc(li, "push_up_half")) {
-					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
-				}
-				if (u.hc(li, "push_down")) {
-					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				if(u.hc(li, "push_down")) {
+					u.as(li, "marginTop", block_height+"px", false);
 				}
 			}
+			var factor = (this.offsetWidth - 600) / 600;
+			var padding = (10 + (factor * 30))+"px "+(10 + (factor * 20))+"px";
+			this.article_rule.style.setProperty("padding", padding, "important");
+			this.tweet_rule.style.setProperty("padding", padding, "important");
 		}
 		scene.scrolled = function() {
 			u.bug("page.scrolled:" + u.nodeId(this))
 		}
 		scene.ready = function() {
 			u.bug("scene.ready:" + u.nodeId(this));
+			this.style_tag = document.createElement("style");
+			this.style_tag.setAttribute("media", "all")
+			this.style_tag.setAttribute("type", "text/css")
+			this.style_tag = u.ae(document.head, this.style_tag);
+			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
+			this.article_rule = this.style_tag.sheet.cssRules[0];
+			this.style_tag.sheet.insertRule("#content .scene.front li.tweet {}", 0);
+			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 			this.lis = u.qsa("li", this);
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
-				if (u.hc(li, "instagram")) {
+				if(u.hc(li, "forty")) {
+					li._forty = true;
+				}
+				else if(u.hc(li, "sixty")) {
+					li._sixty = true;
+				}
+				else {
+					li._twenty = true;
+				}
+				if(u.hc(li, "instagram")) {
 					var node = u.qs("div.image", li);
-					if (node) {
+					if(node) {
 						node.image_id = u.cv(node, "image_id");
 						node.format = u.cv(node, "format");
-						if (node.image_id && node.format) {
+						if(node.image_id && node.format) {
 							node.loaded = function(queue) {
-								console.log(queue[0].image);
 								u.ae(this, "img", {"src": queue[0].image.src});
 							}
 							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
 							u.preloader(node, [node._image_src])
 						}
 					}
-					u.as(li, "height", li.offsetWidth+2+"px");
 				}
-				if (u.hc(li, "tweet")) {
-					u.as(li, "height", li.offsetWidth/2+2+"px");
+				if(u.hc(li, "tweet")) {}
+				if(u.hc(li, "article")) {
+					var link = u.qs("a", li);
+					u.ce(link, {"type":"link"});
 				}
-				if (u.hc(li, "article")) {
-					var link = u.qs("a");
-					u.as(li, "height", li.offsetWidth+2+"px");
-					link.clicked = function(event) {
-						u.e.kill();
-						console.log("TODO: ajax load this page");
+				if(u.hc(li, "ambassador")) {
+					li.article = u.qs("li.article", li);
+					li.video = u.qs("li.video", li);
+					li.video.video_id = u.cv(li.video, "video_id");
+					li.video.video_format = u.cv(li.video, "video_format");
+					li.video.image_id = u.cv(li.video, "image_id");
+					li.video.image_format = u.cv(li.video, "image_format");
+					if(li.video.image_id && li.video.image_format) {
+						li.video.loaded = function(queue) {
+							u.ae(this, "img", {"src": queue[0].image.src});
+						}
+						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
+						u.preloader(li.video, [li.video._image_src])
 					}
-					u.ce(link);
-				}
-				if (u.hc(li, "ambassador")) {
-					var article = u.qs("li.article", li);
-					u.as(article, "height", article.offsetWidth/3*2+2+"px");
-					var video = u.qs("li.video", li);
-					u.as(video, "height", video.offsetWidth/3*2+2+"px");
-					video.video_id = u.cv(node, "video_id");
-					video.format = u.cv(node, "format");
-					if (video.video_id && video.format) {
-						video._video_url = "/videos/" + video.video_id + "/video/510x." + video._video_format;
-						video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
-						u.e.click(this.item);
-						this.item.clicked = function(event) {
+					if(li.video.video_id && li.video.video_format) {
+						li.video._video_url = "/videos/" + li.video.video_id + "/video/720x." + li.video.video_format;
+						li.video.play_bn = u.ae(li.video, "div", {"class": "play"});
+						u.e.click(li.video);
+						li.video.clicked = function(event) {
 							page.videoPlayer.ended = function(event) {
 								page.videoPlayer.play();
 							}
-							this.player = u.ae(this._image, page.videoPlayer);
-							this.player = page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+							u.ae(this, page.videoPlayer);
+							page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
 						}
 					}
 				};
-				if (u.hc(li, "push_up")) {
-					u.as(li, "marginTop", -li.offsetWidth-1+"px");
-				}
-				if (u.hc(li, "push_up_half")) {
-					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
-				}
-				if (u.hc(li, "push_down")) {
-					u.as(li, "marginTop", li.offsetWidth+1+"px");
-				}
 			}
+			this.resized();
 			u.textscaler(this, {
 				"min_width":800,
 				"max_width":1400,
@@ -5527,21 +5543,16 @@ Util.Objects["front"] = new function() {
 					"max_size":24
 				},
 				".forty h2":{
-					"min_size":28,
+					"min_size":24,
 					"max_size":48
 				},
 				".tweet p":{
 					"min_size":14,
 					"max_size":26
-				},
+				}
 			});
 			this.is_ready = true;
 			page.cN.ready();
-		}
-		// 
-		// 	
-		// 		
-		scene.initGrid = function() {
 		}
 		scene.build = function() {
 			if(!this.is_built) {
@@ -5553,6 +5564,7 @@ Util.Objects["front"] = new function() {
 		scene.destroy = function() {
 			this.destroy = null;
 			this.finalizeDestruction = function() {
+				this.style_tag.parentNode.removeChild(this.style_tag);
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
@@ -5574,120 +5586,199 @@ Util.Objects["events"] = new function() {
 		}
 		scene.scrolled = function() {
 		}
-		scene.init_tags = function() {
-			this._tag = u.qs(".tag_list");
-			this._tagsAll = u.ie(this._tag, "li", {"class":"all selected","html":"All"});
-			this._tags = u.qsa("li", this._tag);
-			this.selected_tags = [];
-			var i, node;
-			for(i = 0; node = this._tags[i]; i++) {
-				node.clicked = function() {
-					for(i = 0; node = scene.items[i]; i++) {
-						if(u.hc(node, "selected")) {
-							u.a.transition(node, "all 0.3s ease-out");
-							u.rc(node, "selected");
-							u.as(node, "height", "41px");
-						}
-					}
-					if(u.hc(this, "all")) {
-						var i, node;
-						for(i = 0; node = scene._tags[i]; i++) {
-							u.rc(node, "selected");
-						}
-						u.ac(scene._tagsAll, "selected")
-						scene.selected_tags = [];
-					} 
-					else if(u.hc(this, "selected")){
-						u.rc(this, "selected");
-						scene.selected_tags.splice(scene.selected_tags.indexOf(this.innerHTML), 1);
-						if(scene.selected_tags.length == 0) { 
-							u.ac(scene._tagsAll, "selected");
-						}
-					} 
-					else {
-						u.rc(scene._tagsAll, "selected")
-						u.ac(this, "selected");
-						scene.selected_tags.push(this.innerHTML)
-					}
-					scene.filter(scene.selected_tags)
+		scene._filter = function() {
+			var i, _event;
+			for(i = 0; _event = this._events[i]; i++) {
+				if(u.hc(_event, "selected")) {
+					u.a.transition(_event, "all 0.5s ease-out");
+					u.rc(_event, "selected");
+					u.as(_event, "height", "41px");
 				}
-				u.ce(node)
+				if(this.checkDays(_event) && this.checkTags(_event) && this.checkSearch(_event)) {
+					if(!_event._shown) {
+						u.a.transition(_event, "all 0.5s ease-out");
+						u.as(_event, "display", "block");
+						u.as(_event, "height", "41px");
+						_event._shown = true;
+					}
+				} else {
+					if(_event._shown) {
+						_event.transitioned = function() {
+							u.as(this, "display", "none");
+						}
+						u.a.transition(_event, "all 0.5s ease-out");
+						u.as(_event, "height", "0px");
+						_event._shown = false;
+					}
+				}
 			}
 		}
-		scene.filter = function(selected_tags) {
-			var i, node;
-			for(i = 0; node = this.items[i]; i++) { 
-				var has_tags = true
-				if(selected_tags.length == 0) {
-					if(!node._shown) {
-						u.a.transition(node, "all 0.3s ease-out");
-						u.as(node, "display", "block");
-						u.as(node, "height", "41px");
-						node._shown = true;
-					}
-				} 
-				else {
-					for(k = 0; list_tag = selected_tags[k]; k++) { 
-						if(node.node_tags_array.indexOf(list_tag) == -1) { 
-							has_tags = false;
-							if(node._shown) {
-								node.transitioned = function() {
-									u.as(this, "display", "none");
-								}
-								u.a.transition(node, "all 0.3s ease-out");
-								u.as(node, "height", "0px");
-								node._shown = false;
-							}
-							break;
-						}
-					}
-					if(has_tags) {
-						if(!node._shown) {
-							u.a.transition(node, "all 0.3s ease-out");
-							u.as(node, "display", "block");
-							u.as(node, "height", "41px");
-							node._shown = true;
-						}
+		scene.checkDays = function(event_node) {
+			if(!this._selected_day || this._selected_day == event_node._day) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		scene.checkTags = function(event_node) {
+			if(this._selected_tags.length == 0) {
+				return true;
+			} else {
+				var i, tag;
+				for(i = 0; tag = this._selected_tags[i]; i++) {
+					if(event_node._event_tags_array.indexOf(tag) == -1) {
+						return false;
 					}
 				}
 			}
+			return true;	
+		}
+		scene.checkSearch = function(event_node) {
+			if(!this._selected_search || event_node._host._string.match(this._selected_search) || event_node._name._string.match(this._selected_search) || event_node._location._string.match(this._selected_search)) {
+				return true;
+			} else {
+				return false;
+			}	
 		}
 		scene.ready = function() {
-			scene.items = u.qsa(".item");
-			scene.item_tags = u.qsa("ul.tags li");
-			scene.init_tags();
-			var i, node;
-			for(i = 0; node = scene.items[i]; i++) {
-				node.tag_values = u.qsa("ul.tags li", node);
-				node.node_tags_array = [];
-				var j, node_tag;
-				for(j = 0; node_tag = node.tag_values[j]; j++) {
-					node.node_tags_array.push(node_tag.innerHTML);
-				}
-				node._shown = true;
-				node._height = node.offsetHeight;
-				node.clicked = function() {
-					if(u.hc(this, "selected")) {
-						u.a.transition(this, "all 0.3s ease-out");
-						u.rc(this, "selected");
-						u.as(this, "height", "41px");
-					} else {
-						u.a.transition(this, "all 0.5s ease-out");
-						u.ac(this, "selected");
-						u.as(this, "height", this._height + "px");
+			this._selected_day = "";
+			this._selected_tags = [];
+			this._selected_search = "";
+			this.initEvents = function() {
+				this._events = u.qsa(".item");
+				var i, _event;
+				for(i = 0; _event = this._events[i]; i++) {
+					_event._tags = u.qsa("ul.tags li", _event);
+					_event._event_tags_array = [];
+					var j, _event_tag;
+					for(j = 0; _event_tag = _event._tags[j]; j++) {
+						_event._event_tags_array.push(_event_tag.innerHTML);
 					}
-					var i, node;
-					for(i = 0; node = scene.items[i]; i++) {
-						if(u.hc(node, "selected") && node != this) {
-							u.a.transition(node, "all 0.3s ease-out");
-							u.rc(node, "selected");
-							u.as(node, "height", "41px");
+					_event._shown = true;
+					_event._height = _event.offsetHeight;
+					_event._day = u.cv(_event, "day").toLowerCase();
+					_event._name = u.qs(".name", _event);
+					_event._host = u.qs(".host", _event);
+					_event._location = u.qs(".location", _event);
+					_event._host._string = _event._host.innerHTML.toLowerCase()
+					_event._name._string = _event._name.innerHTML.toLowerCase()
+					_event._location._string = _event._location.innerHTML.toLowerCase()
+					_event.clicked = function() {
+						if(u.hc(this, "selected")) {
+							u.a.transition(this, "all 0.5s ease-out");
+							u.rc(this, "selected");
+							u.as(this, "height", "41px");
+						} else {
+							u.a.transition(this, "all 0.8s ease-out");
+							u.ac(this, "selected");
+							u.as(this, "height", this._height + "px");
+						}
+						var i, _event;
+						for(i = 0; _event = scene._events[i]; i++) {
+							if(u.hc(_event, "selected") && _event != this) {
+								u.a.transition(_event, "all 0.5s ease-out");
+								u.rc(_event, "selected");
+								u.as(_event, "height", "41px");
+							}
 						}
 					}
+					u.ce(_event)
+					u.ass(_event, {"height": "41px"})
 				}
-				u.ce(node)
-				u.ass(node, {"height": "41px"})
 			}
+			this.initDays = function() {
+				this._days_list = u.qs("ul.days");
+				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
+				this._days = u.qsa("li", this._days_list);
+				var i, day;
+				for(i = 0; day = this._days[i]; i++) {
+					day.clicked = function() {
+						if(u.hc(this, "selected")){
+							if(this != scene._all_days) {
+								u.rc(this, "selected");
+								u.ac(scene._all_days, "selected");
+								scene._selected_day = "";
+							}
+						} else {
+							var i, day;
+							for(i = 0; day = scene._days[i]; i++) {
+								u.rc(day, "selected");
+							}
+							if(this == scene._all_days) {
+								scene._selected_day = "";
+							} else {
+								scene._selected_day = this.innerHTML.toLowerCase();
+							}
+							u.ac(this, "selected");
+						}
+						scene._filter();
+					}
+					u.ce(day)
+				}
+			}
+			this.initTags = function() {
+				this._tags_list = u.qs(".tag_list");
+				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
+				this._tags = u.qsa("li", this._tags_list);
+				var i, tag;
+				for(i = 0; tag = this._tags[i]; i++) {
+					tag.clicked = function() {
+						if(u.hc(this, "all")) {
+							var i, tag;
+							for(i = 0; tag = scene._tags[i]; i++) {
+								u.rc(tag, "selected");
+							}
+							scene._search_input.value = scene._search_input._default;
+							scene._selected_search = "";
+							u.ac(scene._all_tags, "selected")
+							scene._selected_tags = [];
+						} else if(u.hc(this, "selected")){
+							u.rc(this, "selected");
+							scene._selected_tags.splice(scene._selected_tags.indexOf(this.innerHTML), 1);
+							if(scene._selected_tags.length == 0) {
+								u.ac(scene._all_tags, "selected");
+							}
+						} else {
+							u.rc(scene._all_tags, "selected")
+							u.ac(this, "selected");
+							scene._selected_tags.push(this.innerHTML)
+						}
+						scene._filter();
+					}
+					u.ce(tag)
+				}
+			}
+			this.initSearch = function() {
+				this._search = u.qs("form.search", this);
+				this._search_input = u.qs("input", this._search);
+				this._search_input._default = "Type here"
+				this._search_input.value = this._search_input._default;
+				this._search_input.focused = function() {
+					if(this.value == this._default) {
+						this.value = "";
+					} 
+				}
+				this._search_input.blurred = function() {
+					if(this.value == "") {
+						this.value = this._default;
+					} 
+				}
+				this._search_input.keySearch = function() {
+					scene._selected_search = this.value.toLowerCase();
+					scene._filter();
+				}
+				this._search_input.keyUp = function(event) {
+					u.t.resetTimer(this.t_search)
+					this.t_search = u.t.setTimer(this, this.keySearch, 300);
+				}
+				u.e.addEvent(this._search_input, "focus", this._search_input.focused);
+				u.e.addEvent(this._search_input, "blur", this._search_input.blurred);
+				u.e.addEvent(this._search_input, "keyup", this._search_input.keyUp);
+			}
+			this.initEvents();
+			this.initDays();
+			this.initTags();
+			this.initSearch();
 			this.is_ready = true;
 			page.cN.ready();
 		}
