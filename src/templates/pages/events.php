@@ -3,7 +3,7 @@ global $IC;
 global $action;
 global $itemtype;
 
-$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true)));
+$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
 $tags = $IC->getTags(array("context" => $itemtype)); 
 $days = $IC->getTags(array("context" => "day")); 
 
@@ -54,7 +54,9 @@ $days = $IC->getTags(array("context" => "day"));
 
 <?	if($items): ?>
 	<ul class="items">
-<?		foreach($items as $item): ?>
+<?		foreach($items as $item): 
+		$media = $IC->sliceMedia($item);
+?>
 
 		<li class="item person id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
 
@@ -73,13 +75,19 @@ $days = $IC->getTags(array("context" => "day"));
 <?			endif; ?>
 
 			<div class="description">
-				<p><?= $item["description"] ?></p>
+				<div class="media">
+					<img src="/images/6/single_media/x390.png">
+				</div>
 				
-				<ul class="action">
-					<li>
-						<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
-					</li>
-				</ul>
+				<div class="text">
+					<p><?= $item["description"] ?></p>
+				
+					<ul class="action">
+						<li>
+							<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
+						</li>
+					</ul>
+				</div>
 
 			</div>
 
