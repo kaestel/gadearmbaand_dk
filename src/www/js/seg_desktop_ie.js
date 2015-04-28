@@ -5392,10 +5392,11 @@ Util.Objects["page"] = new function() {
 					page.intro.line1 = u.qs("line", page.intro.svg);
 					page.intro.line1.transitioned = function() {
 						page.intro.line1.transitioned = function() {
-							u.svgShape(page.intro.svg, {
+							page.intro.path1 = u.svgShape(page.intro.svg, {
 								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 50 90 1 1 200 0"
+								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
 							});
+							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
 						}
 						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
 					}
@@ -5423,17 +5424,42 @@ Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
 			u.bug("page.resized:" + u.nodeId(this));
+			var i, li;
+			for (i = 0; li = this.lis[i]; i++) {
+				if (u.hc(li, "article")) {
+					u.as(li, "height", li.offsetWidth+2+"px");
+				}
+				if (u.hc(li, "instagram")) {
+					u.as(li, "height", li.offsetWidth+2+"px");
+				}
+				if (u.hc(li, "tweet")) {
+					u.as(li, "height", li.offsetWidth/2+2+"px");
+				}
+				if (u.hc(li, "ambassador")) {
+					var video = u.qs("li.video");
+					u.as(video, "height", video.offsetWidth/3*2+2+"px");
+					var article = u.qs("li.article");
+					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+				}
+				if (u.hc(li, "push_up")) {
+					u.as(li, "marginTop", -li.offsetWidth-1+"px");
+				}
+				if (u.hc(li, "push_up_half")) {
+					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
+				}
+				if (u.hc(li, "push_down")) {
+					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				}
+			}
 		}
 		scene.scrolled = function() {
 			u.bug("page.scrolled:" + u.nodeId(this))
-			// 
 		}
 		scene.ready = function() {
 			u.bug("scene.ready:" + u.nodeId(this));
-			var ul = u.qs("#grid");
-			var lis = u.qsa("li", ul);
+			this.lis = u.qsa("li", this);
 			var i, li;
-			for (i = 0; li = lis[i]; i++) {
+			for (i = 0; li = this.lis[i]; i++) {
 				if (u.hc(li, "instagram")) {
 					var node = u.qs("div.image", li);
 					if (node) {
@@ -5441,52 +5467,73 @@ Util.Objects["front"] = new function() {
 						node.format = u.cv(node, "format");
 						if (node.image_id && node.format) {
 							node.loaded = function(queue) {
-								console.log(queue[0]._image);
-								u.ae(this, "img", {"src": queue[0]._image.src});
+								console.log(queue[0].image);
+								u.ae(this, "img", {"src": queue[0].image.src});
 							}
-							node._image_src = "/img/temp/" + node.image_id + "." + node.format;
+							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
 							u.preloader(node, [node._image_src])
 						}
 					}
+					u.as(li, "height", li.offsetWidth+2+"px");
 				}
 				if (u.hc(li, "tweet")) {
+					u.as(li, "height", li.offsetWidth/2+2+"px");
 				}
 				if (u.hc(li, "article")) {
 					var link = u.qs("a");
-					u.as(li, "height", li.offsetWidth+"px");
+					u.as(li, "height", li.offsetWidth+2+"px");
 					link.clicked = function(event) {
 						u.e.kill();
 						console.log("TODO: ajax load this page");
 					}
 					u.ce(link);
 				}
+				if (u.hc(li, "ambassador")) {
+					var article = u.qs("li.article", li);
+					u.as(article, "height", article.offsetWidth/3*2+2+"px");
+					var video = u.qs("li.video", li);
+					u.as(video, "height", video.offsetWidth/3*2+2+"px");
+					video.video_id = u.cv(node, "video_id");
+					video.format = u.cv(node, "format");
+					if (video.video_id && video.format) {
+						video._video_url = "/videos/" + video.video_id + "/video/510x." + video._video_format;
+						video.play_bn = u.ae(this.item._image, "div", {"class": "play"});
+						u.e.click(this.item);
+						this.item.clicked = function(event) {
+							page.videoPlayer.ended = function(event) {
+								page.videoPlayer.play();
+							}
+							this.player = u.ae(this._image, page.videoPlayer);
+							this.player = page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+						}
+					}
+				};
+				if (u.hc(li, "push_up")) {
+					u.as(li, "marginTop", -li.offsetWidth-1+"px");
+				}
+				if (u.hc(li, "push_up_half")) {
+					u.as(li, "marginTop", -li.offsetWidth/2-1+"px");
+				}
+				if (u.hc(li, "push_down")) {
+					u.as(li, "marginTop", li.offsetWidth+1+"px");
+				}
 			}
 			u.textscaler(this, {
-				"min_height":400,
-				"max_height":1000,
-				"min_width":600,
-				"max_width":1300,
-				"unit":"rem",
-				"h1":{
-					"min_size":4,
-					"max_size":8
+				"min_width":800,
+				"max_width":1400,
+				"unit":"px",
+				".twenty h2":{
+					"min_size":16,
+					"max_size":24
 				},
-				"h2":{
-					"min_size":2,
-					"max_size":4
+				".forty h2":{
+					"min_size":28,
+					"max_size":48
 				},
-				"h3":{
-					"min_size":1.4,
-					"max_size":2.8
+				".tweet p":{
+					"min_size":14,
+					"max_size":26
 				},
-				"p":{
-					"min_size":1,
-					"max_size":2
-				},
-				"p span.s2":{
-					"min_size":1.4,
-					"max_size":2.8
-				}
 			});
 			this.is_ready = true;
 			page.cN.ready();

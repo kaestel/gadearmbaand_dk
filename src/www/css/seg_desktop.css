@@ -118,33 +118,45 @@ li {font-size: 14px; line-height: 1.25em;}
 #content .scene.front ul li.forty {width:40%;}
 #content .scene.front ul li.sixty {width:60%;}
 #content .scene.front ul li.eighty {width:80%;}
-#content .scene.front ul li.negative_twenty {margin-top:-20%;}
-#content .scene.front ul li.instagram {}
-#content .scene.front ul li.instagram div.image {}
-#content .scene.front ul li.instagram div.image img {width:100%;}
-#content .scene.front ul li.tweet {background-color:#0c9a15; padding:20px;}
-#content .scene.front ul li.tweet.forty {width:40%; padding:34px 20px 34px 20px;}
-#content .scene.front ul li.tweet h2 {font-family: 'DINPro'; font-weight:400; color:#000000; padding-bottom:8px;}
-#content .scene.front ul li.tweet.twenty h2 {font-size:10px;}
-#content .scene.front ul li.tweet.forty h2 {font-size:12px;}
-#content .scene.front ul li.tweet p {color:#ffffff; font-size:32px; }
-#content .scene.front ul li.tweet p a {color:#000000;}
-#content .scene.front ul li.article {background:#000000;}
-#content .scene.front ul li.article.twenty {padding:34px 20px 34px 20px; font-size:12px;}
-#content .scene.front ul li.article.forty {padding:34px 20px 34px 20px; font-size:18px;}
-#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:800; color:#0c9a15; font-size:12px; padding-bottom:8px;}
-#content .scene.front ul li.article.twenty h3 {font-size: 10px;}
-#content .scene.front ul li.article.twenty h3 {font-size: 12px;}
+#content .scene.front ul li.ambassador {width:100%;}
+#content .scene.front ul li.instagram {overflow:hidden;}
+#content .scene.front ul li.instagram div.image {width: 100%; height: 100%;}
+#content .scene.front ul li.instagram div.image img {width:102%; margin:-1% 0 0 -1%;}
+#content .scene.front ul li.tweet {background-color:#6eb951; }
+#content .scene.front ul li.tweet.forty {width:40%; padding:40px 50px;}
+#content .scene.front ul li.tweet h3 {font-family: 'DINPro'; font-weight:400; color:#19051a; padding-bottom:8px;}
+#content .scene.front ul li.tweet.twenty h3 {font-size:10px;}
+#content .scene.front ul li.tweet.forty h3 {font-size:12px;}
+#content .scene.front ul li.tweet p {color:#ffffff; font-size:22px; }
+#content .scene.front ul li.tweet p a {color:#19051a;}
+#content .scene.front ul li.tweet.float {float:right;}
+#content .scene.front ul li.article {background:#19051a;}
 #content .scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff;}
-#content .scene.front ul li.article.twenty h2 {font-size:16px; padding-bottom:10px;}
-#content .scene.front ul li.article.forty h2 {font-size:32px; padding-bottom:20px;}
-#content .scene.front ul li.article.twenty a,
-#content .scene.front ul li.article.forty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #0c9a15;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#0c9a15; text-align:center;
+#content .scene.front ul li.article h3 { font-family: 'DINPro'; font-weight:800; color:#6eb951; font-size:12px; padding-bottom:8px;}
+#content .scene.front ul li.article.twenty {padding: 40px 30px; font-size:12px;} 
+#content .scene.front ul li.article.twenty h2 {font-size:16px; line-height:1.3em; padding-bottom:10px;}
+#content .scene.front ul li.article.twenty h3 {font-size: 10px;}
+#content .scene.front ul li.article.twenty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
+    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center;
 }
+#content .scene.front ul li.article.forty {padding:40px 50px; font-size:18px;} 
+#content .scene.front ul li.article.forty h3 {font-size: 12px;}
+#content .scene.front ul li.article.forty h2 {font-size:32px; line-height:1.5em; padding-bottom:20px;}
+#content .scene.front ul li.article.forty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
+    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center;
+}
+#content .scene.front ul li.ambassador {font-size:18px;} 
+#content .scene.front ul li.ambassador ul li.article h3 {}
+#content .scene.front ul li.ambassador ul li.article h2 {line-height:1.5em; padding-bottom:20px;}
+#content .scene.front ul li.ambassador ul li.article a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
+    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center;
+}
+#content .scene.front ul li.ambassador ul li.video {background: url("/img/temp/front_video.jpg") no-repeat; background-size:102% auto;}
+ sixty
 @media screen and (max-width:800px) {
 	#content .scene.front {width:800px;}
 }
+
 
 
 
