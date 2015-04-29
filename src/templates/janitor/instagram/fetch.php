@@ -80,7 +80,7 @@ function getSet($max_id = false) {
 
 
 	// tag to get instagrams for
-	$tag = 'kaesteltest';
+	$tag = 'gadearmbaand';
 	//$tag = 'sing2ride';
 	$client_id = "1a5eeb9643a44fd9b5fe828068bba595";
 	$insta_url = "https://api.instagram.com/v1/tags/".$tag."/media/recent?client_id=".$client_id;
