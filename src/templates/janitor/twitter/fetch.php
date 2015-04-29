@@ -14,7 +14,7 @@ global $t_token_url;
 global $t_oauth_consumer_key;
 global $t_oauth_consumer_secret;
 
-$twitter_name = "kaesteltest";
+$twitter_name = "cphdistortion";
 $t_token_url = "https://api.twitter.com/oauth2/token";
 $t_oauth_consumer_key = "Hf0BSUTMsw0o0XvTcvMT38Y9A";
 $t_oauth_consumer_secret = "0GwR11zPYbDQ49r13s90mWd8w0D7tErERjhkVPrRz50I0v600o";
@@ -211,19 +211,19 @@ function getTimeline($max_id = false) {
 
 
 // do search for tweets with mention of twitter_name
-function getSearch($max_id = false) {
+function getSearch($search_string, $max_id = false) {
 
 //	print "getSearch:".$max_id."<br>\n";
 
 //	global $IC;
 	global $model;
-	global $twitter_name;
+//	global $twitter_name;
 	global $create_results;
 
 	$extend_search = true;
 	$last_tweet_id = false;
 
-	$search = twitterRequest("https://api.twitter.com/1.1/search/tweets.json", "q=@".$twitter_name."&result_type=recent&include_entities=false&count=100".($max_id ? "&max_id=".$max_id : ""));
+	$search = twitterRequest("https://api.twitter.com/1.1/search/tweets.json", "q=".$search_string."%20-filter:retweets&result_type=recent&include_entities=false&count=100".($max_id ? "&max_id=".$max_id : ""));
 //	print_r($search);
 
 	if(isset($search["statuses"])) {
@@ -294,7 +294,7 @@ function getSearch($max_id = false) {
 // 	// check for next page
  	if($extend_search && $last_tweet_id)  {
 //		print "go next\n";
-		getSearch($last_tweet_id);
+		getSearch($search_string, $last_tweet_id);
  	}
 
 }
@@ -309,7 +309,9 @@ function getSearch($max_id = false) {
 
 	<ul class="items">
 		<? getTimeline(); ?>
-		<? getSearch(); ?>
+		<? getSearch("@cphdistortion"); ?>
+		<? getSearch("#cphdistortion"); ?>
+		<? getSearch("#gadearmbaand"); ?>
 	</ul>
 
 <?	if(!$create_results): ?>
