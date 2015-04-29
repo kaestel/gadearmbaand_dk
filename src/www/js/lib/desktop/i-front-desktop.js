@@ -79,11 +79,16 @@ Util.Objects["front"] = new function() {
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 
 
+			this.h1 = u.qs("h1", this);
+
+
 			//this.ul = u.qs(".grid");
-			this.lis = u.qsa("li", this);
+			this.lis = u.qsa("ul.grid > li", this);
 			var i, li;
 
 			for (i = 0; li = this.lis[i]; i++) {
+
+//				u.a.scale(li, 15);
 
 				// pre-index
 				if(u.hc(li, "forty")) {
@@ -103,12 +108,14 @@ Util.Objects["front"] = new function() {
 					// img
 					var node = u.qs("div.image", li);
 					if(node) {
+						node.li = li;
 						node.image_id = u.cv(node, "image_id");
 						node.format = u.cv(node, "format");
 
 						if(node.image_id && node.format) {
 							node.loaded = function(queue) {
 								u.ae(this, "img", {"src": queue[0].image.src});
+
 							}
 							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
 							u.preloader(node, [node._image_src])
@@ -117,13 +124,22 @@ Util.Objects["front"] = new function() {
 				}
 
 				// handle tweet
-				if(u.hc(li, "tweet")) {}
+				if(u.hc(li, "tweet")) {
+					// u.a.transition(li, "all 1.5s ease-in-out");
+					// u.a.scale(li, 1);
+					// u.a.setOpacity(li, 1);
+					
+				}
 
 				// handle article page
 				if(u.hc(li, "article")) {
 
 					var link = u.qs("a", li);
 					u.ce(link, {"type":"link"});
+
+					// u.a.transition(li, "all 1.5s ease-in-out");
+					// u.a.scale(li, 1);
+					// u.a.setOpacity(li, 1);
 
 				}
 
@@ -137,6 +153,7 @@ Util.Objects["front"] = new function() {
 
 					// video
 					li.video = u.qs("li.video", li);
+					li.video.li = li;
 
 					li.video.video_id = u.cv(li.video, "video_id");
 					li.video.video_format = u.cv(li.video, "video_format");
@@ -147,6 +164,7 @@ Util.Objects["front"] = new function() {
 					if(li.video.image_id && li.video.image_format) {
 						li.video.loaded = function(queue) {
 							u.ae(this, "img", {"src": queue[0].image.src});
+
 						}
 
 						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
@@ -250,15 +268,24 @@ Util.Objects["front"] = new function() {
 
 			}
 
-			this.transitioned = function() {
+			u.a.transition(this.h1, "all 1s ease-out");
+			u.a.setOpacity(this.h1, 0);
 
-				// destruction is done
-				this.finalizeDestruction();
+			var i, li, j = 0;
+
+			for(i = 0; li = this.lis[i]; i++) {
+				var li_y = u.absY(li);
+				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
+					u.bug("move:" + u.nodeId(li))
+					u.as(li, "zIndex", 100-j);
+					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
+					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
+					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
+					u.a.setOpacity(li, 0);
+				}
 			}
 
-			// make up some page destruction
-			u.a.transition(this, "all 1s linear");
-			u.a.setOpacity(this, 0);
+			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
 
 		}
 

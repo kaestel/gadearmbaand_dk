@@ -6,9 +6,8 @@
 .scene.front h1 {font-size:40px; padding:60px 0; text-align:center;}
 .scene.front ul {width:100%; font-size:0;}
 .scene.front ul li {
-    display: inline-block; vertical-align:top;
+    display: inline-block; vertical-align:top; /*opacity: 0;*/
     box-sizing:border-box;
-
 }
 .scene.front ul li.blank {background:red;}
 
