@@ -208,7 +208,7 @@ Util.Objects["front"] = new function() {
 
 			u.textscaler(this, {
 				"min_width":800,
-				"max_width":1400,
+				"max_width":1200,
 				"unit":"px",
 				".twenty h2":{
 					"min_size":16,
@@ -219,8 +219,8 @@ Util.Objects["front"] = new function() {
 					"max_size":48
 				},
 				".tweet p":{
-					"min_size":14,
-					"max_size":26
+					"min_size":15,
+					"max_size":23
 				}
 			});
 
