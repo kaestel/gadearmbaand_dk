@@ -22,26 +22,27 @@ $days = $IC->getTags(array("context" => "day"));
 <?		endif; ?>
 	</ul>
 
-	<h2>Advanced search</h2>
 	<div class="filter">
 
-		<h3>Filter by tags</h3>
-		<ul class="tag_list">
-		<?		if($tags): ?>
-		<?			foreach($tags as $tag): ?>
-					<li><?= $tag["value"] ?></li>
-		<?			endforeach; ?>
-		<?		endif; ?>
-		</ul>
+		<h2>advanced search</h2>
 		
 		<form class="search">
-			<h3>Search</h3>
 			<fieldset>
 				<div class="field string">
 					<input type="text" />
 				</div>
 			</fieldset>
 		</form>
+
+		
+		<ul class="tag_list">
+<?			if($tags): ?>
+<?				foreach($tags as $tag): ?>
+					<li><?= $tag["value"] ?></li>
+<?				endforeach; ?>
+<?			endif; ?>
+		</ul>
+		
 	</div>
 
 	<ul class="legend">
@@ -75,9 +76,7 @@ $days = $IC->getTags(array("context" => "day"));
 <?			endif; ?>
 
 			<div class="description">
-				<div class="media">
-					<img src="/images/6/single_media/x390.png">
-				</div>
+				<div class="media item_id:<?= $item["item_id"] ?> format:<?= $media["format"] ?>"></div>
 				
 				<div class="text">
 					<p><?= $item["description"] ?></p>
