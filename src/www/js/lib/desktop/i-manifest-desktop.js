@@ -143,7 +143,8 @@ Util.Objects["manifest"] = new function() {
 					u.t.setTimer(this, "_animate", 10);
 				}
 				else {
-					this.scene.finalizeDestruction();
+					u.t.setTimer(this.scene, this.scene.finalizeDestruction, 500);
+//					this.scene.finalizeDestruction();
 				}
 
 			}
