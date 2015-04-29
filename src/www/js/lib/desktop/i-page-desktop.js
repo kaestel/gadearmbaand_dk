@@ -36,10 +36,10 @@ Util.Objects["page"] = new function() {
 
 
 				if(page.browser_w >= 1200) {
-					u.ac(document.body, "fixed");
+					u.ac(page, "fixed");
 				}
 				else {
-					u.rc(document.body, "fixed");
+					u.rc(page, "fixed");
 				}
 
 				// forward scroll event to current scene
