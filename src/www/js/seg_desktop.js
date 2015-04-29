@@ -4737,7 +4737,7 @@ Util.videoPlayer = function(_options) {
 
 /*ga.js*/
 u.ga_account = '';
-u.ga_domain = '';
+u.ga_domain = 'gadearmbaand.dk';
 u.gapi_key = '';
 
 
@@ -5338,10 +5338,16 @@ Util.Objects["page"] = new function() {
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 				if(page.browser_w >= 1200) {
-					u.ac(document.body, "fixed");
+					u.ac(page, "fixed");
 				}
 				else {
-					u.rc(document.body, "fixed");
+					u.rc(page, "fixed");
+				}
+				var i, item;
+				if(page.nN.items) {
+					for(i = 0; item = page.nN.items[i]; i++) {
+						u.ass(item, {"height" : page.browser_h / 2 + "px"});
+					}
 				}
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
@@ -5368,11 +5374,11 @@ Util.Objects["page"] = new function() {
 					else {
 						u.e.addEvent(window, "resize", page.resized);
 					}
+					this.initHeader();
 					this.resized();
 					this.scrolled();
 					this.initIntro();
 					this.initNavigation();
-					this.initHeader();
 					u.navigation();
 					u.init(this.cN.scene);
 				}
@@ -5408,6 +5414,7 @@ Util.Objects["page"] = new function() {
 			}
 			page.initHeader = function() {
 				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				page.nN.items = u.qsa("ul li h4",page.nN);
 				u.ce(bn_nav);
 				bn_nav.clicked = function() {
 					if(u.hc(page.nN, "open")) {
@@ -5500,22 +5507,6 @@ function static_init() {
 u.e.addDOMReadyEvent(static_init);
 
 
-/*i-login-desktop.js*/
-Util.Objects["login"] = new function() {
-	this.init = function(scene) {
-		scene.resized = function() {
-		}
-		scene.scrolled = function() {
-		}
-		scene.ready = function() {
-			this._form = u.qs("form", this);
-			u.f.init(this._form);
-		}
-		scene.ready();
-	}
-}
-
-
 /*i-front-desktop.js*/
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
@@ -5564,7 +5555,8 @@ Util.Objects["front"] = new function() {
 			this.article_rule = this.style_tag.sheet.cssRules[0];
 			this.style_tag.sheet.insertRule("#content .scene.front li.tweet {}", 0);
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
-			this.lis = u.qsa("li", this);
+			this.h1 = u.qs("h1", this);
+			this.lis = u.qsa("ul.grid > li", this);
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 				if(u.hc(li, "forty")) {
@@ -5579,6 +5571,7 @@ Util.Objects["front"] = new function() {
 				if(u.hc(li, "instagram")) {
 					var node = u.qs("div.image", li);
 					if(node) {
+						node.li = li;
 						node.image_id = u.cv(node, "image_id");
 						node.format = u.cv(node, "format");
 						if(node.image_id && node.format) {
@@ -5590,7 +5583,8 @@ Util.Objects["front"] = new function() {
 						}
 					}
 				}
-				if(u.hc(li, "tweet")) {}
+				if(u.hc(li, "tweet")) {
+				}
 				if(u.hc(li, "article")) {
 					var link = u.qs("a", li);
 					u.ce(link, {"type":"link"});
@@ -5598,6 +5592,7 @@ Util.Objects["front"] = new function() {
 				if(u.hc(li, "ambassador")) {
 					li.article = u.qs("li.article", li);
 					li.video = u.qs("li.video", li);
+					li.video.li = li;
 					li.video.video_id = u.cv(li.video, "video_id");
 					li.video.video_format = u.cv(li.video, "video_format");
 					li.video.image_id = u.cv(li.video, "image_id");
@@ -5626,7 +5621,7 @@ Util.Objects["front"] = new function() {
 			this.resized();
 			u.textscaler(this, {
 				"min_width":800,
-				"max_width":1400,
+				"max_width":1200,
 				"unit":"px",
 				".twenty h2":{
 					"min_size":16,
@@ -5637,8 +5632,8 @@ Util.Objects["front"] = new function() {
 					"max_size":48
 				},
 				".tweet p":{
-					"min_size":14,
-					"max_size":26
+					"min_size":15,
+					"max_size":23
 				}
 			});
 			this.is_ready = true;
@@ -5658,11 +5653,21 @@ Util.Objects["front"] = new function() {
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
-			this.transitioned = function() {
-				this.finalizeDestruction();
+			u.a.transition(this.h1, "all 1s ease-out");
+			u.a.setOpacity(this.h1, 0);
+			var i, li, j = 0;
+			for(i = 0; li = this.lis[i]; i++) {
+				var li_y = u.absY(li);
+				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
+					u.bug("move:" + u.nodeId(li))
+					u.as(li, "zIndex", 100-j);
+					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
+					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
+					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
+					u.a.setOpacity(li, 0);
+				}
 			}
-			u.a.transition(this, "all 1s linear");
-			u.a.setOpacity(this, 0);
+			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
 		}
 		scene.ready();
 	}
@@ -5985,7 +5990,7 @@ Util.Objects["manifest"] = new function() {
 					u.t.setTimer(this, "_animate", 10);
 				}
 				else {
-					this.scene.finalizeDestruction();
+					u.t.setTimer(this.scene, this.scene.finalizeDestruction, 500);
 				}
 			}
 			svg._animate();

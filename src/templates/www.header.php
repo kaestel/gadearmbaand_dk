@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="<?= $this->language() ?>">
 <head>
-	<!-- (c) & (p) parentnode.dk 2009-2015 //-->
+	<!-- (c) & (p) Martin Kæstel, Robin Isaksson, Stefan Friedli - 2015 - thank you for the beers //-->
 	<!-- All material protected by copyrightlaws, as if you didnt know //-->
-	<!-- If you want to help build the ultimate frontend-centered platform, visit parentnode.dk -->
 	<title><?= SITE_URL ?> - <?= $this->pageTitle() ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="keywords" content="development frontend HTML JavaScript CSS idealism web" />

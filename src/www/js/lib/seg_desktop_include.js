@@ -8,7 +8,6 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-textsc
 document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-animation-to.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-desktop.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-login-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-front-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-events-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-manifest-desktop.js"></script>');

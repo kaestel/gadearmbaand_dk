@@ -35,7 +35,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="blank sixty"></li>
-		<li class="instagram forty push_up_half">
+		<li class="instagram forty push_up_half mfull">
 			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[2]["username"] ?></p>
 			</div>
@@ -61,7 +61,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<h3 class="author"><?= $tweets[0]["username"] ?></h3>
 			<p><?= $tweets[0]["text"] ?></p>
 		</li>
-		<li class="instagram twenty push_down">
+		<li class="instagram twenty push_down mfull">
 			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[5]["username"] ?></p>
 			</div>
@@ -84,7 +84,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<h3 class="author"><?= $tweets[1]["username"] ?></h3>
 			<p><?= $tweets[1]["text"] ?></p>
 		</li>
-		<li class="instagram forty">
+		<li class="instagram forty mfull">
 			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[6]["username"] ?></p>
 			</div>
@@ -105,7 +105,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
-		<li class="instagram twenty ">
+		<li class="instagram twenty mfull">
 			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[9]["username"] ?></p>
 			</div>
@@ -143,7 +143,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<h2>Headline in two lines</h2>
 			<a href="#">Læs hvorfor</a>
 		</li>
-		<li class="instagram twenty">
+		<li class="instagram twenty mfull">
 			<div class="image image_id:<?= $instagrams[12]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[12]["username"] ?></p>
 			</div>
@@ -153,7 +153,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<h3 class="author"><?= $tweets[3]["username"] ?></h3>
 			<p><?= $tweets[3]["text"] ?></p>
 		</li>
-		<li class="instagram forty push_up_half">
+		<li class="instagram forty push_up_half mfull">
 			<div class="image image_id:<?= $instagrams[13]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[13]["username"] ?></p>
 			</div>
@@ -183,7 +183,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
-		<li class="instagram twenty">
+		<li class="instagram twenty mfull">
 			<div class="image image_id:<?= $instagrams[16]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[16]["username"] ?></p>
 			</div>
@@ -215,7 +215,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<h3 class="author"><?= $tweets[4]["username"] ?></h3>
 			<p><?= $tweets[4]["text"] ?></p>
 		</li>
-		<li class="instagram twenty push_down">
+		<li class="instagram twenty push_down mfull">
 			<div class="image image_id:<?= $instagrams[21]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p><?= $instagrams[21]["username"] ?></p>
 			</div>
