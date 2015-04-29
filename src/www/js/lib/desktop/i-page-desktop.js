@@ -42,6 +42,14 @@ Util.Objects["page"] = new function() {
 					u.rc(page, "fixed");
 				}
 
+				// navigation adjustments
+				var i, item;
+				if(page.nN.items) {
+					for(i = 0; item = page.nN.items[i]; i++) {
+						u.ass(item, {"height" : page.browser_h / 2 + "px"});
+					}
+				}
+
 				// forward scroll event to current scene
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
@@ -101,6 +109,9 @@ Util.Objects["page"] = new function() {
 						u.e.addEvent(window, "resize", page.resized);
 					}
 
+					// build header
+					this.initHeader();
+
 					// resize / scroll straight away to adjust widths
 					this.resized();
 					this.scrolled();
@@ -112,10 +123,6 @@ Util.Objects["page"] = new function() {
 
 					// build navigation
 					this.initNavigation();
-
-
-					// build header
-					this.initHeader();
 
 
 					// enable ajax navigation
@@ -203,7 +210,8 @@ Util.Objects["page"] = new function() {
 
 				// get the navigation node from the servicenavigation
 				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
-
+				page.nN.items = u.qsa("ul li h4",page.nN);
+				
 				// very simple navigation toggle
 				u.ce(bn_nav);
 				bn_nav.clicked = function() {
