@@ -2,10 +2,11 @@
 /* BASIC CONTENT */
 .fixed #content .scene.front {width: 1200px; margin: 0 auto;}
 
+#content .scene.front {opacity: 1;}
 
-.scene.front h1 {font-size:40px; padding:60px 0; text-align:center;}
+.scene.front h1 {padding: 60px 0; text-align:center;}
 .scene.front ul {width:100%; font-size:0;}
-.scene.front ul li {
+.scene.front ul li {overflow: hidden; position: relative;
     display: inline-block; vertical-align:top; /*opacity: 0;*/
     box-sizing:border-box;
 }
@@ -21,17 +22,42 @@
 /*.scene.front ul li.push_up {margin-top:-20%;}
 .scene.front ul li.push_down {margin-top:20%;}*/
 
+.scene.front ul li svg {width: 102%; height: 102%; margin:-1%; z-index: 2;
+	fill: #ffffff; position: absolute; top: 0; left: 0;
+}
+
 
 /* instagram */
-.scene.front ul li.instagram {overflow: hidden; position: relative;}
+.scene.front ul li.instagram {opacity: 0;}
 .scene.front ul li.instagram div.image {width: 100%; height: 100%;}
-.scene.front ul li.instagram div.image img {width:102%; margin:-1% 0 0 -1%;}
-.scene.front ul li.instagram p {display: none;}
+.scene.front ul li.instagram div.image img {width:102%; height: 102%; margin:-1%;}
+.scene.front ul li.instagram p {display: none; 
+	position: absolute; bottom: 5px; left: 5px; padding: 2px 5px; background: rgba(255,255,255,0.5); border-radius: 10px;
+}
 
 
 /* tweet */
-.scene.front ul li.tweet {background-color:#6eb951; }
-.scene.front ul li.tweet.forty {width:40%; padding:40px 50px;}
+.scene.front ul li.tweet.on {}
+.scene.front ul li.tweet {padding: 0;
+	perspective-origin: 0 0;
+	-webkit-perspective-origin: 0 0;
+
+	transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+
+	-webkit-perspective: 500px;
+	perspective: 500px;
+}
+.scene.front ul li.tweet .card {padding:40px 50px; background-color:#6eb951; height: 100%; width: 100%; position: absolute; top: 0; left: 0;
+    box-sizing:border-box;
+	backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+
+	transform: rotateX(180deg);	
+} 
+
+.scene.front ul li.tweet.forty {width:40%;}
 .scene.front ul li.tweet h3 {font-family: 'DINPro'; font-weight:400; color:#19051a; padding-bottom:8px;}
 .scene.front ul li.tweet.twenty h3 {font-size:10px;}
 .scene.front ul li.tweet.forty h3 {font-size:12px;}
@@ -40,7 +66,8 @@
 .scene.front ul li.tweet.float {float:right;}
 
 /* article */
-.scene.front ul li.article {background:#19051a;}
+.scene.front ul.grid > li.article {opacity: 0;}
+.scene.front ul li.article {background: #19051a;}
 .scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff;}
 .scene.front ul li.article h3 {font-family: 'DINPro'; font-weight:800; color:#6eb951; font-size:12px; padding-bottom:8px;}
 
@@ -59,6 +86,7 @@
 }
 
 .scene.front ul li.ambassador {font-size:18px;} /* padding:34px 20px 34px 20px; */
+.scene.front ul li.ambassador ul {position: relative; z-index: 1;}
 .scene.front ul li.ambassador ul li.article h3 {}
 .scene.front ul li.ambassador ul li.article h2 {line-height:1.5em; padding-bottom:20px;}
 .scene.front ul li.ambassador ul li.article a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;

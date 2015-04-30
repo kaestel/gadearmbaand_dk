@@ -7,20 +7,20 @@ $itemtype = "instagram";
 $instagrams = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 22, "extend" => array("tags" => true, "mediae" => true)));
 
 $itemtype = "twitter";
-$tweets = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 5, "extend" => array("tags" => true)));
+$tweets = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 10, "extend" => array("tags" => true)));
 
 $itemtype = "media";
-$mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "limit" => 3, "extend" => array("mediae" => true)));
+$mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "position ASC, published_at DESC", "limit" => 3, "extend" => array("mediae" => true)));
 
 ?>
 
 <div class="scene front i:front">
-	<h1>Gadeårmband</h1>
+	<h1>Gadearmbånd</h1>
 
 	<ul class="grid">
 		<li class="article twenty">
-			<h3>Gadeårmband</h3>
-			<h2>Del din kærlighed</h2>
+			<h3>Gadearmbånd</h3>
+			<h2>Køb. Så tryller vi</h2>
 			<a href="#">Køb nu</a>
 		</li>
 		<li class="instagram forty">
@@ -53,13 +53,19 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 		</li>
 		<li class="blank forty"></li>
 		<li class="article forty">
-			<h3>Gadeårmband</h3>
-			<h2>En gadefest er i virkelig&shy;heden ikke svært at holde</h2>
-			<a href="/manifest">Læs hvorfor</a>
+			<h3>Manifest</h3>
+			<h2>En gadefest er i virkelig­heden ikke svær at holde</h2>
+			<a href="/manifest">Derfor gadearmbånd</a>
 		</li>
 		<li class="tweet forty">
-			<h3 class="author"><?= $tweets[0]["username"] ?></h3>
-			<p><?= $tweets[0]["text"] ?></p>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[0]["username"]) ?>" target="_blank"><?= $tweets[0]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[0]["text"]) ?></p>
+			</div>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[1]["username"]) ?>" target="_blank"><?= $tweets[1]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[1]["text"]) ?></p>
+			</div>
 		</li>
 		<li class="instagram twenty push_down mfull">
 			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
@@ -70,10 +76,10 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<ul>
 				<li class="video sixty video_id:<?= $mediae[0]["item_id"] ?> video_format:<?= $mediae[0]["mediae"]["video"]["format"] ?> image_id:<?= $mediae[0]["item_id"] ?> image_format:<?= $mediae[0]["mediae"]["image"]["format"] ?>"></li>
 				<li class="article forty">
-					<h3>Ambassador</h3>
-					<h2>David Muchacho</h2>
-					<p>Lorem ipsum, info about the the ambassador.</p>
-					<a href="#">Derfor gadeårmband</a>
+					<h3>Fest-diplomat</h3>
+					<h2>Master Fatman</h2>
+					<p>Om at gøre noget ved byen. Om Dronning Louises Bro der kan mærke det. Om 4/4-takter og om at tilbyde en masse forskelligt på hylderne.</p>
+					<a href="#">Køb Gadearmbånd</a>
 				</li>
 			</ul>
 		</li>
@@ -81,8 +87,14 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 
 	<ul class="grid">
 		<li class="tweet forty">
-			<h3 class="author"><?= $tweets[1]["username"] ?></h3>
-			<p><?= $tweets[1]["text"] ?></p>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[2]["username"]) ?>" target="_blank"><?= $tweets[2]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[2]["text"]) ?></p>
+			</div>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[3]["username"]) ?>" target="_blank"><?= $tweets[3]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[3]["text"]) ?></p>
+			</div>
 		</li>
 		<li class="instagram forty mfull">
 			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
@@ -90,9 +102,9 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="article twenty push_down">
-			<h3>Gadeårmband</h3>
-			<h2>Headline in two lines</h2>
-			<a href="#">Læs hvorfor</a>
+			<h3>Gadearmbånd</h3>
+			<h2>Hold festen skæv</h2>
+			<a href="#">Køb nu</a>
 		</li>
 		<li class="instagram twenty">
 			<div class="image image_id:<?= $instagrams[7]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
@@ -111,16 +123,22 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="tweet forty float push_up_half">
-			<h3 class="author"><?= $tweets[2]["username"] ?></h3>
-			<p><?= $tweets[2]["text"] ?></p>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[4]["username"]) ?>" target="_blank"><?= $tweets[4]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[4]["text"]) ?></p>
+			</div>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[5]["username"]) ?>" target="_blank"><?= $tweets[5]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[5]["text"]) ?></p>
+			</div>
 		</li>
 		<li class="ambassador">
 			<ul>
 				<li class="article forty">
-					<h3>Ambassador</h3>
+					<h3>Fest-diplomat</h3>
 					<h2>David Muchacho</h2>
-					<p>Lorem ipsum, info about the the ambassador.</p>
-					<a href="#">Derfor gadeårmband</a>
+					<p>Om at have været med siden dengang. Om at indtage Vesterbro oppefra. Om at flirte med en sommerkæreste. Om at få solen i øjnene og Distortion i kroppen.</p>
+					<a href="/manifest">Derfor gadearmbånd</a>
 				</li>
 				<li class="video sixty video_id:<?= $mediae[1]["item_id"] ?> video_format:<?= $mediae[1]["mediae"]["video"]["format"] ?> image_id:<?= $mediae[1]["item_id"] ?> image_format:<?= $mediae[1]["mediae"]["image"]["format"] ?>"></li>
 			</ul>
@@ -139,9 +157,9 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="article twenty">
-			<h3>Gadeårmband</h3>
-			<h2>Headline in two lines</h2>
-			<a href="#">Læs hvorfor</a>
+			<h3>Gadearmbånd</h3>
+			<h2>Skab magien</h2>
+			<a href="#">Køb nu</a>
 		</li>
 		<li class="instagram twenty mfull">
 			<div class="image image_id:<?= $instagrams[12]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
@@ -150,8 +168,14 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="tweet forty">
-			<h3 class="author"><?= $tweets[3]["username"] ?></h3>
-			<p><?= $tweets[3]["text"] ?></p>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[6]["username"]) ?>" target="_blank"><?= $tweets[6]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[6]["text"]) ?></p>
+			</div>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[7]["username"]) ?>" target="_blank"><?= $tweets[7]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[7]["text"]) ?></p>
+			</div>
 		</li>
 		<li class="instagram forty push_up_half mfull">
 			<div class="image image_id:<?= $instagrams[13]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
@@ -162,10 +186,10 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<ul>
 				<li class="video sixty video_id:<?= $mediae[2]["item_id"] ?> video_format:<?= $mediae[2]["mediae"]["video"]["format"] ?> image_id:<?= $mediae[2]["item_id"] ?> image_format:<?= $mediae[2]["mediae"]["image"]["format"] ?>"></li>
 				<li class="article forty">
-					<h3>Ambassador</h3>
-					<h2>David Muchacho</h2>
-					<p>Lorem ipsum, info about the the ambassador.</p>
-					<a href="#">Derfor gadeårmband</a>
+					<h3>Fest-diplomat</h3>
+					<h2>Signe Lykke</h2>
+					<p>Om at lave klassisk musik med underliggende drone-bas. Om at være med til at udfordre rammerne. Om musiksnobberi og drive, blod, sved og tårer.</p>
+					<a href="/events">Se gadeprogrammet</a>
 				</li>
 			</ul>
 		</li>
@@ -212,8 +236,14 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="tweet forty">
-			<h3 class="author"><?= $tweets[4]["username"] ?></h3>
-			<p><?= $tweets[4]["text"] ?></p>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[8]["username"]) ?>" target="_blank"><?= $tweets[8]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[8]["text"]) ?></p>
+			</div>
+			<div class="card">
+				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[9]["username"]) ?>" target="_blank"><?= $tweets[9]["username"] ?></a></h3>
+				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[9]["text"]) ?></p>
+			</div>
 		</li>
 		<li class="instagram twenty push_down mfull">
 			<div class="image image_id:<?= $instagrams[21]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
