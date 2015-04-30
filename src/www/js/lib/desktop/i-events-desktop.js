@@ -104,7 +104,7 @@ Util.Objects["events"] = new function() {
 			
 			this.initEvents = function() {
 
-				this._events = u.qsa(".item");
+				this._events = u.qsa(".item", this);
 
 				var i, _event;
 				for(i = 0; _event = this._events[i]; i++) {
@@ -168,7 +168,7 @@ Util.Objects["events"] = new function() {
 
 			this.initDays = function() {
 
-				this._days_list = u.qs("ul.days");
+				this._days_list = u.qs("ul.days", this);
 				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
 				this._days = u.qsa("li", this._days_list);
 
@@ -210,7 +210,7 @@ Util.Objects["events"] = new function() {
 
 			this.initTags = function() {
 
-				this._tags_list = u.qs(".tag_list");
+				this._tags_list = u.qs(".tag_list", this);
 				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
 				this._tags = u.qsa("li", this._tags_list);
 

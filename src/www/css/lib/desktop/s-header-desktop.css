@@ -12,10 +12,20 @@
 }
 
 #navigation ul.navigation {width: 100%;}
-#navigation ul.navigation li {display: inline-block; text-align: center; width: 50%;}
+#navigation ul.navigation li {display: inline-block; text-align: center; width: 50%;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
 #navigation ul.navigation li h4 {display: table; width: 100%;}
 #navigation ul.navigation li h4 a {display: table-cell; vertical-align: middle;
 	font-family: "Flood", Verdana, Arial, sans-serif; color: #ffffff; font-size: 45px;
 }
+#navigation ul.navigation li.front:hover {background-image: url(/img/bg_manifest.jpg);}
+#navigation ul.navigation li.events:hover {background-image: url(/img/bg_manifest.jpg);}
+#navigation ul.navigation li.manifest:hover {background-image: url(/img/bg_manifest.jpg);}
+#navigation ul.navigation li.buy:hover {background-image: url(/img/bg_manifest.jpg);}
 
 #navigation.open {display: block;}
