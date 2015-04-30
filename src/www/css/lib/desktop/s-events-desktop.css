@@ -6,7 +6,7 @@
 	box-sizing: border-box;
 }
 
-.scene.event h1 {width: 100%; text-align: center; padding: 40px 0 50px;}
+.scene.event h1 {width: 100%; text-align: center; padding: 60px 0;}
 
 .scene.event > ul.days {width: 100%; text-align: center;}
 .scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #70B857; cursor: pointer; font-weight: 800;}
