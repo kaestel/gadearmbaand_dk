@@ -12,20 +12,25 @@
 }
 
 #navigation ul.navigation {width: 100%;}
-#navigation ul.navigation li {display: inline-block; text-align: center; width: 50%;
+#navigation ul.navigation li {display: inline-block; text-align: center; width: 50%; position: relative; overflow: hidden;
 	background-repeat: no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
-#navigation ul.navigation li h4 {display: table; width: 100%;}
+#navigation ul.navigation li h4 {display: table; width: 100%; position: relative; z-index: 2;}
 #navigation ul.navigation li h4 a {display: table-cell; vertical-align: middle;
 	font-family: "Flood", Verdana, Arial, sans-serif; color: #ffffff; font-size: 45px;
 }
-#navigation ul.navigation li.front:hover {background-image: url(/img/bg_manifest.jpg);}
+
+#navigation ul.navigation li .vp {position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%;}
+#navigation ul.navigation li .videoplayer {width: 100%; height: 100%; }
+#navigation ul.navigation li .videoplayer video {width: 100%; height: 100%;}
+
+/*#navigation ul.navigation li.front:hover {background-image: url(/img/bg_manifest.jpg);}
 #navigation ul.navigation li.events:hover {background-image: url(/img/bg_manifest.jpg);}
 #navigation ul.navigation li.manifest:hover {background-image: url(/img/bg_manifest.jpg);}
 #navigation ul.navigation li.buy:hover {background-image: url(/img/bg_manifest.jpg);}
-
+*/
 #navigation.open {display: block;}

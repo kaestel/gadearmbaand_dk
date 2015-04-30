@@ -284,6 +284,38 @@ Util.Objects["page"] = new function() {
 
 					}
 
+					node.vp = u.ae(node, "div", {"class":"vp"});
+
+					node.mousedover = function() {
+
+						u.ae(this.vp, page.videoPlayer);
+						u.bug("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
+						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
+
+						if(this.offsetWidth/this.offsetHeight > 480/270) {
+							var height = (this.offsetWidth / (480/270));
+							u.as(this.vp, "height", height + "px");
+							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
+							u.as(this.vp, "width", "100%");
+							u.as(this.vp, "marginLeft", 0);
+						}
+						else {
+							var width = (this.offsetHeight / (270/480));
+							u.as(this.vp, "width", width + "px");
+							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
+							u.as(this.vp, "height", "100%");
+							u.as(this.vp, "marginTop", 0);
+						}
+					}
+					
+					node.mousedout = function() {
+						page.videoPlayer.stop();
+//						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
+					}
+
+					u.e.addEvent(node, "mouseenter", node.mousedover);
+					u.e.addEvent(node, "mouseleave", node.mousedout);
+
 				}
 
 			}
