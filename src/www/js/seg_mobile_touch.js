@@ -4736,7 +4736,7 @@ Util.videoPlayer = function(_options) {
 
 
 /*ga.js*/
-u.ga_account = '';
+u.ga_account = 'UA-62479513-1';
 u.ga_domain = 'gadearmbaand.dk';
 u.gapi_key = '';
 
@@ -5243,14 +5243,10 @@ u.textscaler = function(node, _settings) {
 			parts = sets[x].trim().split(" ");
 			sets[x] = parts;
 			if(parts && pairs[parts[0].toLowerCase()] == parts.length-1) {
-				u.bug("valid set:" + parts);
 			}
 			else {
-				u.bug("invalid set - could be 'dual' set with only one identifier")
 			}
 		}
-		u.bug("values:" + sets);
-		u.bug("value:" + value);
 		return sets;
 	}
 	u.a.getInitialValue = function(node, attribute) {
@@ -5275,8 +5271,6 @@ u.textscaler = function(node, _settings) {
 			if(attribute.match(/^(d)$/)) {
 				node._start[attribute] = this.parseSVGPath(this.getInitialValue(node, attribute));
 				node._end[attribute] = this.parseSVGPath(attributes[attribute]);
-				u.bug("start:" + node._start[attribute].join("#"))
-				u.bug("end:" + node._end[attribute])
 			}
 			else {
 				node._unit[attribute] = attributes[attribute].toString().match(/\%|px/);
@@ -5301,7 +5295,6 @@ u.textscaler = function(node, _settings) {
 					var new_value = "";
 					for(x in this._start[attribute]) {
 						for(y in this._start[attribute][x]) {
-							u.bug("pf:" + this._start[attribute][x][y] + " :: " + parseFloat(this._start[attribute][x][y]) + ", " + typeof(this._start[attribute][x][y]))
 							if(parseFloat(this._start[attribute][x][y]) == this._start[attribute][x][y]) {
 								new_value += (Number(this._start[attribute][x][y]) + ((Number(this._end[attribute][x][y]) - Number(this._start[attribute][x][y])) * progress)) + " ";
 							}
@@ -5310,7 +5303,6 @@ u.textscaler = function(node, _settings) {
 							}
 						}
 					}
-					u.bug("set new:" + new_value);
 					this.setAttribute(attribute, new_value);
 				}
 				else {
