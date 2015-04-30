@@ -6,7 +6,7 @@
 	background-size: cover;
 }
 
-.scene.manifest h1 {width: 100%; text-align: center; color: #FFFFFF; padding: 40px 0 80px;}
+.scene.manifest h1 {width: 100%; text-align: center; color: #FFFFFF; padding: 60px 0 80px;}
 .scene.manifest .content {width: 720px; margin: 0 auto; padding: 0 0 60px;}
 .scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1em; font-size: 45px; font-weight: 400;}
 .scene.manifest .content h3 {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
