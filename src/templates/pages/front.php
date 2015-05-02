@@ -22,7 +22,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<div class="card">
 				<h3>Gadearmbånd</h3>
 				<h2>Køb. Så tryller vi</h2>
-				<a href="#">Køb nu</a>
+				<a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a>
 			</div>
 		</li>
 		<li class="instagram forty i2">
@@ -87,7 +87,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 						<h3>Fest-diplomat</h3>
 						<h2>Master Fatman</h2>
 						<p>Om at gøre noget ved byen. Om Dronning Louises Bro der kan mærke det. Om 4/4-takter og om at tilbyde en masse forskelligt på hylderne.</p>
-						<a href="#">Køb Gadearmbånd</a>
+						<a href="http://burl.nu/jbjpcu" target="_blank">Køb Gadearmbånd</a>
 					</div>
 				</li>
 			</ul>
@@ -114,7 +114,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<div class="card">
 				<h3>Gadearmbånd</h3>
 				<h2>Hold festen skæv</h2>
-				<a href="#">Køb nu</a>
+				<a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a>
 			</div>
 		</li>
 		<li class="instagram twenty">
@@ -176,7 +176,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			<div class="card">
 				<h3>Gadearmbånd</h3>
 				<h2>Skab magien</h2>
-				<a href="#">Køb nu</a>
+				<a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a>
 			</div>
 		</li>
 		<li class="instagram twenty mfull">
