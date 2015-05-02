@@ -48,6 +48,11 @@ Util.Objects["page"] = new function() {
 					for(i = 0; item = page.nN.items[i]; i++) {
 						u.ass(item, {"height" : page.browser_h / 2 + "px"});
 					}
+
+					// resize open navigation
+					if(u.hc(page.nN, "open")) {
+						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
+					}
 				}
 
 				// forward scroll event to current scene
@@ -210,6 +215,7 @@ Util.Objects["page"] = new function() {
 
 				// get the navigation node from the servicenavigation
 				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				bn_nav.a = u.qs("a", bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
 				
 				// very simple navigation toggle
@@ -219,19 +225,25 @@ Util.Objects["page"] = new function() {
 					// close navigation
 					if(u.hc(page.nN, "open")) {
 
+						this.a.innerHTML = "Menu";
+						u.rc(this, "open");
+
 						page.nN.transitioned = function() {
 							u.rc(this, "open");
 						}
-						u.a.transition(page.nN, "all 0.5s linear");
-						u.a.setOpacity(page.nN, 0);
+						u.a.transition(page.nN, "all 0.3s linear");
+						u.ass(page.nN, {"width":0, "height":0, "top": "40px", "right": "60px"});
 
 					}
 					// open navigation
 					else {
 						u.ac(page.nN, "open");
 
-						u.a.transition(page.nN, "all 0.5s linear");
-						u.a.setOpacity(page.nN, 1);
+						this.a.innerHTML = "Luk";
+						u.ac(this, "open");
+
+						u.a.transition(page.nN, "all 0.3s linear");
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
 					}
 
 				}
@@ -289,7 +301,6 @@ Util.Objects["page"] = new function() {
 					node.mousedover = function() {
 
 						u.ae(this.vp, page.videoPlayer);
-						u.bug("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
 						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
 
 						if(this.offsetWidth/this.offsetHeight > 480/270) {
@@ -310,7 +321,7 @@ Util.Objects["page"] = new function() {
 					
 					node.mousedout = function() {
 						page.videoPlayer.stop();
-//						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
+						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
 					}
 
 					u.e.addEvent(node, "mouseenter", node.mousedover);

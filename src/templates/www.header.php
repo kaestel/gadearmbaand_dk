@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="<?= $this->language() ?>">
 <head>
-	<!-- (c) & (p) Martin Kæstel, Robin Isaksson, Stefan Friedli - 2015 - thank you for the beers //-->
+	<!-- (c) & (p) 2015 -->
+	<!-- Code: Martin Kæstel, Robin Isaksson, Stefan Friedli - thanks for the beers //-->
+	<!-- Design/PM: Great Works //-->
 	<!-- All material protected by copyrightlaws, as if you didnt know //-->
 	<title><?= SITE_URL ?> - <?= $this->pageTitle() ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

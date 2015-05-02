@@ -4,100 +4,171 @@
 
 #content .scene.front {opacity: 1;}
 
-.scene.front h1 {padding: 60px 0; text-align:center;}
-.scene.front ul {width:100%; font-size:0;}
-.scene.front ul li {overflow: hidden; position: relative;
-    display: inline-block; vertical-align:top; /*opacity: 0;*/
-    box-sizing:border-box;
+.scene.front h1 {opacity: 0;}
+.scene.front ul {width: 100%; font-size: 0;}
+.scene.front ul.grid.destroy {
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
 }
-.scene.front ul li.blank {background:red;}
+
+
+.scene.front ul li {position: relative; display: inline-block; vertical-align: top; box-sizing: border-box;}
+
+.scene.front ul li.blank {}
+
 
 /* widths */
-.scene.front ul li.twenty {width:20%;}
-.scene.front ul li.forty {width:40%;}
-.scene.front ul li.sixty {width:60%;}
-.scene.front ul li.eighty {width:80%;}
-.scene.front ul li.ambassador {width:100%;}
-
-/*.scene.front ul li.push_up {margin-top:-20%;}
-.scene.front ul li.push_down {margin-top:20%;}*/
-
-.scene.front ul li svg {width: 102%; height: 102%; margin:-1%; z-index: 2;
-	fill: #ffffff; position: absolute; top: 0; left: 0;
-}
+.scene.front ul li.twenty {width: 20%;}
+.scene.front ul li.forty {width: 40%;}
+.scene.front ul li.sixty {width: 60%;}
+.scene.front ul li.eighty {width: 80%;}
+.scene.front ul li.ambassador {width: 100%;}
 
 
-/* instagram */
-.scene.front ul li.instagram {opacity: 0;}
-.scene.front ul li.instagram div.image {width: 100%; height: 100%;}
-.scene.front ul li.instagram div.image img {width:102%; height: 102%; margin:-1%;}
-.scene.front ul li.instagram p {display: none; 
-	position: absolute; bottom: 5px; left: 5px; padding: 2px 5px; background: rgba(255,255,255,0.5); border-radius: 10px;
-}
 
-
-/* tweet */
-.scene.front ul li.tweet.on {}
-.scene.front ul li.tweet {padding: 0;
-	perspective-origin: 0 0;
-	-webkit-perspective-origin: 0 0;
-
+/* INSTAGRAM */
+.scene.front ul li.instagram {overflow: hidden;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
 	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
 	-webkit-transform-style: preserve-3d;
-
-	-webkit-perspective: 500px;
-	perspective: 500px;
 }
-.scene.front ul li.tweet .card {padding:40px 50px; background-color:#6eb951; height: 100%; width: 100%; position: absolute; top: 0; left: 0;
-    box-sizing:border-box;
+.scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+}
+.scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
+.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
 
-	transform: rotateX(180deg);	
+
+
+/* TWEET */
+.scene.front ul li.tweet {
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
+}
+.scene.front ul li.tweet .card {padding:40px 50px; background-color: #6eb951; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: rotateX(180deg);
+	-ms-transform: rotateX(180deg);
+	-moz-transform: rotateX(180deg);
+	-webkit-transform: rotateX(180deg);
 } 
+.scene.front ul li.tweet h3 {color: #19051a;}
+.scene.front ul li.tweet p {color: #ffffff; font-size: 22px; line-height: 1.363em;}
+.scene.front ul li.tweet p a {color: #19051a;}
+.scene.front ul li.tweet.float {float: right;}
 
-.scene.front ul li.tweet.forty {width:40%;}
-.scene.front ul li.tweet h3 {font-family: 'DINPro'; font-weight:400; color:#19051a; padding-bottom:8px;}
-.scene.front ul li.tweet.twenty h3 {font-size:10px;}
-.scene.front ul li.tweet.forty h3 {font-size:12px;}
-.scene.front ul li.tweet p {color:#ffffff; font-size:22px; }
-.scene.front ul li.tweet p a {color:#19051a;}
-.scene.front ul li.tweet.float {float:right;}
 
-/* article */
-.scene.front ul.grid > li.article {opacity: 0;}
-.scene.front ul li.article {background: #19051a;}
-.scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff;}
-.scene.front ul li.article h3 {font-family: 'DINPro'; font-weight:800; color:#6eb951; font-size:12px; padding-bottom:8px;}
-
-.scene.front ul li.article.twenty {padding: 40px 30px; font-size:12px;} /* padding:34px 20px 34px 20px; */
-.scene.front ul li.article.twenty h2 {font-size:16px; line-height:1.3em; padding-bottom:10px;}
-.scene.front ul li.article.twenty h3 {font-size: 10px;}
-.scene.front ul li.article.twenty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center; white-space: nowrap;
+/* ARTICLE */
+.scene.front ul li.article {cursor: pointer;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
+}
+.scene.front ul li.article .card {padding: 40px 30px; background: #19051a; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	transform: rotateX(-540deg);
+	-ms-transform: rotateX(-540deg);
+	-moz-transform: rotateX(-540deg);
+	-webkit-transform: rotateX(-540deg);
 }
 
-.scene.front ul li.article.forty {padding:40px 50px; font-size:18px;} /* padding:34px 20px 34px 20px; */
-.scene.front ul li.article.forty h3 {font-size: 12px;}
-.scene.front ul li.article.forty h2 {font-size:32px; line-height:1.5em; padding-bottom:20px;}
-.scene.front ul li.article.forty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center;
+
+.scene.front ul li.article h2 {color: #ffffff; padding-bottom: 22px;}
+.scene.front ul li.article h3 {color: #6eb951;}
+
+.scene.front ul li.article a {display: inline-block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: nowrap;
+	font-family: "DINPro", sans-serif; font-weight: 800;
 }
 
-.scene.front ul li.ambassador {font-size:18px;} /* padding:34px 20px 34px 20px; */
-.scene.front ul li.ambassador ul {position: relative; z-index: 1;}
-.scene.front ul li.ambassador ul li.article h3 {}
-.scene.front ul li.ambassador ul li.article h2 {line-height:1.5em; padding-bottom:20px;}
-.scene.front ul li.ambassador ul li.article a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center; white-space: nowrap;
+.scene.front ul li.article.forty .card {padding: 40px 50px;}
+.scene.front ul li.article.forty h2 {font-size: 45px; line-height: 1.333em; padding-bottom: 45px;}
+
+
+
+
+.scene.front ul li.ambassador {}
+.scene.front ul li.ambassador ul li.article p {color: #ffffff; padding-bottom: 44px; font-size: 22px; line-height: 1.363em;}
+
+
+
+.scene.front ul li.ambassador ul li.video {overflow: hidden;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
 }
-.scene.front ul li.ambassador ul li.video {position: relative; overflow: hidden;}
-.scene.front ul li.ambassador ul li.video img {position: relative; z-index: 1; width:102%; margin:-1% 0 0 -1%;}
+.scene.front ul li.ambassador ul li.video div.image {overflow: hidden; height: 100%; width: 100%; z-index: 2; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+}
+.scene.front ul li.ambassador ul li.video div.image img {width: 102%; height: 102%; margin: -1%;}
+
+
+.scene.front ul li.ambassador ul li.video div.video {overflow: hidden; height: 100%; width: 100%; z-index: 1; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	-moz-transform: rotateX(-180deg);
+	-webkit-transform: rotateX(-180deg);
+}
+
 .scene.front ul li.ambassador ul li.video .videoplayer {position: absolute; z-index: 2; top: -1%; left: -1%; width: 102%; height: 102%;}
 .scene.front ul li.ambassador ul li.video .videoplayer video {width: 100%; height: 100%;}
 
+
+
+
+
+
 /* stop it! */
-@media screen and (max-width:800px) {
-	.scene.front {width:800px;}
+@media screen and (max-width: 800px) {
+	.scene.front {width: 800px;}
 }

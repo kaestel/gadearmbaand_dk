@@ -25,13 +25,15 @@ a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-wei
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 
 
-h1 {font-size: 45px; line-height: 1.3em;
+h1 {font-size: 45px; line-height: 1em; padding: 25px 0 45px; text-align: center;
 	font-family: "Flood", Verdana, Arial, sans-serif
 }
-h2 {font-size: 30px; line-height: 1.1em; font-weight: 800;
+h2 {font-size: 22px; line-height: 1.363em; font-weight: 800;
+	font-family: "Flood", Verdana, Arial, sans-serif
+}
+h3 {font-size: 14px; line-height: 2.143em; font-weight: 800;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
-h3 {font-size: 20px; line-height: 1.25em; font-weight: 800;}
 h4 {font-size: 14px; line-height: 1em;}
 
 

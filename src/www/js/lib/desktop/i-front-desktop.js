@@ -7,7 +7,6 @@ Util.Objects["front"] = new function() {
 
 			var block_height = Math.ceil(this.offsetWidth/5);
 
-
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 
@@ -32,9 +31,9 @@ Util.Objects["front"] = new function() {
 					// handle ambassador
 					if(u.hc(li, "ambassador")) {
 						// video height
-						u.as(li.video, "height", (block_height*2)+"px", false);
+						u.as(li.li_video, "height", (block_height*2)+"px", false);
 						// article height
-						u.as(li.article, "height", (block_height*2)+"px", false);
+						u.as(li.li_article, "height", (block_height*2)+"px", false);
 					}
 
 
@@ -54,7 +53,14 @@ Util.Objects["front"] = new function() {
 			// adjust grid padding
 			var factor = (this.offsetWidth - 600) / 600;
 			var padding = (10 + (factor * 30))+"px "+(10 + (factor * 20))+"px";
+
+			var h2_40_padding = "0 0 " + (20 + (factor * 25))+"px";
+			var h2_20_padding = "0 0 " + (10 + (factor * 12))+"px";
+
 			this.article_rule.style.setProperty("padding", padding, "important");
+			this.article_h2_40_rule.style.setProperty("padding", h2_40_padding, "important");
+			this.article_h2_20_rule.style.setProperty("padding", h2_20_padding, "important");
+			this.article_p_rule.style.setProperty("padding", h2_40_padding, "important");
 			this.tweet_rule.style.setProperty("padding", padding, "important");
 
 
@@ -62,8 +68,23 @@ Util.Objects["front"] = new function() {
 
 		// global scroll handler
 		scene.scrolled = function() {
-			u.bug("page.scrolled:" + u.nodeId(this))
+//			u.bug("page.scrolled:" + u.nodeId(this))
 
+			if(this.is_built) {
+				var i, li;
+				for (i = 0; li = this.lis[i]; i++) {
+
+//					u.bug("check render:" + li.is_built)
+
+					var li_y = u.absY(li);
+					if(!li.is_built && ((li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h - 100))) {
+
+//						u.bug("go render:" + li.is_built)
+						this.renderNode(li);
+
+					}
+				}
+			}
 		}
 
 		// scene ready-check
@@ -85,8 +106,17 @@ Util.Objects["front"] = new function() {
 			this.style_tag.setAttribute("type", "text/css")
 			this.style_tag = u.ae(document.head, this.style_tag);
 
-			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
+			this.style_tag.sheet.insertRule("#content .scene.front li.article .card {}", 0);
 			this.article_rule = this.style_tag.sheet.cssRules[0];
+
+			this.style_tag.sheet.insertRule("#content .scene.front li.article.forty .card h2 {}", 0);
+			this.article_h2_40_rule = this.style_tag.sheet.cssRules[0];
+
+			this.style_tag.sheet.insertRule("#content .scene.front li.article.twenty .card h2 {}", 0);
+			this.article_h2_20_rule = this.style_tag.sheet.cssRules[0];
+
+			this.style_tag.sheet.insertRule("#content .scene.front li.article .card p {}", 0);
+			this.article_p_rule = this.style_tag.sheet.cssRules[0];
 
 			this.style_tag.sheet.insertRule("#content .scene.front li.tweet .card {}", 0);
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
@@ -101,45 +131,12 @@ Util.Objects["front"] = new function() {
 			this.load_image_count = 0;
 			this.loaded_image_count = 0;
 
-			// fill li with dots
-			this.fillWithDots = function(li) {
-
-				var insta_svg_object = {
-					"width":li.offsetWidth,
-					"height":li.offsetHeight,
-					"shapes":[]
-				};
-
-				li.svg = u.svg(insta_svg_object);
-				li.shapes = [];
-				u.ae(li, li.svg);
-				var j, k = 0;
-				var dots_pr_row = li.offsetWidth/30 + 1;
-				li.total_dots = Math.pow(dots_pr_row, 2);
-				for(j = 0; j < li.total_dots; j++) {
-
-//							u.bug("k:" + k + ", " + j%dots_pr_row)
-					if(j%dots_pr_row == 0) {
-						k++;
-					}
-
-					li.shapes.push(u.svgShape(li.svg, {
-						"type":"circle",
-						"cx":(30*(j%dots_pr_row)),
-						"cy":k*30 - 10,
-						"r":20
-					}));
-				}
-
-			}
-
-
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 
 				li.scene = this;
 
-				// pre-index
+				// pre-index for resizing
 				if(u.hc(li, "forty")) {
 					li._forty = true;
 				}
@@ -157,6 +154,12 @@ Util.Objects["front"] = new function() {
 					// img
 					li.image = u.qs("div.image", li);
 					if(li.image) {
+
+
+						u.as(li, "perspective", (li.offsetWidth*2) + "px");
+						u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.offsetWidth+"px)");
+
+
 						li.image.li = li;
 						li.image.image_id = u.cv(li.image, "image_id");
 						li.image.format = u.cv(li.image, "format");
@@ -179,67 +182,131 @@ Util.Objects["front"] = new function() {
 				}
 
 				// handle tweet
-				if(u.hc(li, "tweet")) {
+				else if(u.hc(li, "tweet")) {
 
 					li.cards = u.qsa(".card", li);
 
 				}
 
-				// handle article page
-				if(u.hc(li, "article")) {
+				// handle article
+				else if(u.hc(li, "article")) {
 
-					var link = u.qs("a", li);
-					u.ce(link, {"type":"link"});
+					li.card = u.qs(".card", li);
+					u.ce(li, {"type":"link"});
+
+					li.mousedover = function() {
+						u.a.transition(this.card, "all 0.3s ease-in-out");
+						u.as(this.card, u.a.vendor("transform"), "rotateX(360deg)");
+					}
+					li.mousedout = function() {
+
+						u.a.transition(this.card, "all 0.3s ease-in-out");
+						u.as(this.card, u.a.vendor("transform"), "rotateX(0deg)");
+					}
+					u.e.addEvent(li, "mouseover", li.mousedover);
+					u.e.addEvent(li, "mouseout", li.mousedout);
 
 				}
 
-
 				// handle ambassador
-				if(u.hc(li, "ambassador")) {
+				else if(u.hc(li, "ambassador")) {
 					//u.as(li, "height", li.offsetWidth+"px");
 
 					// article
-					li.article = u.qs("li.article", li);
+					li.li_article = u.qs("li.article", li);
+					u.ce(li.li_article, {"type":"link"});
+
+					li.li_article.card = u.qs(".card", li.li_article);
+
 
 					// video
-					li.video = u.qs("li.video", li);
+					li.li_video = u.qs("li.video", li);
+					li.video = u.qs("div.video", li.li_video);
+					li.image = u.qs("div.image", li.li_video);
+
+					li.li_video.li = li;
 					li.video.li = li;
+					li.image.li = li;
 
-					li.video.video_id = u.cv(li.video, "video_id");
-					li.video.video_format = u.cv(li.video, "video_format");
 
-					li.video.image_id = u.cv(li.video, "image_id");
-					li.video.image_format = u.cv(li.video, "image_format");
+					u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
+					u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
+					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 
-					if(li.video.image_id && li.video.image_format) {
-						li.video.loaded = function(queue) {
+
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
+
+					li.image_id = u.cv(li.image, "image_id");
+					li.image_format = u.cv(li.image, "image_format");
+
+
+					if(li.image_id && li.image_format) {
+						li.image.loaded = function(queue) {
 							u.ae(this, "img", {"src": queue[0].image.src});
 							this.li.scene.loaded_image_count++;
 							this.li.scene.isReady();
 						}
 
-						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
-						u.preloader(li.video, [li.video._image_src])
+						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
+						u.preloader(li.image, [li._image_src])
 						this.load_image_count++;
 					}
 
 
-					if(li.video.video_id && li.video.video_format) {
+					if(li.video_id && li.video_format) {
 
-						li.video._video_url = "/videos/" + li.video.video_id + "/video/720x." + li.video.video_format;
-						li.video.play_bn = u.ae(li.video, "div", {"class": "play"});
+						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
+						li.bn_play = u.ae(li.image, "div", {"class": "play"});
 
-						u.e.click(li.video);
-						li.video.clicked = function(event) {
+						u.e.click(li.image);
+						li.image.clicked = function(event) {
+
+							u.a.transition(this, "all 0.5s ease-in-out");
+							u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+
+							u.a.transition(this.li.video, "all 0.5s ease-in-out");
+							u.as(this.li.video, u.a.vendor("transform"), "rotateX(0deg)");
+
+							// reset video (if playback is started elsewhere)
+							this.li.resetPlayer = function() {
+
+								this.video.transitioned = function() {
+									u.as(this, "zIndex", 1);
+								}
+								u.a.transition(this.video, "all 0.5s ease-in-out");
+								u.as(this.video, u.a.vendor("transform"), "rotateX(-180deg)");
+
+								u.a.transition(this.image, "all 0.5s ease-in-out");
+								u.as(this.image, u.a.vendor("transform"), "rotateX(0deg)");
+								
+							}
+
+							if(page.videoPlayer.current_node) {
+								page.videoPlayer.current_node.resetPlayer();
+							}
 
 							//u.as(this.play_bn, "display", "none");
 							page.videoPlayer.ended = function(event) {
-								//console.log("video player is done playing. LOOOP!");
-//								page.videoPlayer.play();
-							}
+								this.current_node = false;
 
-							u.ae(this, page.videoPlayer);
-							page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+								this.parentNode.transitioned = function() {
+									u.as(this, "zIndex", 1);
+								}
+								u.a.transition(this.parentNode, "all 0.5s ease-in-out");
+								u.as(this.parentNode, u.a.vendor("transform"), "rotateX(-180deg)");
+
+								u.a.transition(this.parentNode.li.image, "all 0.5s ease-in-out");
+								u.as(this.parentNode.li.image, u.a.vendor("transform"), "rotateX(0deg)");
+
+							}
+							
+//							this.li.video.ended;
+
+							u.as(this.li.video, "zIndex", 3);
+							u.ae(this.li.video, page.videoPlayer);
+							page.videoPlayer.current_node = this.li;
+							page.videoPlayer.loadAndPlay(this.li._video_url, {"playpause":true});
 
 						}
 
@@ -252,10 +319,6 @@ Util.Objects["front"] = new function() {
 				// resize grid
 				this.resized();
 
-				if(u.hc(li, "instagram|article|ambassador")) {
-					this.fillWithDots(li);
-				}
-
 			}
 
 			// resize grid
@@ -266,315 +329,133 @@ Util.Objects["front"] = new function() {
 				"min_width":800,
 				"max_width":1200,
 				"unit":"px",
+				"li a":{
+					"min_size":13,
+					"max_size":14
+				},
+				"li h3":{
+					"min_size":13,
+					"max_size":14
+				},
 				".twenty h2":{
 					"min_size":16,
-					"max_size":24
+					"max_size":22
 				},
 				".forty h2":{
-					"min_size":24,
-					"max_size":48
+					"min_size":28,
+					"max_size":45
 				},
 				".tweet p":{
 					"min_size":15,
-					"max_size":23
+					"max_size":22
+				},
+				".ambassador p":{
+					"min_size":15,
+					"max_size":22
 				}
 			});
 
 
-			u.bug("all lis ready")
-
+			// call middle step which checks for images loaded
 			this.is_almost_ready = true;
 			this.isReady();
-//			page.cN.ready();
 
 		}
 
+		// twitter card rotator
+		scene._rotateCard = function() {
+
+			if(this.cards.length > 1) {
+				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
+
+				this.cards[this.card].transitioned = function() {
+					u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+				}
+				u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
+				u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
+
+				u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
+				u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
+
+				this.card = new_card;
+
+				u.t.setTimer(this, this.rotateCard, 5000);
+			}
+		}
+
+		// render timestamp
+		scene.next_render = new Date().getTime();
+
+		// render a node
+		scene.renderNode = function(li) {
+
+//			u.bug("renderNode:" + u.nodeId(li) + ", " + li.is_built);
+
+			li.is_built = true;
+
+			var now = new Date().getTime();
+
+			// delay rendering for a minimum of 100ms between each render
+			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
+
+
+			// instagram
+			if(u.hc(li, "instagram")) {
+
+				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+			}
+
+			// ambassador
+			else if(u.hc(li, "ambassador")) {
+
+				li.image.transitioned = function() {
+					u.as(li.li_video, "perspective", 500 + "px");
+				}
+
+				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+
+				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
+			}
+
+			// article
+			else if(u.hc(li, "article")) {
+
+				u.a.transition(li.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
+
+			}
+
+			// tweet
+			else if(u.hc(li, "tweet")) {
+
+				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
+				li.card = 0;
+
+				// enable card rotation
+				li.rotateCard = this._rotateCard;
+
+				u.t.setTimer(li, li.rotateCard, 5000);
+			}
+		}
 
 		// build scene - start actual rendering of scene
 		scene.build = function() {
 
 			if(!this.is_built) {
-				u.bug("scene.build:" + u.nodeId(this));
+//				u.bug("scene.build:" + u.nodeId(this));
+
+				u.a.transition(this.h1, "all 0.5s ease-in");
+				u.a.setOpacity(this.h1, 1);
+
 
 				this.is_built = true;
 
-
-				// mapped to li-node
-				this._animate_build = function() {
-
-					var shape, i = 0;
-					if(this.shapes.length) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-
-					if(this.shapes.length) {
-					
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-
-					if(this.shapes.length) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-
-					if(this.shapes.length) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-
-					if(this.shapes.length) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 100) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 100) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 100) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 100) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-					if(this.shapes.length && this.total_dots > 300) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-
-
-					if(this.shapes.length) {
-
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-
-						u.a.to(shape, "all 0.3s linear", {"cx":this._center, "cy":this._center, "r":0});
-
-						// continue animation
-//						u.a.setOpacity(this.svg, this.svg._opacity ? this.svg._opacity*0.99 : 0.95);
-
-						u.t.setTimer(this, "animate", 10);
-					}
-
-				}
-
-
-				this._rotateCard = function() {
-
-					if(this.cards.length > 1) {
-						var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
-
-						this.cards[this.card].transitioned = function() {
-							u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
-						}
-						u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
-						u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
-
-						u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
-						u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
-
-						this.card = new_card;
-
-						u.t.setTimer(this, this.rotateCard, 5000);
-					}
-				}
-
-
-				for(i = 0; li = this.lis[i]; i++) {
-
-					var li_y = u.absY(li);
-					if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-
-
-						if(u.hc(li, "instagram|article|ambassador")) {
-
-							li._center = li.offsetWidth/2;
-
-							// pick random rendering
-							var rand = u.random(0,5);
-							if(rand == 1) {
-								li._render = {"cx":li._center, "cy":li._center, "r":0}
-							}
-							else if(rand == 2) {
-								li._render = {"cx":li.offsetWidth + 30, "r":0}
-							}
-							else if(rand == 3) {
-								li._render = {"cx":-30, "r":0}
-							}
-							else if(rand == 4) {
-								li._render = {"cy":-30, "r":0}
-							}
-							else if(rand == 5) {
-								li._render = {"cy":li.offsetHeight + 30, "r":0}
-							}
-							else {
-								li._render = {"r":0}
-							}
-
-							u.a.transition(li, "all 1.5s ease-in-out");
-							u.a.setOpacity(li, 1);
-
-							li.animate = this._animate_build;
-							li.animate();
-
-						}
-
-						if(u.hc(li, "tweet")) {
-
-							u.a.transition(li.cards[0], "all 0.5s ease-in-out");
-							u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
-							li.card = 0;
-
-							li.rotateCard = this._rotateCard;
-
-							u.t.setTimer(li, li.rotateCard, 5000);
-
-						}
-
-					}
-					else {
-						u.a.setOpacity(li, 1);
-						if(li.svg) {
-							li.svg.parentNode.removeChild(li.svg);
-						}
-						if(li.cards) {
-							u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
-							li.card = 0;
-							li.rotateCard = this._rotateCard;
-							u.t.setTimer(li, li.rotateCard, 5000);
-						}
-					}
-
-				}
-//				u.a.transition(this)
-
-				// u.a.transition(this, "all 1s linear");
-				// u.a.setOpacity(this, 1);
-
+				// scroll handler handles rendering when is_built is set
+				this.scrolled();
 			}
 		}
 
@@ -600,27 +481,30 @@ Util.Objects["front"] = new function() {
 
 			}
 
-			u.a.transition(this.h1, "all 1s ease-out");
+			// hide header
+			u.a.transition(this.h1, "all 0.5s ease-out");
 			u.a.setOpacity(this.h1, 0);
 
 			var i, li, j = 0;
 
 			for(i = 0; li = this.lis[i]; i++) {
 				var li_y = u.absY(li);
+
+				// only destroy visible elements
 				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-					u.bug("move:" + u.nodeId(li))
+//					u.bug("move:" + u.nodeId(li))
 					u.as(li, "zIndex", 100-j);
-					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
-					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
-					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
-					u.a.setOpacity(li, 0);
+
+					u.ac(li.parentNode, "destroy");
+
+					u.a.transition(li, "all 0.5s ease-in "+(150*j++)+"ms");
+					u.as(li, u.a.vendor("transform"), "translateY(1500px) rotateX(-540deg)");
 				}
 			}
 
-			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
+			u.t.setTimer(this, this.finalizeDestruction, (150*j)+500);
 
 		}
-
 
 
 		// ready to start page builing process

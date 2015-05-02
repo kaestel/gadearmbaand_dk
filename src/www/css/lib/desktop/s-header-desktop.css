@@ -1,14 +1,17 @@
 /* HEADER */
 #header {}
 
-#header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 30px; right: 30px; border: 2px solid #70B857;}
-#header .servicenavigation li.navigation a {font-weight: 800; color: #70B857; padding: 4px 20px 6px; display: block;}
-#header .servicenavigation li.navigation:hover {background-color: #70B857;}
-#header .servicenavigation li.navigation:hover a {color: #FFFFFF;}
+#header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 40px; right: 40px; border: 2px solid #70B857;}
+#header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
+#header .servicenavigation li.navigation:hover,
+#header .servicenavigation li.navigation.open {background-color: #70B857;}
+#header .servicenavigation li.navigation:hover a,
+#header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
 
 
-#navigation {display: none; z-index: 5; position: fixed; top: 0; left: 0; height: 100%; width: 100%; opacity: 0;
-	background: #2D2D2D;
+#navigation {display: none; z-index: 5; position: fixed; top: 40px; right: 60px; height: 0; width: 0; overflow: hidden;
+/*	opacity: 0;*/
+	background: #19051a;
 }
 
 #navigation ul.navigation {width: 100%;}
