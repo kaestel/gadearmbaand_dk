@@ -70,13 +70,15 @@ input, select, textarea {font-size: 14px; color: #333333;}
 input, textarea {outline: none;}
 a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
-h1 {font-size: 45px; line-height: 1.3em;
+h1 {font-size: 45px; line-height: 1em; padding: 25px 0 45px; text-align: center;
 	font-family: "Flood", Verdana, Arial, sans-serif
 }
-h2 {font-size: 30px; line-height: 1.1em; font-weight: 800;
+h2 {font-size: 22px; line-height: 1.363em; font-weight: 800;
+	font-family: "Flood", Verdana, Arial, sans-serif
+}
+h3 {font-size: 14px; line-height: 2.143em; font-weight: 800;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
-h3 {font-size: 20px; line-height: 1.25em; font-weight: 800;}
 h4 {font-size: 14px; line-height: 1em;}
 p {font-size: 14px; line-height: 1.38em;} 
 ul,
@@ -92,12 +94,14 @@ li {font-size: 14px; line-height: 1.25em;}
 
 /*s-header-desktop.css*/
 #header {}
-#header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 30px; right: 30px; border: 2px solid #70B857;}
-#header .servicenavigation li.navigation a {font-weight: 800; color: #70B857; padding: 4px 20px 6px; display: block;}
-#header .servicenavigation li.navigation:hover {background-color: #70B857;}
-#header .servicenavigation li.navigation:hover a {color: #FFFFFF;}
-#navigation {display: none; z-index: 5; position: fixed; top: 0; left: 0; height: 100%; width: 100%; opacity: 0;
-	background: #2D2D2D;
+#header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 40px; right: 40px; border: 2px solid #70B857;}
+#header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
+#header .servicenavigation li.navigation:hover,
+#header .servicenavigation li.navigation.open {background-color: #70B857;}
+#header .servicenavigation li.navigation:hover a,
+#header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
+#navigation {display: none; z-index: 5; position: fixed; top: 40px; right: 60px; height: 0; width: 0; overflow: hidden;
+	background: #19051a;
 }
 #navigation ul.navigation {width: 100%;}
 #navigation ul.navigation li {display: inline-block; text-align: center; width: 50%; position: relative; overflow: hidden;
@@ -111,7 +115,8 @@ li {font-size: 14px; line-height: 1.25em;}
 #navigation ul.navigation li h4 a {display: table-cell; vertical-align: middle;
 	font-family: "Flood", Verdana, Arial, sans-serif; color: #ffffff; font-size: 45px;
 }
-#navigation ul.navigation li .vp {position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%;}
+#navigation ul.navigation li .vp {position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; opacity: 0;}
+#navigation ul.navigation li .vp.show {opacity: 1;}
 #navigation ul.navigation li .videoplayer {width: 100%; height: 100%; }
 #navigation ul.navigation li .videoplayer video {width: 100%; height: 100%;}
 #navigation.open {display: block;}
@@ -124,79 +129,138 @@ li {font-size: 14px; line-height: 1.25em;}
 /*s-front-desktop.css*/
 .fixed #content .scene.front {width: 1200px; margin: 0 auto;}
 #content .scene.front {opacity: 1;}
-.scene.front h1 {padding: 60px 0; text-align:center;}
-.scene.front ul {width:100%; font-size:0;}
-.scene.front ul li {overflow: hidden; position: relative;
-    display: inline-block; vertical-align:top; 
-    box-sizing:border-box;
-}
-.scene.front ul li.blank {background:red;}
-.scene.front ul li.twenty {width:20%;}
-.scene.front ul li.forty {width:40%;}
-.scene.front ul li.sixty {width:60%;}
-.scene.front ul li.eighty {width:80%;}
-.scene.front ul li.ambassador {width:100%;}
-.scene.front ul li svg {width: 102%; height: 102%; margin:-1%; z-index: 2;
-	fill: #ffffff; position: absolute; top: 0; left: 0;
-}
-.scene.front ul li.instagram {opacity: 0;}
-.scene.front ul li.instagram div.image {width: 100%; height: 100%;}
-.scene.front ul li.instagram div.image img {width:102%; height: 102%; margin:-1%;}
-.scene.front ul li.instagram p {display: none; 
-	position: absolute; bottom: 5px; left: 5px; padding: 2px 5px; background: rgba(255,255,255,0.5); border-radius: 10px;
-}
-.scene.front ul li.tweet.on {}
-.scene.front ul li.tweet {padding: 0;
-	perspective-origin: 0 0;
-	-webkit-perspective-origin: 0 0;
+.scene.front h1 {opacity: 0;}
+.scene.front ul {width: 100%; font-size: 0;}
+.scene.front ul.grid.destroy {
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
 	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
 	-webkit-transform-style: preserve-3d;
-	-webkit-perspective: 500px;
 	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
 }
-.scene.front ul li.tweet .card {padding:40px 50px; background-color:#6eb951; height: 100%; width: 100%; position: absolute; top: 0; left: 0;
-    box-sizing:border-box;
+.scene.front ul li {position: relative; display: inline-block; vertical-align: top; box-sizing: border-box;}
+.scene.front ul li.blank {}
+.scene.front ul li.twenty {width: 20%;}
+.scene.front ul li.forty {width: 40%;}
+.scene.front ul li.sixty {width: 60%;}
+.scene.front ul li.eighty {width: 80%;}
+.scene.front ul li.ambassador {width: 100%;}
+.scene.front ul li.instagram {overflow: hidden;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+}
+.scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
-	transform: rotateX(180deg);	
+}
+.scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
+.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
+.scene.front ul li.tweet {
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
+}
+.scene.front ul li.tweet .card {padding:40px 50px; background-color: #6eb951; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: rotateX(180deg);
+	-ms-transform: rotateX(180deg);
+	-moz-transform: rotateX(180deg);
+	-webkit-transform: rotateX(180deg);
 } 
-.scene.front ul li.tweet.forty {width:40%;}
-.scene.front ul li.tweet h3 {font-family: 'DINPro'; font-weight:400; color:#19051a; padding-bottom:8px;}
-.scene.front ul li.tweet.twenty h3 {font-size:10px;}
-.scene.front ul li.tweet.forty h3 {font-size:12px;}
-.scene.front ul li.tweet p {color:#ffffff; font-size:22px; }
-.scene.front ul li.tweet p a {color:#19051a;}
-.scene.front ul li.tweet.float {float:right;}
-.scene.front ul.grid > li.article {opacity: 0;}
-.scene.front ul li.article {background: #19051a;}
-.scene.front ul li.article h2 {font-family: 'Flood'; color:#ffffff;}
-.scene.front ul li.article h3 {font-family: 'DINPro'; font-weight:800; color:#6eb951; font-size:12px; padding-bottom:8px;}
-.scene.front ul li.article.twenty {padding: 40px 30px; font-size:12px;} 
-.scene.front ul li.article.twenty h2 {font-size:16px; line-height:1.3em; padding-bottom:10px;}
-.scene.front ul li.article.twenty h3 {font-size: 10px;}
-.scene.front ul li.article.twenty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center; white-space: nowrap;
+.scene.front ul li.tweet h3 {color: #19051a;}
+.scene.front ul li.tweet p {color: #ffffff; font-size: 22px; line-height: 1.363em;}
+.scene.front ul li.tweet p a {color: #19051a;}
+.scene.front ul li.tweet.float {float: right;}
+.scene.front ul li.article {cursor: pointer;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
 }
-.scene.front ul li.article.forty {padding:40px 50px; font-size:18px;} 
-.scene.front ul li.article.forty h3 {font-size: 12px;}
-.scene.front ul li.article.forty h2 {font-size:32px; line-height:1.5em; padding-bottom:20px;}
-.scene.front ul li.article.forty a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center;
+.scene.front ul li.article .card {padding: 40px 30px; background: #19051a; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	transform: rotateX(-540deg);
+	-ms-transform: rotateX(-540deg);
+	-moz-transform: rotateX(-540deg);
+	-webkit-transform: rotateX(-540deg);
 }
-.scene.front ul li.ambassador {font-size:18px;} 
-.scene.front ul li.ambassador ul {position: relative; z-index: 1;}
-.scene.front ul li.ambassador ul li.article h3 {}
-.scene.front ul li.ambassador ul li.article h2 {line-height:1.5em; padding-bottom:20px;}
-.scene.front ul li.ambassador ul li.article a {display:block; width: 110px; padding:10px 0 9px 0; border:1px solid #6eb951;
-    font-size:12px; font-family:"DINPro", sans-serif; font-weight:400; color:#6eb951; text-align:center; white-space: nowrap;
+.scene.front ul li.article h2 {color: #ffffff; padding-bottom: 22px;}
+.scene.front ul li.article h3 {color: #6eb951;}
+.scene.front ul li.article a {display: inline-block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: nowrap;
+	font-family: "DINPro", sans-serif; font-weight: 800;
 }
-.scene.front ul li.ambassador ul li.video {position: relative; overflow: hidden;}
-.scene.front ul li.ambassador ul li.video img {position: relative; z-index: 1; width:102%; margin:-1% 0 0 -1%;}
+.scene.front ul li.article.forty .card {padding: 40px 50px;}
+.scene.front ul li.article.forty h2 {font-size: 45px; line-height: 1.333em; padding-bottom: 45px;}
+.scene.front ul li.ambassador {}
+.scene.front ul li.ambassador ul li.article p {color: #ffffff; padding-bottom: 44px; font-size: 22px; line-height: 1.363em;}
+.scene.front ul li.ambassador ul li.video {overflow: hidden;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+}
+.scene.front ul li.ambassador ul li.video div.image {overflow: hidden; height: 100%; width: 100%; z-index: 2; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+}
+.scene.front ul li.ambassador ul li.video div.image img {width: 102%; height: 102%; margin: -1%;}
+.scene.front ul li.ambassador ul li.video div.image div.play {width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: pointer;
+	background: transparent url(/img/gx_play.png) no-repeat center center;
+}
+.scene.front ul li.ambassador ul li.video div.video {overflow: hidden; height: 100%; width: 100%; z-index: 1; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	-moz-transform: rotateX(-180deg);
+	-webkit-transform: rotateX(-180deg);
+}
 .scene.front ul li.ambassador ul li.video .videoplayer {position: absolute; z-index: 2; top: -1%; left: -1%; width: 102%; height: 102%;}
 .scene.front ul li.ambassador ul li.video .videoplayer video {width: 100%; height: 100%;}
-@media screen and (max-width:800px) {
-	.scene.front {width:800px;}
+@media screen and (max-width: 800px) {
+	.scene.front {width: 800px;}
 }
 
 
@@ -207,9 +271,9 @@ li {font-size: 14px; line-height: 1.25em;}
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event h1 {width: 100%; text-align: center; padding: 60px 0;}
+.scene.event h1 {}
 .scene.event > ul.days {width: 100%; text-align: center;}
-.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #70B857; cursor: pointer; font-weight: 800;}
+.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
 .scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
 .scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
 .scene.event > .filter {text-align: center; padding: 8px 24px 10px; background-color: #70B857; margin: 30px auto 0; overflow: hidden;
@@ -217,16 +281,18 @@ li {font-size: 14px; line-height: 1.25em;}
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer;}
+.scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer;
+	font-family: "DINPro", Verdana, Arial, sans-serif
+}
 .scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; opacity: 0;}
-.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #180619; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
+.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
 .scene.event > .filter ul.tag_list li:hover {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
 .scene.event > .filter .search {opacity: 0;}
 .scene.event > .filter .search fieldset {}
 .scene.event > .filter .search fieldset .field {padding: 30px 0 50px;}
-.scene.event > .filter .search fieldset .field input {border: none; background-color: transparent; border-bottom: 2px solid #180619; width: 230px; padding: 4px 20px 6px; font-weight: 800; color: #180619; text-align: center;}
+.scene.event > .filter .search fieldset .field input {border: none; background-color: transparent; border-bottom: 2px solid #180619; width: 230px; padding: 4px 20px 6px; font-weight: 800; color: #ffffff; text-align: center;}
 .scene.event > ul.legend {padding: 80px 0px 0; text-align: left;}
 .scene.event > ul.legend li {width: 25%; display: inline-block; border-bottom: 2px solid #180619; padding-bottom: 10px; color: #70B857; font-weight: 600;}
 .scene.event > ul.legend li:first-child {padding-left: 10px;
@@ -290,7 +356,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	-o-background-size: cover;
 	background-size: cover;
 }
-.scene.manifest h1 {width: 100%; text-align: center; color: #FFFFFF; padding: 60px 0 80px;}
+.scene.manifest h1 {color: #FFFFFF;}
 .scene.manifest .content {width: 720px; margin: 0 auto; padding: 0 0 60px;}
 .scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1em; font-size: 45px; font-weight: 400;}
 .scene.manifest .content h3 {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}

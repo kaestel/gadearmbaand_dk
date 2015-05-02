@@ -147,7 +147,9 @@
 	-webkit-backface-visibility: hidden;
 }
 .scene.front ul li.ambassador ul li.video div.image img {width: 102%; height: 102%; margin: -1%;}
-
+.scene.front ul li.ambassador ul li.video div.image div.play {width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: pointer;
+	background: transparent url(/img/gx_play.png) no-repeat center center;
+}
 
 .scene.front ul li.ambassador ul li.video div.video {overflow: hidden; height: 100%; width: 100%; z-index: 1; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;

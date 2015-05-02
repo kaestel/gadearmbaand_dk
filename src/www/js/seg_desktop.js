@@ -5340,6 +5340,9 @@ Util.Objects["page"] = new function() {
 					for(i = 0; item = page.nN.items[i]; i++) {
 						u.ass(item, {"height" : page.browser_h / 2 + "px"});
 					}
+					if(u.hc(page.nN, "open")) {
+						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
+					}
 				}
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
@@ -5405,21 +5408,26 @@ Util.Objects["page"] = new function() {
 				u.request(this, u.h.getCleanHash(url));
 			}
 			page.initHeader = function() {
-				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
-				u.ce(bn_nav);
-				bn_nav.clicked = function() {
+				u.ce(page.bn_nav);
+				page.bn_nav.clicked = function() {
 					if(u.hc(page.nN, "open")) {
+						this.a.innerHTML = "Menu";
+						u.rc(this, "open");
 						page.nN.transitioned = function() {
 							u.rc(this, "open");
 						}
-						u.a.transition(page.nN, "all 0.5s linear");
-						u.a.setOpacity(page.nN, 0);
+						u.a.transition(page.nN, "all 0.3s linear");
+						u.ass(page.nN, {"width":0, "height":0, "top": "40px", "right": "60px"});
 					}
 					else {
 						u.ac(page.nN, "open");
-						u.a.transition(page.nN, "all 0.5s linear");
-						u.a.setOpacity(page.nN, 1);
+						this.a.innerHTML = "Luk";
+						u.ac(this, "open");
+						u.a.transition(page.nN, "all 0.3s linear");
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
 					}
 				}
 			}
@@ -5431,29 +5439,28 @@ Util.Objects["page"] = new function() {
 						u.ce(node);
 						node.clicked = function(event) {
 							page.nN.next_url = this.url;
+							page.bn_nav.clicked();
 							page.nN.transitioned = function() {
 								u.rc(this, "open");
 								page.navigate(this.next_url);
 							}
-							u.a.transition(page.nN, "all 0.5s linear");
-							u.a.setOpacity(page.nN, 0);
 						}
 					}
 					else {
 						u.e.click(node);
 						node.clicked = function(event) {
-							page.nN.transitioned = function() {
-								u.rc(this, "open");
-							}
-							u.a.transition(page.nN, "all 0.5s linear");
-							u.a.setOpacity(page.nN, 0);
+							page.bn_nav.clicked();
 						}
 					}
 					node.vp = u.ae(node, "div", {"class":"vp"});
+					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
 					node.mousedover = function() {
+						u.ac(this.vp, "show");
 						u.ae(this.vp, page.videoPlayer);
-						u.bug("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
-						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
+						page.videoPlayer.ended = function() {
+							this.play();
+						}
+						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
 						if(this.offsetWidth/this.offsetHeight > 480/270) {
 							var height = (this.offsetWidth / (480/270));
 							u.as(this.vp, "height", height + "px");
@@ -5470,7 +5477,9 @@ Util.Objects["page"] = new function() {
 						}
 					}
 					node.mousedout = function() {
+						u.rc(this.vp, "show");
 						page.videoPlayer.stop();
+						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
 					}
 					u.e.addEvent(node, "mouseenter", node.mousedover);
 					u.e.addEvent(node, "mouseleave", node.mousedout);
@@ -5544,8 +5553,8 @@ Util.Objects["front"] = new function() {
 						u.as(li, "height", block_height+"px", false);
 					}
 					if(u.hc(li, "ambassador")) {
-						u.as(li.video, "height", (block_height*2)+"px", false);
-						u.as(li.article, "height", (block_height*2)+"px", false);
+						u.as(li.li_video, "height", (block_height*2)+"px", false);
+						u.as(li.li_article, "height", (block_height*2)+"px", false);
 					}
 					if(u.hc(li, "push_up|push_up_half")) {
 						u.as(li, "marginTop", -(block_height)+"px", false);
@@ -5557,11 +5566,24 @@ Util.Objects["front"] = new function() {
 			}
 			var factor = (this.offsetWidth - 600) / 600;
 			var padding = (10 + (factor * 30))+"px "+(10 + (factor * 20))+"px";
+			var h2_40_padding = "0 0 " + (20 + (factor * 25))+"px";
+			var h2_20_padding = "0 0 " + (10 + (factor * 12))+"px";
 			this.article_rule.style.setProperty("padding", padding, "important");
+			this.article_h2_40_rule.style.setProperty("padding", h2_40_padding, "important");
+			this.article_h2_20_rule.style.setProperty("padding", h2_20_padding, "important");
+			this.article_p_rule.style.setProperty("padding", h2_40_padding, "important");
 			this.tweet_rule.style.setProperty("padding", padding, "important");
 		}
 		scene.scrolled = function() {
-			u.bug("page.scrolled:" + u.nodeId(this))
+			if(this.is_built) {
+				var i, li;
+				for (i = 0; li = this.lis[i]; i++) {
+					var li_y = u.absY(li);
+					if(!li.is_built && ((li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h - 100))) {
+						this.renderNode(li);
+					}
+				}
+			}
 		}
 		scene.isReady = function() {
 			if(this.is_almost_ready && this.load_image_count == this.loaded_image_count) {
@@ -5575,38 +5597,20 @@ Util.Objects["front"] = new function() {
 			this.style_tag.setAttribute("media", "all")
 			this.style_tag.setAttribute("type", "text/css")
 			this.style_tag = u.ae(document.head, this.style_tag);
-			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
+			this.style_tag.sheet.insertRule("#content .scene.front li.article .card {}", 0);
 			this.article_rule = this.style_tag.sheet.cssRules[0];
+			this.style_tag.sheet.insertRule("#content .scene.front li.article.forty .card h2 {}", 0);
+			this.article_h2_40_rule = this.style_tag.sheet.cssRules[0];
+			this.style_tag.sheet.insertRule("#content .scene.front li.article.twenty .card h2 {}", 0);
+			this.article_h2_20_rule = this.style_tag.sheet.cssRules[0];
+			this.style_tag.sheet.insertRule("#content .scene.front li.article .card p {}", 0);
+			this.article_p_rule = this.style_tag.sheet.cssRules[0];
 			this.style_tag.sheet.insertRule("#content .scene.front li.tweet .card {}", 0);
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 			this.h1 = u.qs("h1", this);
 			this.lis = u.qsa("ul.grid > li", this);
 			this.load_image_count = 0;
 			this.loaded_image_count = 0;
-			this.fillWithDots = function(li) {
-				var insta_svg_object = {
-					"width":li.offsetWidth,
-					"height":li.offsetHeight,
-					"shapes":[]
-				};
-				li.svg = u.svg(insta_svg_object);
-				li.shapes = [];
-				u.ae(li, li.svg);
-				var j, k = 0;
-				var dots_pr_row = li.offsetWidth/30 + 1;
-				li.total_dots = Math.pow(dots_pr_row, 2);
-				for(j = 0; j < li.total_dots; j++) {
-					if(j%dots_pr_row == 0) {
-						k++;
-					}
-					li.shapes.push(u.svgShape(li.svg, {
-						"type":"circle",
-						"cx":(30*(j%dots_pr_row)),
-						"cy":k*30 - 10,
-						"r":20
-					}));
-				}
-			}
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 				li.scene = this;
@@ -5622,6 +5626,8 @@ Util.Objects["front"] = new function() {
 				if(u.hc(li, "instagram")) {
 					li.image = u.qs("div.image", li);
 					if(li.image) {
+						u.as(li, "perspective", (li.offsetWidth*2) + "px");
+						u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.offsetWidth+"px)");
 						li.image.li = li;
 						li.image.image_id = u.cv(li.image, "image_id");
 						li.image.format = u.cv(li.image, "format");
@@ -5637,257 +5643,174 @@ Util.Objects["front"] = new function() {
 						}
 					}
 				}
-				if(u.hc(li, "tweet")) {
+				else if(u.hc(li, "tweet")) {
 					li.cards = u.qsa(".card", li);
 				}
-				if(u.hc(li, "article")) {
-					var link = u.qs("a", li);
-					u.ce(link, {"type":"link"});
+				else if(u.hc(li, "article")) {
+					li.card = u.qs(".card", li);
+					u.ce(li, {"type":"link"});
+					li.mousedover = function() {
+						u.a.transition(this.card, "all 0.3s ease-in-out");
+						u.as(this.card, u.a.vendor("transform"), "rotateX(360deg)");
+					}
+					li.mousedout = function() {
+						u.a.transition(this.card, "all 0.3s ease-in-out");
+						u.as(this.card, u.a.vendor("transform"), "rotateX(0deg)");
+					}
+					u.e.addEvent(li, "mouseover", li.mousedover);
+					u.e.addEvent(li, "mouseout", li.mousedout);
 				}
-				if(u.hc(li, "ambassador")) {
-					li.article = u.qs("li.article", li);
-					li.video = u.qs("li.video", li);
+				else if(u.hc(li, "ambassador")) {
+					li.li_article = u.qs("li.article", li);
+					u.ce(li.li_article, {"type":"link"});
+					li.li_article.card = u.qs(".card", li.li_article);
+					li.li_video = u.qs("li.video", li);
+					li.video = u.qs("div.video", li.li_video);
+					li.image = u.qs("div.image", li.li_video);
+					li.li_video.li = li;
 					li.video.li = li;
-					li.video.video_id = u.cv(li.video, "video_id");
-					li.video.video_format = u.cv(li.video, "video_format");
-					li.video.image_id = u.cv(li.video, "image_id");
-					li.video.image_format = u.cv(li.video, "image_format");
-					if(li.video.image_id && li.video.image_format) {
-						li.video.loaded = function(queue) {
+					li.image.li = li;
+					u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
+					u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
+					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
+					li.image_id = u.cv(li.image, "image_id");
+					li.image_format = u.cv(li.image, "image_format");
+					if(li.image_id && li.image_format) {
+						li.image.loaded = function(queue) {
 							u.ae(this, "img", {"src": queue[0].image.src});
 							this.li.scene.loaded_image_count++;
 							this.li.scene.isReady();
 						}
-						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
-						u.preloader(li.video, [li.video._image_src])
+						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
+						u.preloader(li.image, [li._image_src])
 						this.load_image_count++;
 					}
-					if(li.video.video_id && li.video.video_format) {
-						li.video._video_url = "/videos/" + li.video.video_id + "/video/720x." + li.video.video_format;
-						li.video.play_bn = u.ae(li.video, "div", {"class": "play"});
-						u.e.click(li.video);
-						li.video.clicked = function(event) {
-							page.videoPlayer.ended = function(event) {
+					if(li.video_id && li.video_format) {
+						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
+						li.bn_play = u.ae(li.image, "div", {"class": "play"});
+						u.e.click(li.image);
+						li.image.clicked = function(event) {
+							u.a.transition(this, "all 0.5s ease-in-out");
+							u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+							u.a.transition(this.li.video, "all 0.5s ease-in-out");
+							u.as(this.li.video, u.a.vendor("transform"), "rotateX(0deg)");
+							this.li.resetPlayer = function() {
+								this.video.transitioned = function() {
+									u.as(this, "zIndex", 1);
+								}
+								u.a.transition(this.video, "all 0.5s ease-in-out");
+								u.as(this.video, u.a.vendor("transform"), "rotateX(-180deg)");
+								u.a.transition(this.image, "all 0.5s ease-in-out");
+								u.as(this.image, u.a.vendor("transform"), "rotateX(0deg)");
 							}
-							u.ae(this, page.videoPlayer);
-							page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+							if(page.videoPlayer.current_node) {
+								page.videoPlayer.current_node.resetPlayer();
+							}
+							page.videoPlayer.ended = function(event) {
+								this.current_node = false;
+								this.parentNode.transitioned = function() {
+									u.as(this, "zIndex", 1);
+								}
+								u.a.transition(this.parentNode, "all 0.5s ease-in-out");
+								u.as(this.parentNode, u.a.vendor("transform"), "rotateX(-180deg)");
+								u.a.transition(this.parentNode.li.image, "all 0.5s ease-in-out");
+								u.as(this.parentNode.li.image, u.a.vendor("transform"), "rotateX(0deg)");
+							}
+							u.as(this.li.video, "zIndex", 3);
+							u.ae(this.li.video, page.videoPlayer);
+							page.videoPlayer.current_node = this.li;
+							page.videoPlayer.loadAndPlay(this.li._video_url, {"playpause":true});
 						}
 					}
 				}
 				li.is_ready = true;
 				this.resized();
-				if(u.hc(li, "instagram|article|ambassador")) {
-					this.fillWithDots(li);
-				}
 			}
 			this.resized();
 			u.textscaler(this, {
 				"min_width":800,
 				"max_width":1200,
 				"unit":"px",
+				"li a":{
+					"min_size":13,
+					"max_size":14
+				},
+				"li h3":{
+					"min_size":13,
+					"max_size":14
+				},
 				".twenty h2":{
 					"min_size":16,
-					"max_size":24
+					"max_size":22
 				},
 				".forty h2":{
-					"min_size":24,
-					"max_size":48
+					"min_size":28,
+					"max_size":45
 				},
 				".tweet p":{
 					"min_size":15,
-					"max_size":23
+					"max_size":22
+				},
+				".ambassador p":{
+					"min_size":15,
+					"max_size":22
 				}
 			});
-			u.bug("all lis ready")
 			this.is_almost_ready = true;
 			this.isReady();
 		}
+		scene._rotateCard = function() {
+			if(this.cards.length > 1) {
+				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
+				this.cards[this.card].transitioned = function() {
+					u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+				}
+				u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
+				u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
+				u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
+				u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
+				this.card = new_card;
+				u.t.setTimer(this, this.rotateCard, 5000);
+			}
+		}
+		scene.next_render = new Date().getTime();
+		scene.renderNode = function(li) {
+			li.is_built = true;
+			var now = new Date().getTime();
+			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
+			if(u.hc(li, "instagram")) {
+				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+			}
+			else if(u.hc(li, "ambassador")) {
+				li.image.transitioned = function() {
+					u.as(li.li_video, "perspective", 500 + "px");
+				}
+				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
+			}
+			else if(u.hc(li, "article")) {
+				u.a.transition(li.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
+			}
+			else if(u.hc(li, "tweet")) {
+				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
+				li.card = 0;
+				li.rotateCard = this._rotateCard;
+				u.t.setTimer(li, li.rotateCard, 5000);
+			}
+		}
 		scene.build = function() {
 			if(!this.is_built) {
-				u.bug("scene.build:" + u.nodeId(this));
+				u.a.transition(this.h1, "all 0.5s ease-in");
+				u.a.setOpacity(this.h1, 1);
 				this.is_built = true;
-				this._animate_build = function() {
-					var shape, i = 0;
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0."+u.random(2,6)+"s linear", this._render);
-					}
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 100) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 100) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 100) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 100) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length && this.total_dots > 300) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", this._render);
-					}
-					if(this.shapes.length) {
-						i = u.random(0, this.shapes.length-1);
-						shape = this.shapes[i];
-						this.shapes.splice(i, 1);
-						u.a.to(shape, "all 0.3s linear", {"cx":this._center, "cy":this._center, "r":0});
-						u.t.setTimer(this, "animate", 10);
-					}
-				}
-				this._rotateCard = function() {
-					if(this.cards.length > 1) {
-						var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
-						this.cards[this.card].transitioned = function() {
-							u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
-						}
-						u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
-						u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
-						u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
-						u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
-						this.card = new_card;
-						u.t.setTimer(this, this.rotateCard, 5000);
-					}
-				}
-				for(i = 0; li = this.lis[i]; i++) {
-					var li_y = u.absY(li);
-					if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-						if(u.hc(li, "instagram|article|ambassador")) {
-							li._center = li.offsetWidth/2;
-							var rand = u.random(0,5);
-							if(rand == 1) {
-								li._render = {"cx":li._center, "cy":li._center, "r":0}
-							}
-							else if(rand == 2) {
-								li._render = {"cx":li.offsetWidth + 30, "r":0}
-							}
-							else if(rand == 3) {
-								li._render = {"cx":-30, "r":0}
-							}
-							else if(rand == 4) {
-								li._render = {"cy":-30, "r":0}
-							}
-							else if(rand == 5) {
-								li._render = {"cy":li.offsetHeight + 30, "r":0}
-							}
-							else {
-								li._render = {"r":0}
-							}
-							u.a.transition(li, "all 1.5s ease-in-out");
-							u.a.setOpacity(li, 1);
-							li.animate = this._animate_build;
-							li.animate();
-						}
-						if(u.hc(li, "tweet")) {
-							u.a.transition(li.cards[0], "all 0.5s ease-in-out");
-							u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
-							li.card = 0;
-							li.rotateCard = this._rotateCard;
-							u.t.setTimer(li, li.rotateCard, 5000);
-						}
-					}
-					else {
-						u.a.setOpacity(li, 1);
-						if(li.svg) {
-							li.svg.parentNode.removeChild(li.svg);
-						}
-						if(li.cards) {
-							u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
-							li.card = 0;
-							li.rotateCard = this._rotateCard;
-							u.t.setTimer(li, li.rotateCard, 5000);
-						}
-					}
-				}
+				this.scrolled();
 			}
 		}
 		scene.destroy = function() {
@@ -5897,21 +5820,19 @@ Util.Objects["front"] = new function() {
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
-			u.a.transition(this.h1, "all 1s ease-out");
+			u.a.transition(this.h1, "all 0.5s ease-out");
 			u.a.setOpacity(this.h1, 0);
 			var i, li, j = 0;
 			for(i = 0; li = this.lis[i]; i++) {
 				var li_y = u.absY(li);
 				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-					u.bug("move:" + u.nodeId(li))
 					u.as(li, "zIndex", 100-j);
-					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
-					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
-					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
-					u.a.setOpacity(li, 0);
+					u.ac(li.parentNode, "destroy");
+					u.a.transition(li, "all 0.5s ease-in "+(150*j++)+"ms");
+					u.as(li, u.a.vendor("transform"), "translateY(1500px) rotateX(-540deg)");
 				}
 			}
-			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
+			u.t.setTimer(this, this.finalizeDestruction, (150*j)+500);
 		}
 		scene.ready();
 	}

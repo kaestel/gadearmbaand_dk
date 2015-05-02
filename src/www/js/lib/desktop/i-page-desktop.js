@@ -214,13 +214,13 @@ Util.Objects["page"] = new function() {
 //				u.bug("initHeader")
 
 				// get the navigation node from the servicenavigation
-				var bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
-				bn_nav.a = u.qs("a", bn_nav);
+				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
+				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
 				
 				// very simple navigation toggle
-				u.ce(bn_nav);
-				bn_nav.clicked = function() {
+				u.ce(page.bn_nav);
+				page.bn_nav.clicked = function() {
 
 					// close navigation
 					if(u.hc(page.nN, "open")) {
@@ -269,13 +269,12 @@ Util.Objects["page"] = new function() {
 							// save next url to process after navigation has been removed
 							page.nN.next_url = this.url;
 
+							page.bn_nav.clicked();
 							// remove navigation
 							page.nN.transitioned = function() {
 								u.rc(this, "open");
 								page.navigate(this.next_url);
 							}
-							u.a.transition(page.nN, "all 0.5s linear");
-							u.a.setOpacity(page.nN, 0);
 
 						}
 
@@ -285,23 +284,23 @@ Util.Objects["page"] = new function() {
 						u.e.click(node);
 						node.clicked = function(event) {
 
-							// remove navigation
-							page.nN.transitioned = function() {
-								u.rc(this, "open");
-							}
-							u.a.transition(page.nN, "all 0.5s linear");
-							u.a.setOpacity(page.nN, 0);
+							page.bn_nav.clicked();
 
 						}
 
 					}
 
 					node.vp = u.ae(node, "div", {"class":"vp"});
+					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
 
 					node.mousedover = function() {
 
+						u.ac(this.vp, "show");
 						u.ae(this.vp, page.videoPlayer);
-						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_480x270.mp4");
+						page.videoPlayer.ended = function() {
+							this.play();
+						}
+						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
 
 						if(this.offsetWidth/this.offsetHeight > 480/270) {
 							var height = (this.offsetWidth / (480/270));
@@ -320,6 +319,7 @@ Util.Objects["page"] = new function() {
 					}
 					
 					node.mousedout = function() {
+						u.rc(this.vp, "show");
 						page.videoPlayer.stop();
 						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
 					}

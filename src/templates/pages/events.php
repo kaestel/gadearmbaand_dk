@@ -3,9 +3,9 @@ global $IC;
 global $action;
 global $itemtype;
 
-$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
-$tags = $IC->getTags(array("context" => $itemtype)); 
-$days = $IC->getTags(array("context" => "day")); 
+$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "event.host, published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
+$tags = $IC->getTags(array("context" => $itemtype, "order" => "value")); 
+$days = $IC->getTags(array("context" => "day", "order" => "value DESC")); 
 
 
 ?>
