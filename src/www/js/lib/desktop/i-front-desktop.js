@@ -156,8 +156,9 @@ Util.Objects["front"] = new function() {
 					if(li.image) {
 
 
-						u.as(li, "perspective", (li.offsetWidth*2) + "px");
-						u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.offsetWidth+"px)");
+						u.as(li, "perspective", (li.offsetWidth) + "px");
+						u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
+						u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
 
 
 						li.image.li = li;
@@ -192,20 +193,11 @@ Util.Objects["front"] = new function() {
 				else if(u.hc(li, "article")) {
 
 					li.card = u.qs(".card", li);
+					li.link = u.qs(".card a", li);
+
 					u.ce(li, {"type":"link"});
 
-					li.mousedover = function() {
-						u.a.transition(this.card, "all 0.3s ease-in-out");
-						u.as(this.card, u.a.vendor("transform"), "rotateX(360deg)");
-					}
-					li.mousedout = function() {
-
-						u.a.transition(this.card, "all 0.3s ease-in-out");
-						u.as(this.card, u.a.vendor("transform"), "rotateX(0deg)");
-					}
-					u.e.addEvent(li, "mouseover", li.mousedover);
-					u.e.addEvent(li, "mouseout", li.mousedout);
-
+					this._linkScrambler(li);
 				}
 
 				// handle ambassador
@@ -218,6 +210,9 @@ Util.Objects["front"] = new function() {
 
 					li.li_article.card = u.qs(".card", li.li_article);
 
+					li.li_article.link = u.qs(".card a", li.li_article);
+					this._linkScrambler(li.li_article);
+
 
 					// video
 					li.li_video = u.qs("li.video", li);
@@ -229,8 +224,12 @@ Util.Objects["front"] = new function() {
 					li.image.li = li;
 
 
-					u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
-					u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
+					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
+					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
+
+					// u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
+					// u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 
 
@@ -362,6 +361,82 @@ Util.Objects["front"] = new function() {
 
 		}
 
+		// scramble text in buttons
+		scene._linkScrambler = function(li) {
+
+			li.default_text = li.link.innerHTML;
+			li.scrambled_count = 0;
+			li.randomizer = function() {
+				var indexes = [];
+				var chars = [];
+				var rand;
+				while(chars.length < this.scrambled_sequence.length/3) {
+
+					rand = u.random(0, this.scrambled_sequence.length-1);
+					if(indexes.indexOf(rand) == -1) {
+						indexes.push(rand);
+						chars.push(this.scrambled_sequence[rand]);
+					}
+
+				}
+				return [chars, indexes];
+			}
+
+			li.scramble = function() {
+
+				this.scrambled_sequence = this.link.innerHTML.split("");
+				var c = this.randomizer();
+
+				if(this.scrambled_count < 9) {
+
+					var index, char;
+
+					while(c[0].length) {
+						index = c[1].splice([u.random(0, c[1].length-1)], 1);
+						char = c[0].splice([u.random(0, c[0].length-1)], 1);
+
+						this.scrambled_sequence[index] = char;
+					}
+					this.link.innerHTML = this.scrambled_sequence.join("");
+
+					this.scrambled_count++;
+					u.t.setTimer(this, this.scramble, 100);
+				}
+				else {
+					this.link.innerHTML = this.default_text;
+				}
+
+			}
+			li.unscramble = function() {
+
+				u.a.transition(this.link, "all 0.3s ease-in-out");
+				u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
+
+				this.link.innerHTML = this.default_text;
+				this.scrambled_count = 0;
+			}
+
+			li.mousedover = function() {
+				u.t.resetTimer(this.t_scrambler);
+
+				if(!this.scrambled_count) {
+
+					u.a.transition(this.link, "all 0.3s ease-in-out");
+					u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
+
+					this.scramble();
+				}
+			}
+			li.mousedout = function() {
+				u.t.resetTimer(this.t_scrambler);
+
+				this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
+			}
+			u.e.addEvent(li, "mouseover", li.mousedover);
+			u.e.addEvent(li, "mouseout", li.mousedout);
+
+		}
+
 		// twitter card rotator
 		scene._rotateCard = function() {
 
@@ -402,19 +477,28 @@ Util.Objects["front"] = new function() {
 			// instagram
 			if(u.hc(li, "instagram")) {
 
-				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 			}
 
 			// ambassador
 			else if(u.hc(li, "ambassador")) {
 
 				li.image.transitioned = function() {
-					u.as(li.li_video, "perspective", 500 + "px");
+
+					u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
+
+					u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
+					u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
+					u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+
 				}
 
-				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
+
+				// u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				// u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
 
 				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");

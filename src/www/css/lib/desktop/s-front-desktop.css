@@ -37,21 +37,18 @@
 
 
 /* INSTAGRAM */
-.scene.front ul li.instagram {overflow: hidden;
-	perspective-origin: 50% 0;
-	-ms-perspective-origin: 50% 0;
-	-moz-perspective-origin: 50% 0;
-	-webkit-perspective-origin: 50% 0;
-	transform-style: preserve-3d;
-	-ms-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	-webkit-transform-style: preserve-3d;
+.scene.front ul li.instagram {
+	perspective-origin: 50% 50%;
+	-ms-perspective-origin: 50% 50%;
+	-moz-perspective-origin: 50% 50%;
+	-webkit-perspective-origin: 50% 50%;
 }
 .scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+
 }
 .scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
 .scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
@@ -105,18 +102,44 @@
 	-webkit-perspective: 500px;
 }
 .scene.front ul li.article .card {padding: 40px 30px; background: #19051a; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
-	transform: rotateX(-540deg);
-	-ms-transform: rotateX(-540deg);
-	-moz-transform: rotateX(-540deg);
-	-webkit-transform: rotateX(-540deg);
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+
+	transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	-moz-transform: rotateX(-180deg);
+	-webkit-transform: rotateX(-180deg);
 }
 
 
 .scene.front ul li.article h2 {color: #ffffff; padding-bottom: 22px;}
 .scene.front ul li.article h3 {color: #6eb951;}
 
-.scene.front ul li.article a {display: inline-block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: nowrap;
+.scene.front ul li.article ul.actions {display: block;}
+.scene.front ul li.article ul.actions li {display: inline-block; vertical-align: top;
+	perspective-origin: 50% 0;
+	-ms-perspective-origin: 50% 0;
+	-moz-perspective-origin: 50% 0;
+	-webkit-perspective-origin: 50% 0;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
+}
+
+.scene.front ul li.article ul.actions li a {display: block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: pre;
 	font-family: "DINPro", sans-serif; font-weight: 800;
+
+	transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	-moz-transform: rotateX(0deg);
+	-webkit-transform: rotateX(0deg);
 }
 
 .scene.front ul li.article.forty .card {padding: 40px 50px;}
@@ -130,8 +153,13 @@
 
 
 
-.scene.front ul li.ambassador ul li.video {overflow: hidden;
-	perspective-origin: 50% 0;
+.scene.front ul li.ambassador ul li.video {
+	perspective-origin: 50% 50%;
+	-ms-perspective-origin: 50% 50%;
+	-moz-perspective-origin: 50% 50%;
+	-webkit-perspective-origin: 50% 50%;
+
+/*	perspective-origin: 50% 0;
 	-ms-perspective-origin: 50% 0;
 	-moz-perspective-origin: 50% 0;
 	-webkit-perspective-origin: 50% 0;
@@ -139,6 +167,7 @@
 	-ms-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	-webkit-transform-style: preserve-3d;
+*/	
 }
 .scene.front ul li.ambassador ul li.video div.image {overflow: hidden; height: 100%; width: 100%; z-index: 2; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
