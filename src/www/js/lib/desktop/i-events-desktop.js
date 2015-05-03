@@ -130,18 +130,19 @@ Util.Objects["events"] = new function() {
 					_event._day = u.cv(_event, "day").toLowerCase();
 					_event._name = u.qs(".name", _event);
 					_event._host = u.qs(".host", _event);
-					_event._location = u.qs(".location", _event);
+					_event._location = u.qs(".location a", _event);
+
 
 					_event._host._string = _event._host.innerHTML.toLowerCase()
 					_event._name._string = _event._name.innerHTML.toLowerCase()
 					_event._location._string = _event._location.innerHTML.toLowerCase()
 
-					_event.clicked = function() {
+					_event.clicked = function(event) {
 
 						if(u.hc(this, "selected")) {
 							u.a.transition(this, "all 0.5s ease-out");
 							u.rc(this, "selected");
-							u.as(this, "height", "41px");
+							u.as(this, "height", "38px");
 
 						} else {
 							u.a.transition(this, "all 0.8s ease-out");
@@ -156,13 +157,13 @@ Util.Objects["events"] = new function() {
 								
 								u.a.transition(_event, "all 0.5s ease-out");
 								u.rc(_event, "selected");
-								u.as(_event, "height", "41px");
+								u.as(_event, "height", "38px");
 							}
 						}
 					}
 
-					u.ce(_event)
-					u.ass(_event, {"height": "41px"})
+					u.e.click(_event)
+					u.ass(_event, {"height": "38px"})
 				}
 			}
 
@@ -318,7 +319,7 @@ Util.Objects["events"] = new function() {
 
 			this._tag_filter._height = this._tag_filter.offsetHeight;
 
-			u.ass(this._tag_filter, {"height" : "34px", "width" : "190px"});
+			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
 
 			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
 			this._tag_filter._search = u.qs(".search", this._tag_filter);
@@ -348,6 +349,7 @@ Util.Objects["events"] = new function() {
 
 					}
 
+					u.ac(scene._tag_filter, "open");
 					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
 					u.ass(scene._tag_filter, {"width" : "100%", "height" : scene._tag_filter._height + "px"});
 
@@ -364,6 +366,8 @@ Util.Objects["events"] = new function() {
 
 					}
 
+					u.rc(scene._tag_filter, "open");
+
 					u.a.transition(scene._tag_filter._tag_list, "all 0.5s ease-out");
 					u.as(scene._tag_filter._tag_list, "opacity", 0);
 
@@ -371,7 +375,7 @@ Util.Objects["events"] = new function() {
 					u.as(scene._tag_filter._search, "opacity", 0);
 
 					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
-					u.ass(scene._tag_filter, {"width" : "190px", "height" : "34px"});
+					u.ass(scene._tag_filter, {"width" : "100px", "height" : "32px"});
 
 					scene._tag_filter.open = false;
 

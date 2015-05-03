@@ -15,11 +15,14 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 	<h1>Program</h1>
 
 	<ul class="days">
-<?		if($days): ?>
-<?			foreach($days as $day): ?>
-				<li><?= $day["value"] ?></li>
-<?			endforeach; ?>
-<?		endif; ?>
+		<li>Onsdag</li>
+		<li>Torsdag</li>
+		<li>Fredag</li>
+<? //		if($days): ?>
+<? //			foreach($days as $day): ?>
+				<!--li><?//= $day["value"] ?></li-->
+<? //			endforeach; ?>
+<? //		endif; ?>
 	</ul>
 
 	<div class="filter">
@@ -63,7 +66,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 			<h3 class="host"><?= $item["host"] ?></h3>
 			<h2 class="name"><?= $item["name"] ?></h2>
-			<p class="location"><?= $item["location"] ?></p>
+			<p class="location"><a href="http://maps.google.com/maps/place/<?= $item["latitude"] ?>,<?= $item["longitude"] ?>" target="_blank"><?= $item["location"] ?></a></p>
 
 <?			if($item["tags"]): ?>
 				<ul class="tags">
