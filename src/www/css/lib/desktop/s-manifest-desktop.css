@@ -7,10 +7,12 @@
 }
 
 .scene.manifest h1 {color: #FFFFFF;}
-.scene.manifest .content {width: 720px; margin: 0 auto; padding: 0 0 60px;}
-.scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1em; font-size: 45px; font-weight: 400;}
-.scene.manifest .content h3 {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
-.scene.manifest .content p {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
+.scene.manifest .content {width: 600px; margin: 0 auto; padding: 40px 0 60px;}
+.scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1.1em; /*padding-top: 1.3em;*/ font-size: 45px; font-weight: 800; text-align: center;
+/*	font-family: "DINPro", Verdana, Arial, sans-serif;*/
+}
+.scene.manifest .content h3 {color: #FFFFFF; /*padding-bottom: 1em;*/ padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
+.scene.manifest .content p {color: #FFFFFF; padding-bottom: 1.2em; font-size: 22px; font-weight: 400; /*text-align: center;*/}
 
 
 

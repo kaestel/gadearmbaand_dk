@@ -4,16 +4,27 @@
 	<h1>Manifest</h1>
 
 	<div class="content">
-		<h2>Vi elsker København</h2>
-		<h3>Kanalerne, kirketårne, runde tårne, gader og stræder</h3>
-		<p>Og vi elsker alle jer, der gør os glade, når vi går på gaden. Jer, der dagligt åbner butikkerne, stiller skiltene ud og byder indenfor. Jer der hilser. Jer der holder døren, holder håbet højt og holder pauser på bænkene. Uden jer ville byen bare være runde tårne. Gader ville bare være gader.</p>
-		<p>Heldigvis er gader ikke bare gader. I er her. Vi er her. Og kærligheden til netop det er i al enkelhed grunden til, at vi hvert år går ud på gaden sammen, og holder en fest, som har holdt siden 1998.</p>
-		<p>For os hænger kærlighed og kræsenhed sammen. Derfor er en gadefest heller ikke bare en gadefest. En gadefest er i virkeligheden ikke svært at holde. Men at holde en gadefest i en hel bydel ad gangen, hvor alle kan deltage og som både har store højttalere og plads til små, finurlige detaljer, dét kræver mange flere hænder, end vi selv har.</p>
-		<p>Og hvert år bidrager mange flere hænder, end vi selv har med meget mere, end nogen beder dem om. Butiksejere, beboere og næsten 1.000 frivillige er kun et lille udsnit af alle dem, der sammen får gadefesten til at ske. De gør det også af kærlighed til byen og alle jer, der kommer og fylder gaderne med kådhed, dans og detaljer.</p>
-		<p>Det er altsammen med til at gøre Distortions gadefester til meget mere end bare gadefester.</p>
-		<p>Tak for hjælpen. Lad os holde den gadefest skør og stor og finurlig. Lad os give alle de mennesker som bidrager et skulderklap.</p>
-		<p>Gadefesten er sådan vi deler vores kærlighed. Del din kærlighed på #gadearmbaand</p>
-		<p>— Distortion</p>
+		<p>Gadearmbånd er kærlighed til København og til Distortions gadefester.</p>
+		<p>I 1998 satte vi gang i Distortion for at vise København fra sin bedste side. Og for at holde den ultimative fest.</p>
+		<p>Ideen var (og er) at skabe et forløb gennem byen. Gennem havnen og tunnellerne. Under broerne, over forventning. På busser og både, gennem dag og nat. En mobil begivenhed – et ugelangt brag.</p>
+		<p>Og vi synes, at det hvert lykkedes at holde festen, der holder.</p>
+		<p>Nu har vi Distortion Ø hele weekenden på Refshaleøen og Distortion Club hver nat i byens klubber. Og så har vi Distortions gadefester, som over 100.000 har taget til sig.</p>
+
+		<p>En gadefest er i virkeligheden ikke svær at holde.</p>
+		<p>Men at holde 44 gadefester per dag, i en bydel ad gangen, hvor alle kan deltage – både dem som medbringer gigantiske højttalere og dem som skaber små, finurlige detaljer – dét kræver mange flere hænder, end vi selv har.</p>
+		<p>Butiksejere, beboere, Københavns Kommune, politi, brandvæsen, hundredvis af samarbejdspartnere, danseglade fødder, hjælpsomme hænder og knap 1.800 frivillige er hvert år med til at få gadefesterne til at ske.</p>
+		<p>Gadearmbåndet er et skulderklap til alle de mennesker, deres drive og deres kærlighed til København. Uden dem og uden gadefesternes økonomiske fundament, ville alt være meget kedeligere.</p>
+		<p>At så mange kan samles om en byfest - af ren motivation og skæv skaberlyst – er livsbekræftende. Magisk faktisk.</p>
+		<p>Det er den magi, du er med til at skabe rammerne for ved at købe gadearmbåndet.</p>
+
+		<p>Køb et gadearmbånd.<br />Så tryller vi.</p>
+
+		<p>Tak for hjælpen.</p>
+		<p>Distortion</p>
+
+
+		<h3>Del dine gadefestbilleder på:</h3>
+		<h2>#gadearmbaand</h2>
 	</div>
 	
 </div>
