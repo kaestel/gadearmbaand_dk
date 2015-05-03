@@ -169,7 +169,7 @@ Util.Objects["events"] = new function() {
 			this.initDays = function() {
 
 				this._days_list = u.qs("ul.days", this);
-				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
+				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"Alle dage"});
 				this._days = u.qsa("li", this._days_list);
 
 				var i, day;
@@ -211,7 +211,7 @@ Util.Objects["events"] = new function() {
 			this.initTags = function() {
 
 				this._tags_list = u.qs(".tag_list", this);
-				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
+				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"Alle"});
 				this._tags = u.qsa("li", this._tags_list);
 
 				var i, tag;
@@ -265,8 +265,8 @@ Util.Objects["events"] = new function() {
 
 				this._search = u.qs("form.search", this);
 				this._search_input = u.qs("input", this._search);
-				this._search_input._default = "Type here"
-				
+				this._search_input._default = "Skriv her"
+
 				// setting default value
 				this._search_input.value = this._search_input._default;
 
@@ -314,7 +314,7 @@ Util.Objects["events"] = new function() {
 			// open close advanced search
 			this._tag_filter = u.qs(".filter", this);
 			this._tag_filter._title = u.qs("h2", this._tag_filter);
-			this._tag_filter._title.innerHTML = "open advanced search";
+			this._tag_filter._title.innerHTML = "Søg";
 
 			this._tag_filter._height = this._tag_filter.offsetHeight;
 
@@ -344,7 +344,7 @@ Util.Objects["events"] = new function() {
 						u.a.transition(scene._tag_filter._search, "all 0.5s ease-out");
 						u.as(scene._tag_filter._search, "opacity", 1);
 
-						scene._tag_filter._title.innerHTML = "close advanced search";
+						scene._tag_filter._title.innerHTML = "Luk";
 
 					}
 
@@ -360,7 +360,7 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._tag_list, "display", "none");
 						u.as(scene._tag_filter._search, "display", "none");
 
-						scene._tag_filter._title.innerHTML = "open advanced search";
+						scene._tag_filter._title.innerHTML = "Søg";
 
 					}
 

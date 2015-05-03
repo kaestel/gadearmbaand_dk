@@ -3,7 +3,7 @@ global $IC;
 global $action;
 global $itemtype;
 
-$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "event.host, published_at DESC", "extend" => array("tags" => true, "mediae" => true)));
+$items = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" => "event.host, published_at DESC", "extend" => array("tags" => array("order" => "value ASC"), "mediae" => true)));
 $tags = $IC->getTags(array("context" => $itemtype, "order" => "value")); 
 $days = $IC->getTags(array("context" => "day", "order" => "value DESC")); 
 
@@ -12,7 +12,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 <div class="scene event i:events">
 
-	<h1>Events</h1>
+	<h1>Program</h1>
 
 	<ul class="days">
 <?		if($days): ?>
@@ -24,7 +24,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 	<div class="filter">
 
-		<h2>advanced search</h2>
+		<h2>Søg</h2>
 		
 		<form class="search">
 			<fieldset>
@@ -46,9 +46,9 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 	</div>
 
 	<ul class="legend">
-		<li>Host</li>
+		<li>Vært</li>
 		<li>Event</li>
-		<li>Location</li>
+		<li>Lokation</li>
 		<li>Tags</li>
 	</ul>
 
@@ -83,7 +83,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 				
 					<ul class="action">
 						<li>
-							<a href="<?= $item["facebook_link"] ?>">Facebook event</a>
+							<a href="<?= $item["facebook_link"] ?>" target="_blank">Facebook event</a>
 						</li>
 					</ul>
 				</div>
