@@ -364,7 +364,7 @@ Util.Objects["page"] = new function() {
 
 						this.transitioned = function() {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-							this.sp = u.sequencePlayer(this.sq, {"framerate":20});
+							this.sp = u.sequencePlayer(this.sq);
 							
 							u.as(this.sp, "transformOrigin", "49% 57%");
 
@@ -374,7 +374,7 @@ Util.Objects["page"] = new function() {
 									page.intro.clicked();
 								}
 
-								u.a.transition(this, "all 1.2s ease-in");
+								u.a.transition(this, "all 0.8s ease-in");
 								u.a.rotateScale(this, 50, 230);
 							}
 
@@ -383,7 +383,6 @@ Util.Objects["page"] = new function() {
 							for(i = 0; i < 49; i++) {
 								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
 							}
-							u.bug(images)
 							this.sp.loadAndPlay(images);
 						}
 						u.a.transition(this, "all 1s ease-in");
