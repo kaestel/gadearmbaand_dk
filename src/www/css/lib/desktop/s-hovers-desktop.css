@@ -1,0 +1,17 @@
+.scene.event > ul.items li.item p.location a:hover {text-decoration: underline;}
+.scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
+
+.scene.event > .filter:hover {background-color: #70B857;}
+.scene.event > .filter ul.tag_list li:hover {background-color: #180619; color: #FFFFFF;}
+
+.scene.event > ul.items li.item:hover {background-color: #180619; border-bottom: 2px solid #FFFFFF;}
+.scene.event > ul.items li.item:hover h3.host {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover h2.name {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover p.location {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover ul.tags li {color: #FFFFFF;}
+
+
+#header .servicenavigation li.navigation:hover a,
+#header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
+
+#header .servicenavigation li.navigation:hover {background-color: #70B857;}

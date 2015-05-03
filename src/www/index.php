@@ -11,7 +11,7 @@ $action = $page->actions();
 
 
 $page->bodyClass("front");
-$page->pageTitle("Frontpage");
+$page->pageTitle("#gadearmbaand");
 
 
 

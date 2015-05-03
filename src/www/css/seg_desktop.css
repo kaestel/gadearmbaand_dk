@@ -108,10 +108,7 @@ li {font-size: 14px; line-height: 1.25em;}
 #header .servicenavigation li.navigation {position: fixed; z-index: 160; top: 40px; right: 40px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
 .manifest #header .servicenavigation li.navigation a {color: #ffffff;}
-#header .servicenavigation li.navigation:hover,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
-#header .servicenavigation li.navigation:hover a,
-#header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
 #navigation {display: none; z-index: 150; position: fixed; top: 40px; right: 60px; height: 0; width: 0; overflow: hidden;
 	background: #19051a;
 }
@@ -136,6 +133,20 @@ li {font-size: 14px; line-height: 1.25em;}
 /*s-footer-desktop.css*/
 #footer {}
 
+
+/*s-hovers-desktop.css*/
+.scene.event > ul.items li.item p.location a:hover {text-decoration: underline;}
+.scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
+.scene.event > .filter:hover {background-color: #70B857;}
+.scene.event > .filter ul.tag_list li:hover {background-color: #180619; color: #FFFFFF;}
+.scene.event > ul.items li.item:hover {background-color: #180619; border-bottom: 2px solid #FFFFFF;}
+.scene.event > ul.items li.item:hover h3.host {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover h2.name {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover p.location {color: #FFFFFF;}
+.scene.event > ul.items li.item:hover ul.tags li {color: #FFFFFF;}
+#header .servicenavigation li.navigation:hover a,
+#header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
+#header .servicenavigation li.navigation:hover {background-color: #70B857;}
 
 
 /*s-front-desktop.css*/
@@ -301,21 +312,18 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event h1 {}
 .scene.event > ul.days {width: 100%; text-align: center;}
 .scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
-.scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
 .scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
 .scene.event > .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter:hover,
 .scene.event > .filter.open {background-color: #70B857;}
 .scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer; padding: 4px 0;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
 .scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; opacity: 0;}
 .scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
-.scene.event > .filter ul.tag_list li:hover {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
 .scene.event > .filter .search {opacity: 0;}
@@ -354,7 +362,6 @@ li {font-size: 14px; line-height: 1.25em;}
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event > ul.items li.item p.location a:hover {text-decoration: underline;}
 .scene.event > ul.items li.item ul.tags {vertical-align: top; display: inline-block; width: 25%; font-size: 0; padding: 10px 0 0 10px; white-space: nowrap;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -387,11 +394,6 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > ul.items li.item.selected p.location {color: #FFFFFF;}
 .scene.event > ul.items li.item.selected ul.tags {}
 .scene.event > ul.items li.item.selected ul.tags li {color: #FFFFFF;}
-.scene.event > ul.items li.item:hover {background-color: #180619; border-bottom: 2px solid #FFFFFF;}
-.scene.event > ul.items li.item:hover h3.host {color: #FFFFFF;}
-.scene.event > ul.items li.item:hover h2.name {color: #FFFFFF;}
-.scene.event > ul.items li.item:hover p.location {color: #FFFFFF;}
-.scene.event > ul.items li.item:hover ul.tags li {color: #FFFFFF;}
 
 
 /*s-manifest-desktop.css*/
