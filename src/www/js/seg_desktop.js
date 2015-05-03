@@ -4887,7 +4887,7 @@ Util.Animation = u.a = new function() {
 		return this._support3d;
 	}
 	this._vendor_exceptions = {
-		"mozTransform":"MozTransform","mozTransition":"MozTransition","mozTransitionEnd":"transitionend","mozTransformOrigin":"MozTransformOrigin"
+		"mozTransform":"MozTransform","mozTransition":"MozTransition","mozTransitionEnd":"transitionend","mozTransformOrigin":"MozTransformOrigin","mozPerspectiveOrigin":"MozPerspectiveOrigin","mozTransformStyle":"MozTransformStyle","mozPerspective":"MozPerspective"
 	};
 	this._vendor_methods = {};
  	this.vendorMethod = function(method) {
@@ -5315,6 +5315,213 @@ u.textscaler = function(node, _settings) {
 	}
 
 
+/*beta-u-sequence.js*/
+u.sequencePlayer = function(node, options) {
+	var player;
+	if(node) {
+		player = u.ae(node, "div", {"class":"sequenceplayer"});
+	}
+	else {
+		player = document.createElement("div");
+		u.ac(player, "sequenceplayer");
+	}
+	player.t_playback = false;
+	player._framerate = 12;
+	if(typeof(options) == "object") {
+		var argument;
+		for(argument in options) {
+			switch(argument) {
+				case "framerate"		: this._framerate			= options[argument]; break;
+			}
+		}
+	}
+	else {
+		options = {};
+	}
+	player.load = function(images, options) {
+		this._load_callback;
+		this._autoplay = false;
+		if(typeof(options) == "object") {
+			var argument;
+			for(argument in options) {
+				switch(argument) {
+					case "load_callback"		: this._load_callback			= options[argument]; break;
+					case "autoplay"				: this._autoplay				= options[argument]; break;
+				}
+			}
+		}
+		this.setup(images);
+	}
+	player.loadAndPlay = function(images, options) {
+		if(!options) {
+			options = {};
+		}
+		options.autoplay = true;
+		this._options = options;
+		this.load(images, options);
+	}
+	player.play = function(options) {
+		this._ended_callback = null;
+		this._from = this.sequence._start;
+		this._to = this.sequence._end;
+		if(typeof(options) == "object") {
+			var argument;
+			for(argument in options) {
+				switch(argument) {
+					case "ended_callback"	: this._ended_callback			= options[argument]; break;
+					case "framerate"		: this._framerate				= options[argument]; break;
+					case "to"				: this._to						= options[argument]; break;
+					case "from"				: this._from					= options[argument]; break;
+				}
+			}
+		}
+		if(this._from <= this._to) {
+			this._direction = 1;
+		}
+		else {
+			this._direction = -1;
+		}
+			if(this._direction > 0) {
+				var start_z_index = 4000;
+				for(i = this.sequence._start; i <= this.sequence._end; i++) {
+					if(i == this._from || i == this._from+1) {
+						u.as(this._nodes[i], "display", "block", 1);
+					}
+					else {
+						u.as(this._nodes[i], "display", "none", 1);
+					}
+					u.as(this._nodes[i], "zIndex", start_z_index-i, 1);
+				}
+			}
+			else {
+				var start_z_index = 4000 - this._nodes.length;
+				for(i = this.sequence._end; i <= this.sequence._start; i--) {
+					if(i == this._from || i == this._from-1) {
+						u.as(this._nodes[i], "display", "block", 1);
+					}
+					else {
+						u.as(this._nodes[i], "display", "none", 1);
+					}
+					u.as(this._nodes[i], "zIndex", start_z_index+i, 1);
+				}
+			}
+			// 
+			// 
+			this.offsetHeight;
+			this._current_frame = this._from;
+		this.playback(true);
+	}
+	player.playback = function(start) {
+		if(!start) {
+			this.nextFrame(this._current_frame);
+			this._current_frame = this._current_frame + this._direction;
+		}
+		if(this._to == this._current_frame) {
+			if(typeof(this._ended_callback) == "function") {
+				this._ended_callback();
+			}
+			else if(typeof(this.ended) == "function") {
+				this.ended();
+			}
+		}
+		else {
+			this.t_playback = u.t.setTimer(this, this.playback, (1000/this._framerate));
+		}
+	}
+	player.nextFrame = function(frame) {
+		var after_next = (frame + (this._direction*2));
+		if(this._nodes[after_next] && (this._direction > 0 ? after_next <= this._to : after_next >= this._to)) {
+			u.as(this._nodes[after_next], "display", "block");
+		}
+		if(this._nodes[frame]) {
+			u.as(this._nodes[frame], "display", "none");
+		}
+	}
+	player.prevFrame = function(frame) {
+		var after_next = (frame + this._direction);
+		var prev = (frame - this._direction);
+		if(this._nodes[prev]) {
+			u.as(this._nodes[prev], "display", "block");
+			if(this._nodes[after_next] && (this._direction > 0 ? after_next <= this._to : after_next >= this._to)) {
+				u.as(this._nodes[after_next], "display", "none");
+			}
+		}
+		else {
+			for(i = this._from; i < this._to; i += this._direction) {
+				if(i == this._to || i == this._to-this._direction) {
+					u.as(this._nodes[i], "display", "block");
+				}
+				else {
+					u.as(this._nodes[i], "display", "none");
+				}
+			}
+		}
+	}
+	player.next = function(loop) {
+		if(!loop || this._current_frame + this._direction <= this._to) {
+			this.nextFrame(this._current_frame);
+			this._current_frame = this._current_frame + this._direction;
+		}
+		else if(loop) {
+			this.play();
+			this.pause();
+			this.nextFrame(this._current_frame);
+			this._current_frame = this._current_frame + this._direction;
+		}
+	}
+	player.prev = function(loop) {
+		if(!loop || this._current_frame - this._direction >= this._from) {
+			this.prevFrame(this._current_frame);
+			this._current_frame = this._current_frame - this._direction;
+		}
+		else if(loop) {
+			this.prevFrame(this._current_frame);
+			this._current_frame = this._to;
+		}
+	}
+	player.resume = function() {
+		this.t_playback = u.t.setTimer(this, this.playback, (1000/this._framerate));
+	}
+	player.pause = function() {
+		u.t.resetTimer(this.t_playback);
+	}
+	player.stop = function() {
+		u.t.resetTimer(this.t_playback);
+	}
+	player.setup = function(images) {
+		if(this.sequence) {
+			this.removeChild(this.sequence);
+		}
+		this.sequence = u.ie(this, "ul", {"class":"sequence"});
+		this.sequence.player = this;
+		this._images = images;
+		this._nodes = new Array();
+		this.sequence._start = 0;
+		this.sequence._end = this._images.length-1;
+		this._current_frame = 0;
+		this._setup = function() {
+			u.bug("images loaded")
+			for(i = 0; i <= this.sequence._end; i++) {
+				this._nodes[i] = u.ae(this.sequence, "li", {"style":"background-image: url(" + this._images[i] + ");"});
+				u.as(this._nodes[i], "display", "none", 1);
+			}
+			this.offsetHeight;
+			if(typeof(this._load_callback) == "function") {
+				this._load_callback();
+			}
+			else if(typeof(this.loaded) == "function") {
+				this.loaded();
+			}
+			if(this._autoplay) {
+			 	this.play(this._options);
+			}
+		}
+		u.preloader(this, this._images, {"loaded":"_setup"});
+	}
+	return player;
+}
+
+
 /*i-page-desktop.js*/
 u.bug_console_only = true;
 Util.Objects["page"] = new function() {
@@ -5380,6 +5587,14 @@ Util.Objects["page"] = new function() {
 			}
 			page.cN.ready = function() {
 				if(!page.intro && page.is_ready && page.cN.scene.is_ready) {
+					if(!page.cN.is_ready) {
+						u.a.transition(page.logo, "all 0.5s ease-in");
+						u.a.transition(page.hN, "all 0.5s ease-in");
+						u.a.setOpacity(page.cN, 1);
+						u.a.setOpacity(page.logo, 1);
+						u.a.setOpacity(page.hN, 1);
+						page.cN.is_ready = true;
+					}
 					var destroying = false;
 					var scenes = u.qsa(".scene", this);
 					for(i = 0; scene = scenes[i]; i++) {
@@ -5408,6 +5623,11 @@ Util.Objects["page"] = new function() {
 				u.request(this, u.h.getCleanHash(url));
 			}
 			page.initHeader = function() {
+				page.logo = u.ae(page, "div", {"class":"logo"});
+				u.ce(page.logo);
+				page.logo.clicked = function() {
+					page.navigate("/");
+				}
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
@@ -5488,35 +5708,33 @@ Util.Objects["page"] = new function() {
 			page.initIntro = function() {
 				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
-					page.intro.svg = u.svg({
-						"node":page.intro,
-						"width":page.browser_w,
-						"height":page.browser_h,
-						"class":"intro",
-						"shapes":[
-							{
-								"type":"line",
-								"x1":-10,
-								"y1":page.browser_h/2,
-								"x2":-8,
-								"y2":page.browser_h/2
+					page.intro.loaded = function() {
+						this.transitioned = function() {
+							this.sq = u.ae(this, "div", {"class":"intro_logo"});
+							this.sp = u.sequencePlayer(this.sq, {"framerate":20});
+							u.as(this.sp, "transformOrigin", "49% 57%");
+							this.sp.ended = function() {
+								this.transitioned = function() {
+									page.intro.clicked();
+								}
+								u.a.transition(this, "all 1.2s ease-in");
+								u.a.rotateScale(this, 50, 230);
 							}
-						]
-					});
-					page.intro.line1 = u.qs("line", page.intro.svg);
-					page.intro.line1.transitioned = function() {
-						page.intro.line1.transitioned = function() {
-							page.intro.path1 = u.svgShape(page.intro.svg, {
-								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
-							});
-							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
+							var images = [];
+							var i;
+							for(i = 0; i < 49; i++) {
+								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
+							}
+							u.bug(images)
+							this.sp.loadAndPlay(images);
 						}
-						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
+						u.a.transition(this, "all 1s ease-in");
+						u.a.setOpacity(this, 1);
 					}
-					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
+					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
 					u.ce(page.intro);
 					page.intro.clicked = function() {
+						u.t.resetTimer(this.t_click);
 						this.parentNode.removeChild(this);
 						page.intro = false;
 						page.cN.ready();
@@ -5626,8 +5844,9 @@ Util.Objects["front"] = new function() {
 				if(u.hc(li, "instagram")) {
 					li.image = u.qs("div.image", li);
 					if(li.image) {
-						u.as(li, "perspective", (li.offsetWidth*2) + "px");
-						u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.offsetWidth+"px)");
+						u.as(li, "perspective", (li.offsetWidth) + "px");
+						u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
+						u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
 						li.image.li = li;
 						li.image.image_id = u.cv(li.image, "image_id");
 						li.image.format = u.cv(li.image, "format");
@@ -5648,30 +5867,25 @@ Util.Objects["front"] = new function() {
 				}
 				else if(u.hc(li, "article")) {
 					li.card = u.qs(".card", li);
+					li.link = u.qs(".card a", li);
 					u.ce(li, {"type":"link"});
-					li.mousedover = function() {
-						u.a.transition(this.card, "all 0.3s ease-in-out");
-						u.as(this.card, u.a.vendor("transform"), "rotateX(360deg)");
-					}
-					li.mousedout = function() {
-						u.a.transition(this.card, "all 0.3s ease-in-out");
-						u.as(this.card, u.a.vendor("transform"), "rotateX(0deg)");
-					}
-					u.e.addEvent(li, "mouseover", li.mousedover);
-					u.e.addEvent(li, "mouseout", li.mousedout);
+					this._linkScrambler(li);
 				}
 				else if(u.hc(li, "ambassador")) {
 					li.li_article = u.qs("li.article", li);
 					u.ce(li.li_article, {"type":"link"});
 					li.li_article.card = u.qs(".card", li.li_article);
+					li.li_article.link = u.qs(".card a", li.li_article);
+					this._linkScrambler(li.li_article);
 					li.li_video = u.qs("li.video", li);
 					li.video = u.qs("div.video", li.li_video);
 					li.image = u.qs("div.image", li.li_video);
 					li.li_video.li = li;
 					li.video.li = li;
 					li.image.li = li;
-					u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
-					u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
+					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
+					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 					li.video_id = u.cv(li.video, "video_id");
 					li.video_format = u.cv(li.video, "video_format");
@@ -5761,6 +5975,61 @@ Util.Objects["front"] = new function() {
 			this.is_almost_ready = true;
 			this.isReady();
 		}
+		scene._linkScrambler = function(li) {
+			li.default_text = li.link.innerHTML;
+			li.scrambled_count = 0;
+			li.randomizer = function() {
+				var indexes = [];
+				var chars = [];
+				var rand;
+				while(chars.length < this.scrambled_sequence.length/3) {
+					rand = u.random(0, this.scrambled_sequence.length-1);
+					if(indexes.indexOf(rand) == -1) {
+						indexes.push(rand);
+						chars.push(this.scrambled_sequence[rand]);
+					}
+				}
+				return [chars, indexes];
+			}
+			li.scramble = function() {
+				this.scrambled_sequence = this.link.innerHTML.split("");
+				var c = this.randomizer();
+				if(this.scrambled_count < 9) {
+					var index, char;
+					while(c[0].length) {
+						index = c[1].splice([u.random(0, c[1].length-1)], 1);
+						char = c[0].splice([u.random(0, c[0].length-1)], 1);
+						this.scrambled_sequence[index] = char;
+					}
+					this.link.innerHTML = this.scrambled_sequence.join("");
+					this.scrambled_count++;
+					u.t.setTimer(this, this.scramble, 100);
+				}
+				else {
+					this.link.innerHTML = this.default_text;
+				}
+			}
+			li.unscramble = function() {
+				u.a.transition(this.link, "all 0.3s ease-in-out");
+				u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
+				this.link.innerHTML = this.default_text;
+				this.scrambled_count = 0;
+			}
+			li.mousedover = function() {
+				u.t.resetTimer(this.t_scrambler);
+				if(!this.scrambled_count) {
+					u.a.transition(this.link, "all 0.3s ease-in-out");
+					u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
+					this.scramble();
+				}
+			}
+			li.mousedout = function() {
+				u.t.resetTimer(this.t_scrambler);
+				this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
+			}
+			u.e.addEvent(li, "mouseover", li.mousedover);
+			u.e.addEvent(li, "mouseout", li.mousedout);
+		}
 		scene._rotateCard = function() {
 			if(this.cards.length > 1) {
 				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
@@ -5781,15 +6050,18 @@ Util.Objects["front"] = new function() {
 			var now = new Date().getTime();
 			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
 			if(u.hc(li, "instagram")) {
-				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 			}
 			else if(u.hc(li, "ambassador")) {
 				li.image.transitioned = function() {
-					u.as(li.li_video, "perspective", 500 + "px");
+					u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
+					u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
+					u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
+					u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
 				}
-				u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
+				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
+				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
 			}
@@ -5952,7 +6224,7 @@ Util.Objects["events"] = new function() {
 			}
 			this.initDays = function() {
 				this._days_list = u.qs("ul.days", this);
-				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
+				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"Alle dage"});
 				this._days = u.qsa("li", this._days_list);
 				var i, day;
 				for(i = 0; day = this._days[i]; i++) {
@@ -5982,7 +6254,7 @@ Util.Objects["events"] = new function() {
 			}
 			this.initTags = function() {
 				this._tags_list = u.qs(".tag_list", this);
-				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
+				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"Alle"});
 				this._tags = u.qsa("li", this._tags_list);
 				var i, tag;
 				for(i = 0; tag = this._tags[i]; i++) {
@@ -6015,7 +6287,7 @@ Util.Objects["events"] = new function() {
 			this.initSearch = function() {
 				this._search = u.qs("form.search", this);
 				this._search_input = u.qs("input", this._search);
-				this._search_input._default = "Type here"
+				this._search_input._default = "Skriv her"
 				this._search_input.value = this._search_input._default;
 				this._search_input.focused = function() {
 					if(this.value == this._default) {
@@ -6045,7 +6317,7 @@ Util.Objects["events"] = new function() {
 			this.initSearch();
 			this._tag_filter = u.qs(".filter", this);
 			this._tag_filter._title = u.qs("h2", this._tag_filter);
-			this._tag_filter._title.innerHTML = "open advanced search";
+			this._tag_filter._title.innerHTML = "Søg";
 			this._tag_filter._height = this._tag_filter.offsetHeight;
 			u.ass(this._tag_filter, {"height" : "34px", "width" : "190px"});
 			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
@@ -6062,7 +6334,7 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._tag_list, "opacity", 1);
 						u.a.transition(scene._tag_filter._search, "all 0.5s ease-out");
 						u.as(scene._tag_filter._search, "opacity", 1);
-						scene._tag_filter._title.innerHTML = "close advanced search";
+						scene._tag_filter._title.innerHTML = "Luk";
 					}
 					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
 					u.ass(scene._tag_filter, {"width" : "100%", "height" : scene._tag_filter._height + "px"});
@@ -6071,7 +6343,7 @@ Util.Objects["events"] = new function() {
 					scene._tag_filter._tag_list.transitioned = function() {
 						u.as(scene._tag_filter._tag_list, "display", "none");
 						u.as(scene._tag_filter._search, "display", "none");
-						scene._tag_filter._title.innerHTML = "open advanced search";
+						scene._tag_filter._title.innerHTML = "Søg";
 					}
 					u.a.transition(scene._tag_filter._tag_list, "all 0.5s ease-out");
 					u.as(scene._tag_filter._tag_list, "opacity", 0);

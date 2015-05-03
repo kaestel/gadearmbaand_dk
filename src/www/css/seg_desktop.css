@@ -71,13 +71,13 @@ input, textarea {outline: none;}
 a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 h1 {font-size: 45px; line-height: 1em; padding: 25px 0 45px; text-align: center;
-	font-family: "Flood", Verdana, Arial, sans-serif
+	font-family: "Flood", Verdana, Arial, sans-serif;
 }
 h2 {font-size: 22px; line-height: 1.363em; font-weight: 800;
-	font-family: "Flood", Verdana, Arial, sans-serif
+	font-family: "Flood", Verdana, Arial, sans-serif;
 }
 h3 {font-size: 14px; line-height: 2.143em; font-weight: 800;
-	font-family: "DINPro", Verdana, Arial, sans-serif
+	font-family: "DINPro", Verdana, Arial, sans-serif;
 }
 h4 {font-size: 14px; line-height: 1em;}
 p {font-size: 14px; line-height: 1.38em;} 
@@ -85,10 +85,21 @@ ul,
 ol {font-size: 0;}
 li {font-size: 14px; line-height: 1.25em;}
 #page {position: relative; min-height: 100%; min-width: 600px;}
-#intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0;}
-#intro svg line {stroke-width: 3px; stroke: #ffffff;}
-#intro svg circle {stroke-width: 3px; stroke: #ffffff;}
-#intro svg path {stroke-width: 3px; stroke: #ffffff; fill: none;}
+#page #content {opacity: 0;}
+#page .logo {opacity: 0;}
+#page #header {opacity: 0;}
+#page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px;
+	background: transparent url(/img/logo.png) no-repeat center center;
+}
+#intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0; opacity: 0;
+	background: transparent url(/img/bg_intro.jpg) no-repeat center center;
+	background-size: cover;
+}
+#intro .intro_logo {height: 100%;}
+#intro .intro_logo .sequenceplayer,
+#intro .intro_logo .sequenceplayer ul,
+#intro .intro_logo .sequenceplayer ul li {height: 100%;}
+#intro .intro_logo .sequenceplayer ul li {background-position: center center; background-repeat: no-repeat;}
 #content .scene {opacity: 0;}
 
 
@@ -96,6 +107,7 @@ li {font-size: 14px; line-height: 1.25em;}
 #header {}
 #header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 40px; right: 40px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
+.manifest #header .servicenavigation li.navigation a {color: #ffffff;}
 #header .servicenavigation li.navigation:hover,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
 #header .servicenavigation li.navigation:hover a,
@@ -152,15 +164,11 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.front ul li.sixty {width: 60%;}
 .scene.front ul li.eighty {width: 80%;}
 .scene.front ul li.ambassador {width: 100%;}
-.scene.front ul li.instagram {overflow: hidden;
-	perspective-origin: 50% 0;
-	-ms-perspective-origin: 50% 0;
-	-moz-perspective-origin: 50% 0;
-	-webkit-perspective-origin: 50% 0;
-	transform-style: preserve-3d;
-	-ms-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	-webkit-transform-style: preserve-3d;
+.scene.front ul li.instagram {
+	perspective-origin: 50% 50%;
+	-ms-perspective-origin: 50% 50%;
+	-moz-perspective-origin: 50% 50%;
+	-webkit-perspective-origin: 50% 50%;
 }
 .scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
@@ -213,21 +221,19 @@ li {font-size: 14px; line-height: 1.25em;}
 	-webkit-perspective: 500px;
 }
 .scene.front ul li.article .card {padding: 40px 30px; background: #19051a; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
-	transform: rotateX(-540deg);
-	-ms-transform: rotateX(-540deg);
-	-moz-transform: rotateX(-540deg);
-	-webkit-transform: rotateX(-540deg);
+	backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	-moz-transform: rotateX(-180deg);
+	-webkit-transform: rotateX(-180deg);
 }
 .scene.front ul li.article h2 {color: #ffffff; padding-bottom: 22px;}
 .scene.front ul li.article h3 {color: #6eb951;}
-.scene.front ul li.article a {display: inline-block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: nowrap;
-	font-family: "DINPro", sans-serif; font-weight: 800;
-}
-.scene.front ul li.article.forty .card {padding: 40px 50px;}
-.scene.front ul li.article.forty h2 {font-size: 45px; line-height: 1.333em; padding-bottom: 45px;}
-.scene.front ul li.ambassador {}
-.scene.front ul li.ambassador ul li.article p {color: #ffffff; padding-bottom: 44px; font-size: 22px; line-height: 1.363em;}
-.scene.front ul li.ambassador ul li.video {overflow: hidden;
+.scene.front ul li.article ul.actions {display: block;}
+.scene.front ul li.article ul.actions li {display: inline-block; vertical-align: top;
 	perspective-origin: 50% 0;
 	-ms-perspective-origin: 50% 0;
 	-moz-perspective-origin: 50% 0;
@@ -236,6 +242,27 @@ li {font-size: 14px; line-height: 1.25em;}
 	-ms-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	-webkit-transform-style: preserve-3d;
+	perspective: 500px;
+	-ms-perspective: 500px;
+	-moz-perspective: 500px;
+	-webkit-perspective: 500px;
+}
+.scene.front ul li.article ul.actions li a {display: block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: pre;
+	font-family: "DINPro", sans-serif; font-weight: 800;
+	transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	-moz-transform: rotateX(0deg);
+	-webkit-transform: rotateX(0deg);
+}
+.scene.front ul li.article.forty .card {padding: 40px 50px;}
+.scene.front ul li.article.forty h2 {font-size: 45px; line-height: 1.333em; padding-bottom: 45px;}
+.scene.front ul li.ambassador {}
+.scene.front ul li.ambassador ul li.article p {color: #ffffff; padding-bottom: 44px; font-size: 22px; line-height: 1.363em;}
+.scene.front ul li.ambassador ul li.video {
+	perspective-origin: 50% 50%;
+	-ms-perspective-origin: 50% 50%;
+	-moz-perspective-origin: 50% 50%;
+	-webkit-perspective-origin: 50% 50%;
 }
 .scene.front ul li.ambassador ul li.video div.image {overflow: hidden; height: 100%; width: 100%; z-index: 2; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
@@ -357,10 +384,11 @@ li {font-size: 14px; line-height: 1.25em;}
 	background-size: cover;
 }
 .scene.manifest h1 {color: #FFFFFF;}
-.scene.manifest .content {width: 720px; margin: 0 auto; padding: 0 0 60px;}
-.scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1em; font-size: 45px; font-weight: 400;}
-.scene.manifest .content h3 {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
-.scene.manifest .content p {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
+.scene.manifest .content {width: 600px; margin: 0 auto; padding: 40px 0 60px;}
+.scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1.1em;  font-size: 45px; font-weight: 800; text-align: center;
+}
+.scene.manifest .content h3 {color: #FFFFFF;  padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
+.scene.manifest .content p {color: #FFFFFF; padding-bottom: 1.2em; font-size: 22px; font-weight: 400; }
 .scene.manifest svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
 	stroke: #ffffff; stroke-linecap: round;
 }
