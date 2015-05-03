@@ -6095,13 +6095,13 @@ Util.Objects["page"] = new function() {
 					page.intro.loaded = function() {
 						this.transitioned = function() {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-							this.sp = u.sequencePlayer(this.sq, {"framerate":20});
+							this.sp = u.sequencePlayer(this.sq);
 							u.as(this.sp, "transformOrigin", "49% 57%");
 							this.sp.ended = function() {
 								this.transitioned = function() {
 									page.intro.clicked();
 								}
-								u.a.transition(this, "all 1.2s ease-in");
+								u.a.transition(this, "all 0.8s ease-in");
 								u.a.rotateScale(this, 50, 230);
 							}
 							var images = [];
@@ -6109,7 +6109,6 @@ Util.Objects["page"] = new function() {
 							for(i = 0; i < 49; i++) {
 								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
 							}
-							u.bug(images)
 							this.sp.loadAndPlay(images);
 						}
 						u.a.transition(this, "all 1s ease-in");
@@ -6252,14 +6251,18 @@ Util.Objects["front"] = new function() {
 				else if(u.hc(li, "article")) {
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
-					u.ce(li, {"type":"link"});
+					if(!li.link.target) {
+						u.ce(li, {"type":"link"});
+					}
 					this._linkScrambler(li);
 				}
 				else if(u.hc(li, "ambassador")) {
 					li.li_article = u.qs("li.article", li);
-					u.ce(li.li_article, {"type":"link"});
 					li.li_article.card = u.qs(".card", li.li_article);
 					li.li_article.link = u.qs(".card a", li.li_article);
+					if(!li.li_article.link.target) {
+						u.ce(li.li_article, {"type":"link"});
+					}
 					this._linkScrambler(li.li_article);
 					li.li_video = u.qs("li.video", li);
 					li.video = u.qs("div.video", li.li_video);
@@ -6331,7 +6334,7 @@ Util.Objects["front"] = new function() {
 				"min_width":800,
 				"max_width":1200,
 				"unit":"px",
-				"li a":{
+				"li .actions a":{
 					"min_size":13,
 					"max_size":14
 				},
@@ -6579,15 +6582,15 @@ Util.Objects["events"] = new function() {
 					_event._day = u.cv(_event, "day").toLowerCase();
 					_event._name = u.qs(".name", _event);
 					_event._host = u.qs(".host", _event);
-					_event._location = u.qs(".location", _event);
+					_event._location = u.qs(".location a", _event);
 					_event._host._string = _event._host.innerHTML.toLowerCase()
 					_event._name._string = _event._name.innerHTML.toLowerCase()
 					_event._location._string = _event._location.innerHTML.toLowerCase()
-					_event.clicked = function() {
+					_event.clicked = function(event) {
 						if(u.hc(this, "selected")) {
 							u.a.transition(this, "all 0.5s ease-out");
 							u.rc(this, "selected");
-							u.as(this, "height", "41px");
+							u.as(this, "height", "38px");
 						} else {
 							u.a.transition(this, "all 0.8s ease-out");
 							u.ac(this, "selected");
@@ -6598,12 +6601,12 @@ Util.Objects["events"] = new function() {
 							if(u.hc(_event, "selected") && _event != this) {
 								u.a.transition(_event, "all 0.5s ease-out");
 								u.rc(_event, "selected");
-								u.as(_event, "height", "41px");
+								u.as(_event, "height", "38px");
 							}
 						}
 					}
-					u.ce(_event)
-					u.ass(_event, {"height": "41px"})
+					u.e.click(_event)
+					u.ass(_event, {"height": "38px"})
 				}
 			}
 			this.initDays = function() {
@@ -6703,7 +6706,7 @@ Util.Objects["events"] = new function() {
 			this._tag_filter._title = u.qs("h2", this._tag_filter);
 			this._tag_filter._title.innerHTML = "Søg";
 			this._tag_filter._height = this._tag_filter.offsetHeight;
-			u.ass(this._tag_filter, {"height" : "34px", "width" : "190px"});
+			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
 			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
 			this._tag_filter._search = u.qs(".search", this._tag_filter);
 			u.as(this._tag_filter._tag_list, "display", "none");
@@ -6720,6 +6723,7 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._search, "opacity", 1);
 						scene._tag_filter._title.innerHTML = "Luk";
 					}
+					u.ac(scene._tag_filter, "open");
 					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
 					u.ass(scene._tag_filter, {"width" : "100%", "height" : scene._tag_filter._height + "px"});
 					scene._tag_filter.open = true;
@@ -6729,12 +6733,13 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._search, "display", "none");
 						scene._tag_filter._title.innerHTML = "Søg";
 					}
+					u.rc(scene._tag_filter, "open");
 					u.a.transition(scene._tag_filter._tag_list, "all 0.5s ease-out");
 					u.as(scene._tag_filter._tag_list, "opacity", 0);
 					u.a.transition(scene._tag_filter._search, "all 0.5s ease-out");
 					u.as(scene._tag_filter._search, "opacity", 0);
 					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
-					u.ass(scene._tag_filter, {"width" : "190px", "height" : "34px"});
+					u.ass(scene._tag_filter, {"width" : "100px", "height" : "32px"});
 					scene._tag_filter.open = false;
 				}
 			}

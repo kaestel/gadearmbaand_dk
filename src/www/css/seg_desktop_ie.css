@@ -84,8 +84,8 @@ p {font-size: 14px; line-height: 1.38em;}
 ul,
 ol {font-size: 0;}
 li {font-size: 14px; line-height: 1.25em;}
-#page {position: relative; min-height: 100%; min-width: 600px;}
-#page #content {opacity: 0;}
+#page {position: relative; min-height: 100%; min-width: 800px;}
+#page #content {opacity: 0; position: relative; z-index: 10;}
 #page .logo {opacity: 0;}
 #page #header {opacity: 0;}
 #page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px;
@@ -105,14 +105,14 @@ li {font-size: 14px; line-height: 1.25em;}
 
 /*s-header-desktop.css*/
 #header {}
-#header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 40px; right: 40px; border: 2px solid #70B857;}
+#header .servicenavigation li.navigation {position: fixed; z-index: 160; top: 40px; right: 40px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
 .manifest #header .servicenavigation li.navigation a {color: #ffffff;}
 #header .servicenavigation li.navigation:hover,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
 #header .servicenavigation li.navigation:hover a,
 #header .servicenavigation li.navigation.open:hover a {color: #FFFFFF;}
-#navigation {display: none; z-index: 5; position: fixed; top: 40px; right: 60px; height: 0; width: 0; overflow: hidden;
+#navigation {display: none; z-index: 150; position: fixed; top: 40px; right: 60px; height: 0; width: 0; overflow: hidden;
 	background: #19051a;
 }
 #navigation ul.navigation {width: 100%;}
@@ -303,16 +303,18 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
 .scene.event > ul.days li:hover {background-color: #70B857; color: #FFFFFF;}
 .scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
-.scene.event > .filter {text-align: center; padding: 8px 24px 10px; background-color: #70B857; margin: 30px auto 0; overflow: hidden;
+.scene.event > .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer;
+.scene.event > .filter:hover,
+.scene.event > .filter.open {background-color: #70B857;}
+.scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer; padding: 4px 0;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
 .scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; opacity: 0;}
-.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
+.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
 .scene.event > .filter ul.tag_list li:hover {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
@@ -322,7 +324,7 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > .filter .search fieldset .field input {border: none; background-color: transparent; border-bottom: 2px solid #180619; width: 230px; padding: 4px 20px 6px; font-weight: 800; color: #ffffff; text-align: center;}
 .scene.event > ul.legend {padding: 80px 0px 0; text-align: left;}
 .scene.event > ul.legend li {width: 25%; display: inline-block; border-bottom: 2px solid #180619; padding-bottom: 10px; color: #70B857; font-weight: 600;}
-.scene.event > ul.legend li:first-child {padding-left: 10px;
+.scene.event > ul.legend li {padding-left: 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -333,24 +335,41 @@ li {font-size: 14px; line-height: 1.25em;}
 	box-sizing: border-box;
 }
 .scene.event > ul.items li.item {width: 100%; font-size: 0; border-bottom: 2px solid #180619; overflow: hidden; cursor: pointer;}
-.scene.event > ul.items li.item h3.host {display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px;
+.scene.event > ul.items li.item h3.host {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px; line-height: 1em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+}
+.scene.event > ul.items li.item h2.name {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px;
+	font-family: "DINPro", Verdana, Arial, sans-serif;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+}
+.scene.event > ul.items li.item p.location {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; padding: 10px 0 0 10px; font-weight: 800;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+}
+.scene.event > ul.items li.item p.location a:hover {text-decoration: underline;}
+.scene.event > ul.items li.item ul.tags {vertical-align: top; display: inline-block; width: 25%; font-size: 0; padding: 10px 0 0 10px; white-space: nowrap;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item h2.name {display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0;}
-.scene.event > ul.items li.item p.location {display: inline-block; width: 25%; font-size: 14px; font-weight: 600; padding: 10px 0; font-weight: 800;}
-.scene.event > ul.items li.item ul.tags {display: inline-block; width: 25%; font-size: 0; padding: 10px 0;}
-.scene.event > ul.items li.item ul.tags li {display: inline-block; font-weight: 600; padding-right: 6px;}
+.scene.event > ul.items li.item ul.tags li {display: inline-block; vertical-align: top; line-height: 1em; font-weight: 800; padding-right: 6px;}
 .scene.event > ul.items li.item ul.tags li:after {content: ","}
 .scene.event > ul.items li.item ul.tags li:last-child:after {content: ""}
 .scene.event > ul.items li.item .description {width: 100%; margin: 15px 0 0 0;}
-.scene.event > ul.items li.item .description .media {display: inline-block; width: 25%; padding: 10px 0 0 15px; vertical-align: top;
+.scene.event > ul.items li.item .description .media {display: inline-block; width: 25%; padding: 10px 0 10px 15px; vertical-align: top; text-align: center;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item .description .media img {width: 150px;
+.scene.event > ul.items li.item .description .media img {width: 150px; display: inline-block; vertical-align: top;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
