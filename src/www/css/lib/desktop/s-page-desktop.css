@@ -26,13 +26,13 @@ em, strong {font-size: inherit; font-family: inherit; line-height: inherit; colo
 
 
 h1 {font-size: 45px; line-height: 1em; padding: 25px 0 45px; text-align: center;
-	font-family: "Flood", Verdana, Arial, sans-serif
+	font-family: "Flood", Verdana, Arial, sans-serif;
 }
 h2 {font-size: 22px; line-height: 1.363em; font-weight: 800;
-	font-family: "Flood", Verdana, Arial, sans-serif
+	font-family: "Flood", Verdana, Arial, sans-serif;
 }
 h3 {font-size: 14px; line-height: 2.143em; font-weight: 800;
-	font-family: "DINPro", Verdana, Arial, sans-serif
+	font-family: "DINPro", Verdana, Arial, sans-serif;
 }
 h4 {font-size: 14px; line-height: 1em;}
 
@@ -46,11 +46,23 @@ li {font-size: 14px; line-height: 1.25em;}
 
 
 #page {position: relative; min-height: 100%; min-width: 600px;}
+#page #content {opacity: 0;}
+#page .logo {opacity: 0;}
+#page #header {opacity: 0;}
 
-#intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0;}
-#intro svg line {stroke-width: 3px; stroke: #ffffff;}
-#intro svg circle {stroke-width: 3px; stroke: #ffffff;}
-#intro svg path {stroke-width: 3px; stroke: #ffffff; fill: none;}
+#page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px;
+	background: transparent url(/img/logo.png) no-repeat center center;
+}
+
+#intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0; opacity: 0;
+	background: transparent url(/img/bg_intro.jpg) no-repeat center center;
+	background-size: cover;
+}
+#intro .intro_logo {height: 100%;}
+#intro .intro_logo .sequenceplayer,
+#intro .intro_logo .sequenceplayer ul,
+#intro .intro_logo .sequenceplayer ul li {height: 100%;}
+#intro .intro_logo .sequenceplayer ul li {background-position: center center; background-repeat: no-repeat;}
 
 
 #content .scene {opacity: 0;}

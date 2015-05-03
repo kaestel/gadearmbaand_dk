@@ -150,6 +150,18 @@ Util.Objects["page"] = new function() {
 				// is page in a state to continue
 				if(!page.intro && page.is_ready && page.cN.scene.is_ready) {
 
+					// show page content
+					if(!page.cN.is_ready) {
+//						u.a.transition(page.cN, "all 0.5s ease-in");
+						u.a.transition(page.logo, "all 0.5s ease-in");
+						u.a.transition(page.hN, "all 0.5s ease-in");
+
+						u.a.setOpacity(page.cN, 1);
+						u.a.setOpacity(page.logo, 1);
+						u.a.setOpacity(page.hN, 1);
+						page.cN.is_ready = true;
+					}
+
 					// if existing scene exists, then destroy it
 					// destroy will callback to this function and start the build when approriate
 					// start destroying process for all notes but new scene
@@ -212,6 +224,14 @@ Util.Objects["page"] = new function() {
 			// initialize header
 			page.initHeader = function() {
 //				u.bug("initHeader")
+
+				// logo
+				page.logo = u.ae(page, "div", {"class":"logo"});
+				u.ce(page.logo);
+				page.logo.clicked = function() {
+					page.navigate("/");
+				}
+
 
 				// get the navigation node from the servicenavigation
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
@@ -340,59 +360,93 @@ Util.Objects["page"] = new function() {
 				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
 
-					page.intro.svg = u.svg({
-						"node":page.intro,
-						"width":page.browser_w,
-						"height":page.browser_h,
-						"class":"intro",
-						"shapes":[
-							{
-								"type":"line",
-								"x1":-10,
-								"y1":page.browser_h/2,
-								"x2":-8,
-								"y2":page.browser_h/2
+					page.intro.loaded = function() {
+
+						this.transitioned = function() {
+							this.sq = u.ae(this, "div", {"class":"intro_logo"});
+							this.sp = u.sequencePlayer(this.sq, {"framerate":20});
+							
+							u.as(this.sp, "transformOrigin", "49% 57%");
+
+							this.sp.ended = function() {
+
+								this.transitioned = function() {
+									page.intro.clicked();
+								}
+
+								u.a.transition(this, "all 1.2s ease-in");
+								u.a.rotateScale(this, 50, 230);
 							}
-						]
-						
-					});
 
-
-					page.intro.line1 = u.qs("line", page.intro.svg);
-
-					page.intro.line1.transitioned = function() {
-
-						page.intro.line1.transitioned = function() {
-
-
-
-							page.intro.path1 = u.svgShape(page.intro.svg, {
-								"type":"path",
-								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
-//								"d":"M28.7,83.3c-4.3,4.3-6.9,10.2-6.9,16.7c0,2.9,0.5,5.8,1.5,8.3c1,2.6,2.4,5,4.2,7"
-							});
-							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
-
-							// u.svgShape(page.intro.svg, {
-							// 	"type":"circle",
-							// 	"cx":page.browser_w/2,
-							// 	"cy":page.browser_h/2,
-							// 	"r":100
-							// });
+							var images = [];
+							var i;
+							for(i = 0; i < 49; i++) {
+								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
+							}
+							u.bug(images)
+							this.sp.loadAndPlay(images);
 						}
-
-						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
-
-
+						u.a.transition(this, "all 1s ease-in");
+						u.a.setOpacity(this, 1);
 					}
-					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
+					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
+
+
+// 					page.intro.svg = u.svg({
+// 						"node":page.intro,
+// 						"width":page.browser_w,
+// 						"height":page.browser_h,
+// 						"class":"intro",
+// 						"shapes":[
+// 							{
+// 								"type":"line",
+// 								"x1":-10,
+// 								"y1":page.browser_h/2,
+// 								"x2":-8,
+// 								"y2":page.browser_h/2
+// 							}
+// 						]
+//
+// 					});
+//
+//
+// 					page.intro.line1 = u.qs("line", page.intro.svg);
+//
+// 					page.intro.line1.transitioned = function() {
+//
+// 						page.intro.line1.transitioned = function() {
+//
+//
+//
+// 							page.intro.path1 = u.svgShape(page.intro.svg, {
+// 								"type":"path",
+// 								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
+// //								"d":"M28.7,83.3c-4.3,4.3-6.9,10.2-6.9,16.7c0,2.9,0.5,5.8,1.5,8.3c1,2.6,2.4,5,4.2,7"
+// 							});
+// 							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
+//
+// 							// u.svgShape(page.intro.svg, {
+// 							// 	"type":"circle",
+// 							// 	"cx":page.browser_w/2,
+// 							// 	"cy":page.browser_h/2,
+// 							// 	"r":100
+// 							// });
+// 						}
+//
+// 						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
+//
+//
+// 					}
+// 					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
 
 
 
 					// remove intro
 					u.ce(page.intro);
 					page.intro.clicked = function() {
+//						u.bug("cliecked intro")
 
+						u.t.resetTimer(this.t_click);
 						this.parentNode.removeChild(this);
 						page.intro = false;
 
@@ -400,6 +454,7 @@ Util.Objects["page"] = new function() {
 						page.cN.ready();
 
 					}
+//					page.intro.t_click = u.t.setTimer(page.intro, "clicked", 2500);
 				}
 
 			}

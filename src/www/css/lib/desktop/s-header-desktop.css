@@ -3,6 +3,7 @@
 
 #header .servicenavigation li.navigation {position: fixed; z-index: 10; top: 40px; right: 40px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
+.manifest #header .servicenavigation li.navigation a {color: #ffffff;}
 #header .servicenavigation li.navigation:hover,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
 #header .servicenavigation li.navigation:hover a,
@@ -33,9 +34,4 @@
 #navigation ul.navigation li .videoplayer {width: 100%; height: 100%; }
 #navigation ul.navigation li .videoplayer video {width: 100%; height: 100%;}
 
-/*#navigation ul.navigation li.front:hover {background-image: url(/img/bg_manifest.jpg);}
-#navigation ul.navigation li.events:hover {background-image: url(/img/bg_manifest.jpg);}
-#navigation ul.navigation li.manifest:hover {background-image: url(/img/bg_manifest.jpg);}
-#navigation ul.navigation li.buy:hover {background-image: url(/img/bg_manifest.jpg);}
-*/
 #navigation.open {display: block;}
