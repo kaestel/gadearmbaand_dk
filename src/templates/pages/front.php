@@ -224,7 +224,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 						<h2>Signe Lykke</h2>
 						<p>Om at lave klassisk musik med underliggende drone-bas. Om at være med til at udfordre rammerne. Om musiksnobberi og drive, blod, sved og tårer.</p>
 						<ul class="actions">
-							<li><a href="/events">Se gadeprogrammet</a></li>
+							<li><a href="/program">Se gadeprogrammet</a></li>
 						</ul>
 					</div>
 				</li>

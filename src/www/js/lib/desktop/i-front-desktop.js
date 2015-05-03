@@ -195,7 +195,9 @@ Util.Objects["front"] = new function() {
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
 
-					u.ce(li, {"type":"link"});
+					if(!li.link.target) {
+						u.ce(li, {"type":"link"});
+					}
 
 					this._linkScrambler(li);
 				}
@@ -206,11 +208,15 @@ Util.Objects["front"] = new function() {
 
 					// article
 					li.li_article = u.qs("li.article", li);
-					u.ce(li.li_article, {"type":"link"});
 
 					li.li_article.card = u.qs(".card", li.li_article);
 
 					li.li_article.link = u.qs(".card a", li.li_article);
+
+					if(!li.li_article.link.target) {
+						u.ce(li.li_article, {"type":"link"});
+					}
+
 					this._linkScrambler(li.li_article);
 
 
@@ -328,7 +334,7 @@ Util.Objects["front"] = new function() {
 				"min_width":800,
 				"max_width":1200,
 				"unit":"px",
-				"li a":{
+				"li .actions a":{
 					"min_size":13,
 					"max_size":14
 				},
