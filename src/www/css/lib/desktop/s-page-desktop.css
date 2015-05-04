@@ -56,9 +56,11 @@ li {font-size: 14px; line-height: 1.25em;}
 
 #intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0; opacity: 0;
 	background: transparent url(/img/bg_intro.jpg) no-repeat center center;
-	background-size: cover;
+	background-size: 110% auto;
 }
-#intro .intro_logo {height: 100%;}
+#intro .intro_logo {height: 100%; opacity: 0;
+	background: transparent url(/img/logo/logo_00048.png) no-repeat center center;
+}
 #intro .intro_logo .sequenceplayer,
 #intro .intro_logo .sequenceplayer ul,
 #intro .intro_logo .sequenceplayer ul li {height: 100%;}

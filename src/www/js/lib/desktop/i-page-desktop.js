@@ -354,7 +354,7 @@ Util.Objects["page"] = new function() {
 
 			// initialize intro
 			page.initIntro = function() {
-//				u.bug("initIntro")
+				u.bug("initIntro")
 
 				// create intro layer
 				if(u.hc(document.body, "front")) {
@@ -364,29 +364,62 @@ Util.Objects["page"] = new function() {
 
 						this.transitioned = function() {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-							this.sp = u.sequencePlayer(this.sq);
-							
-							u.as(this.sp, "transformOrigin", "49% 57%");
 
-							this.sp.ended = function() {
+//							u.a.transition(this, "none");
 
-								this.transitioned = function() {
-									page.intro.clicked();
+							u.a.scale(this.sq, 0);
+
+							u.a.transition(this, "all 0.8s ease-out");
+							u.a.scale(this, 1.05);
+							u.a.setBgPos(this, "23%", "49%");
+
+							// u.a.transition(this, "all 1.5s ease-in 0.5s");
+							// u.a.rotateScale(this, 50, 230);
+
+							// u.a.transition(this.sq, "none");
+							//
+							// this.sq.transitioned = function() {
+							//
+							//
+							// 	u.a.transition(this, "none");
+							// 	u.as(this, "transformOrigin", "49% 57%");
+							//
+								this.sq.transitioned = function() {
+									u.bug("close")
+									u.t.setTimer(page.intro, "clicked", 1500);
+//									page.intro.clicked();
 								}
 
-								u.a.transition(this, "all 0.8s ease-in");
-								u.a.rotateScale(this, 50, 230);
-							}
+//							}
 
-							var images = [];
-							var i;
-							for(i = 0; i < 49; i++) {
-								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
-							}
-							this.sp.loadAndPlay(images);
+
+							u.a.transition(this.sq, "all 0.5s ease-in-out 0.3s");
+							u.a.setOpacity(this.sq, 1);
+							u.a.scale(this.sq, 1);
+
+							// this.sp = u.sequencePlayer(this.sq);
+							// u.as(this.sp, "transformOrigin", "49% 57%");
+							//
+							// this.sp.ended = function() {
+							//
+							// 	this.transitioned = function() {
+							// 		page.intro.clicked();
+							// 	}
+							//
+							// 	u.a.transition(this, "all 0.8s ease-in");
+							// 	u.a.rotateScale(this, 50, 230);
+							// }
+							//
+							// var images = [];
+							// var i;
+							// for(i = 0; i < 49; i++) {
+							// 	images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
+							// }
+							// this.sp.loadAndPlay(images);
 						}
 						u.a.transition(this, "all 1s ease-in");
 						u.a.setOpacity(this, 1);
+//						u.a.scale(this, 1.1);
 					}
 					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
 

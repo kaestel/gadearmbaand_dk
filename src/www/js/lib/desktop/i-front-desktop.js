@@ -450,6 +450,7 @@ Util.Objects["front"] = new function() {
 				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
 
 				this.cards[this.card].transitioned = function() {
+					u.a.transition(this, "none");
 					u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
 				}
 				u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
@@ -483,6 +484,9 @@ Util.Objects["front"] = new function() {
 			// instagram
 			if(u.hc(li, "instagram")) {
 
+				li.image.transitioned = function() {
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 			}
@@ -491,6 +495,9 @@ Util.Objects["front"] = new function() {
 			else if(u.hc(li, "ambassador")) {
 
 				li.image.transitioned = function() {
+
+					u.a.transition(this, "none");
+					u.a.removeTransform(this);
 
 					u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
 
@@ -520,6 +527,11 @@ Util.Objects["front"] = new function() {
 
 			// tweet
 			else if(u.hc(li, "tweet")) {
+
+				li.cards[0].transitioned = function() {
+					u.a.transition(this, "none");
+					u.a.removeTransform(this);
+				}
 
 				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");

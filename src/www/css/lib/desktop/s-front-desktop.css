@@ -43,7 +43,7 @@
 	-moz-perspective-origin: 50% 50%;
 	-webkit-perspective-origin: 50% 50%;
 }
-.scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; position: absolute; top: 0; left: 0; box-sizing: border-box;
+.scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; z-index: 10; position: absolute; top: 0; left: 0; box-sizing: border-box;
 	backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
@@ -133,7 +133,7 @@
 	-webkit-perspective: 500px;
 }
 
-.scene.front ul li.article ul.actions li a {display: block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #6eb951; font-size: 14px; white-space: pre;
+.scene.front ul li.article ul.actions li a {display: block; padding: 10px 20px 9px; border: 2px solid #6eb951; color: #ffffff; font-size: 14px; white-space: pre;
 	font-family: "DINPro", sans-serif; font-weight: 800;
 
 	transform: rotateX(0deg);

@@ -4926,7 +4926,7 @@ Util.Animation = u.a = new function() {
 		}
 		return this._vendor_methods[this._vendor+method];
 	}
-	this.transition = function(node, transition) {
+	this.transition = function(node, transition, callback) {
 		try {
 			var duration = transition.match(/[0-9.]+[ms]+/g);
 			if(duration) {
@@ -4950,7 +4950,7 @@ Util.Animation = u.a = new function() {
 		if(event.target == this && typeof(this.transitioned) == "function") {
 			this.transitioned(event);
 		}
-		u.a.transition(this, "none");
+		this.transitioned = null;
 	}
 	this.removeTransform = function(node) {
 		node.style[this.vendor("Transform")] = "none";
@@ -5327,6 +5327,7 @@ Util.Objects["page"] = new function() {
 			page.fN = u.qs("#footer");
 			page.videoPlayer = u.videoPlayer();
 			page.resized = function(event) {
+				console.log("resized")
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 				if(page.browser_w >= 1200) {
@@ -5335,15 +5336,7 @@ Util.Objects["page"] = new function() {
 				else {
 					u.rc(page, "fixed");
 				}
-				var i, item;
-				if(page.nN.items) {
-					for(i = 0; item = page.nN.items[i]; i++) {
-						u.ass(item, {"height" : ((page.browser_h-50) / 4) + "px"});
-					}
-					if(u.hc(page.nN, "open")) {
-						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
-					}
-				}
+				// 	
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
 					page.cN.scene.resized();
 				}
@@ -5424,6 +5417,7 @@ Util.Objects["page"] = new function() {
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
+				console.log("first: "+u.browserH())
 				u.ce(page.bn_nav);
 				page.bn_nav.clicked = function() {
 					if(u.hc(page.nN, "open")) {
@@ -5436,11 +5430,17 @@ Util.Objects["page"] = new function() {
 						u.ass(page.nN, {"width":0, "height":0, "top": "40px", "right": "60px"});
 					}
 					else {
+						if(page.nN.items) {
+							for(i = 0; item = page.nN.items[i]; i++) {
+								console.log(item)
+								u.ass(item, {"height" : ((u.browserH()-50) / 4) + "px"});
+							}
+						}
 						u.ac(page.nN, "open");
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
 						u.a.transition(page.nN, "all 0.3s linear");
-						u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
 					}
 				}
 			}

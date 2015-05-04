@@ -4926,7 +4926,7 @@ Util.Animation = u.a = new function() {
 		}
 		return this._vendor_methods[this._vendor+method];
 	}
-	this.transition = function(node, transition) {
+	this.transition = function(node, transition, callback) {
 		try {
 			var duration = transition.match(/[0-9.]+[ms]+/g);
 			if(duration) {
@@ -4950,7 +4950,7 @@ Util.Animation = u.a = new function() {
 		if(event.target == this && typeof(this.transitioned) == "function") {
 			this.transitioned(event);
 		}
-		u.a.transition(this, "none");
+		this.transitioned = null;
 	}
 	this.removeTransform = function(node) {
 		node.style[this.vendor("Transform")] = "none";
@@ -5706,26 +5706,23 @@ Util.Objects["page"] = new function() {
 				}
 			}
 			page.initIntro = function() {
+				u.bug("initIntro")
 				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
 					page.intro.loaded = function() {
 						this.transitioned = function() {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-							this.sp = u.sequencePlayer(this.sq);
-							u.as(this.sp, "transformOrigin", "49% 57%");
-							this.sp.ended = function() {
-								this.transitioned = function() {
-									page.intro.clicked();
+							u.a.scale(this.sq, 0);
+							u.a.transition(this, "all 0.8s ease-out");
+							u.a.scale(this, 1.05);
+							u.a.setBgPos(this, "23%", "49%");
+								this.sq.transitioned = function() {
+									u.bug("close")
+									u.t.setTimer(page.intro, "clicked", 1500);
 								}
-								u.a.transition(this, "all 0.8s ease-in");
-								u.a.rotateScale(this, 50, 230);
-							}
-							var images = [];
-							var i;
-							for(i = 0; i < 49; i++) {
-								images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
-							}
-							this.sp.loadAndPlay(images);
+							u.a.transition(this.sq, "all 0.5s ease-in-out 0.3s");
+							u.a.setOpacity(this.sq, 1);
+							u.a.scale(this.sq, 1);
 						}
 						u.a.transition(this, "all 1s ease-in");
 						u.a.setOpacity(this, 1);
@@ -6013,16 +6010,12 @@ Util.Objects["front"] = new function() {
 				}
 			}
 			li.unscramble = function() {
-				u.a.transition(this.link, "all 0.3s ease-in-out");
-				u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
 				this.link.innerHTML = this.default_text;
 				this.scrambled_count = 0;
 			}
 			li.mousedover = function() {
 				u.t.resetTimer(this.t_scrambler);
 				if(!this.scrambled_count) {
-					u.a.transition(this.link, "all 0.3s ease-in-out");
-					u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
 					this.scramble();
 				}
 			}
@@ -6037,6 +6030,7 @@ Util.Objects["front"] = new function() {
 			if(this.cards.length > 1) {
 				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
 				this.cards[this.card].transitioned = function() {
+					u.a.transition(this, "none");
 					u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
 				}
 				u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
@@ -6053,11 +6047,16 @@ Util.Objects["front"] = new function() {
 			var now = new Date().getTime();
 			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
 			if(u.hc(li, "instagram")) {
+				li.image.transitioned = function() {
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 			}
 			else if(u.hc(li, "ambassador")) {
 				li.image.transitioned = function() {
+					u.a.transition(this, "none");
+					u.a.removeTransform(this);
 					u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
 					u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
 					u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
@@ -6073,6 +6072,10 @@ Util.Objects["front"] = new function() {
 				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
 			}
 			else if(u.hc(li, "tweet")) {
+				li.cards[0].transitioned = function() {
+					u.a.transition(this, "none");
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
 				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
 				li.card = 0;
@@ -6403,6 +6406,14 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
+				this.content = u.qs(".content", this);
+				// 
+				// 
+				// 
+				// 
+				// 	
+				// 	// 	
+				// 	
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
 			}
