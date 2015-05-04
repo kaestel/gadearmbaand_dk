@@ -1,18 +1,27 @@
 .scene.manifest {width: 100%; overflow: scroll;
-	background-image: url(/img/bg_manifest.jpg); background-attachment: fixed; background-repeat: no-repeat;
+/*	background-image: url(/img/bg_manifest.jpg); background-attachment: fixed; background-repeat: no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
-	background-size: cover;
+	background-size: cover;*/
 }
 
-.scene.manifest h1 {color: #FFFFFF;}
-.scene.manifest .content {width: 600px; margin: 0 auto; padding: 40px 0 60px;}
-.scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1.1em; /*padding-top: 1.3em;*/ font-size: 45px; font-weight: 800; text-align: center;
+.scene.manifest .forgroundPerson {position: absolute; bottom: 0; left: -180px; width: 568px; height: 376px; z-index: 4;
+	background-repeat: no-repeat; background-size: 100%; background-position: left bottom;
+	/*filter: blur(5px);
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);*/
+}
+
+.scene.manifest h1 {color: red;}
+.scene.manifest .content {width: 600px; margin: 0 auto; /*padding: 40px 0 60px;*/ position: relative; z-index: 3;}
+.scene.manifest .content h2 {color: red; padding-bottom: 1.1em; /*padding-top: 1.3em;*/ font-size: 45px; font-weight: 800; text-align: center;
 /*	font-family: "DINPro", Verdana, Arial, sans-serif;*/
 }
-.scene.manifest .content h3 {color: #FFFFFF; /*padding-bottom: 1em;*/ padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
-.scene.manifest .content p {color: #FFFFFF; padding-bottom: 1.2em; font-size: 22px; font-weight: 400; /*text-align: center;*/}
+.scene.manifest .content h3 {color: red; /*padding-bottom: 1em;*/ padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
+.scene.manifest .content p {color: red; padding-bottom: 1.2em; font-size: 22px; font-weight: 400; /*text-align: center;*/}
 
 .scene.manifest .vp {position: absolute; top: 0; right: 0; bottom: 0; left: 0;
 	background-attachment: fixed; background-repeat: no-repeat;
