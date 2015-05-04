@@ -415,8 +415,8 @@ Util.Objects["front"] = new function() {
 			}
 			li.unscramble = function() {
 
-				u.a.transition(this.link, "all 0.3s ease-in-out");
-				u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
+				// u.a.transition(this.link, "all 0.3s ease-in-out");
+				// u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
 
 				this.link.innerHTML = this.default_text;
 				this.scrambled_count = 0;
@@ -427,8 +427,8 @@ Util.Objects["front"] = new function() {
 
 				if(!this.scrambled_count) {
 
-					u.a.transition(this.link, "all 0.3s ease-in-out");
-					u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
+					// u.a.transition(this.link, "all 0.3s ease-in-out");
+					// u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
 
 					this.scramble();
 				}
