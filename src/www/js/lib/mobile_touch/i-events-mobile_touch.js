@@ -99,16 +99,24 @@ Util.Objects["events"] = new function() {
 			this._selected_day = "";
 			this._selected_tags = [];
 			this._selected_search = "";
+
 			
 			
 			this.initEvents = function() {
 
-				this._events = u.qsa(".item");
+				this._events = u.qsa(".item", this);
 
 				var i, _event;
 				for(i = 0; _event = this._events[i]; i++) {
 
 					_event._tags = u.qsa("ul.tags li", _event);
+					_event._media = u.qs("div.media", _event);
+					_event._media._item_id = u.cv(_event._media, "item_id")
+					_event._media._format = u.cv(_event._media, "format")
+
+					// inject img
+					u.ae(_event._media, "img", {"src" : "/images/" + _event._media._item_id + "/single_media/300x." + _event._media._format});
+
 					_event._event_tags_array = [];
 
 					var j, _event_tag;
@@ -122,18 +130,19 @@ Util.Objects["events"] = new function() {
 					_event._day = u.cv(_event, "day").toLowerCase();
 					_event._name = u.qs(".name", _event);
 					_event._host = u.qs(".host", _event);
-					_event._location = u.qs(".location", _event);
+					_event._location = u.qs(".location a", _event);
+
 
 					_event._host._string = _event._host.innerHTML.toLowerCase()
 					_event._name._string = _event._name.innerHTML.toLowerCase()
 					_event._location._string = _event._location.innerHTML.toLowerCase()
 
-					_event.clicked = function() {
+					_event.clicked = function(event) {
 
 						if(u.hc(this, "selected")) {
 							u.a.transition(this, "all 0.5s ease-out");
 							u.rc(this, "selected");
-							u.as(this, "height", "41px");
+							u.as(this, "height", "38px");
 
 						} else {
 							u.a.transition(this, "all 0.8s ease-out");
@@ -148,20 +157,20 @@ Util.Objects["events"] = new function() {
 								
 								u.a.transition(_event, "all 0.5s ease-out");
 								u.rc(_event, "selected");
-								u.as(_event, "height", "41px");
+								u.as(_event, "height", "38px");
 							}
 						}
 					}
 
-					u.ce(_event)
-					u.ass(_event, {"height": "41px"})
+					u.e.click(_event)
+					u.ass(_event, {"height": "38px"})
 				}
 			}
 
 			this.initDays = function() {
 
-				this._days_list = u.qs("ul.days");
-				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"All days"});
+				this._days_list = u.qs("ul.days", this);
+				this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"Alle dage"});
 				this._days = u.qsa("li", this._days_list);
 
 				var i, day;
@@ -202,8 +211,8 @@ Util.Objects["events"] = new function() {
 
 			this.initTags = function() {
 
-				this._tags_list = u.qs(".tag_list");
-				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"All"});
+				this._tags_list = u.qs(".tag_list", this);
+				this._all_tags = u.ie(this._tags_list, "li", {"class":"all selected","html":"Alle"});
 				this._tags = u.qsa("li", this._tags_list);
 
 				var i, tag;
@@ -257,8 +266,8 @@ Util.Objects["events"] = new function() {
 
 				this._search = u.qs("form.search", this);
 				this._search_input = u.qs("input", this._search);
-				this._search_input._default = "Type here"
-				
+				this._search_input._default = "Skriv her"
+
 				// setting default value
 				this._search_input.value = this._search_input._default;
 
@@ -302,6 +311,78 @@ Util.Objects["events"] = new function() {
 			this.initTags();
 			this.initSearch();
 
+
+			// open close advanced search
+			this._tag_filter = u.qs(".filter", this);
+			this._tag_filter._title = u.qs("h2", this._tag_filter);
+			this._tag_filter._title.innerHTML = "Søg";
+
+			this._tag_filter._height = this._tag_filter.offsetHeight;
+
+			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
+
+			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
+			this._tag_filter._search = u.qs(".search", this._tag_filter);
+
+			u.as(this._tag_filter._tag_list, "display", "none");
+			u.as(this._tag_filter._search, "display", "none");
+
+
+			this._tag_filter.open = false;
+
+			this._tag_filter._title.clicked = function() {
+
+				if(!scene._tag_filter.open) {
+
+					scene._tag_filter.transitioned = function() {
+
+						u.as(scene._tag_filter._tag_list, "display", "block");
+						u.as(scene._tag_filter._search, "display", "block");
+
+						u.a.transition(scene._tag_filter._tag_list, "all 0.5s ease-out");
+						u.as(scene._tag_filter._tag_list, "opacity", 1);
+
+						u.a.transition(scene._tag_filter._search, "all 0.5s ease-out");
+						u.as(scene._tag_filter._search, "opacity", 1);
+
+						scene._tag_filter._title.innerHTML = "Luk";
+
+					}
+
+					u.ac(scene._tag_filter, "open");
+					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
+					u.ass(scene._tag_filter, {"width" : "100%", "height" : scene._tag_filter._height + "px"});
+
+					scene._tag_filter.open = true;
+
+				} else {
+
+					scene._tag_filter._tag_list.transitioned = function() {
+
+						u.as(scene._tag_filter._tag_list, "display", "none");
+						u.as(scene._tag_filter._search, "display", "none");
+
+						scene._tag_filter._title.innerHTML = "Søg";
+
+					}
+
+					u.rc(scene._tag_filter, "open");
+
+					u.a.transition(scene._tag_filter._tag_list, "all 0.5s ease-out");
+					u.as(scene._tag_filter._tag_list, "opacity", 0);
+
+					u.a.transition(scene._tag_filter._search, "all 0.5s ease-out");
+					u.as(scene._tag_filter._search, "opacity", 0);
+
+					u.a.transition(scene._tag_filter, "all 0.5s ease-out");
+					u.ass(scene._tag_filter, {"width" : "100px", "height" : "32px"});
+
+					scene._tag_filter.open = false;
+
+				}
+			}
+
+			u.ce(this._tag_filter._title);
 
 
 			this.is_ready = true;

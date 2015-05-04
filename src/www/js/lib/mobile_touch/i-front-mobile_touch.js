@@ -7,52 +7,6 @@ Util.Objects["front"] = new function() {
 
 			var block_height = Math.ceil(this.offsetWidth/5);
 
-			//
-			// var i, li;
-			// for (i = 0; li = this.lis[i]; i++) {
-			//
-			// 	// handle article and instagram items
-			// 	if(u.hc(li, "article|instagram")) {
-			// 		if(li._forty) {
-			// 			u.as(li, "height", (block_height*2)+"px", false);
-			// 		}
-			// 		else {
-			// 			u.as(li, "height", block_height+"px", false);
-			// 		}
-			// 	}
-			//
-			// 	// handle tweet items
-			// 	if(u.hc(li, "tweet")) {
-			// 		u.as(li, "height", block_height+"px", false);
-			// 	}
-			//
-			//
-			// 	// handle ambassador
-			// 	if(u.hc(li, "ambassador")) {
-			// 		// video height
-			// 		u.as(li.video, "height", (block_height*2)+"px", false);
-			// 		// article height
-			// 		u.as(li.article, "height", (block_height*2)+"px", false);
-			// 	}
-			//
-			//
-			// 	// handle margins
-			// 	if(u.hc(li, "push_up|push_up_half")) {
-			// 		u.as(li, "marginTop", -(block_height)+"px", false);
-			// 	}
-			// 	if(u.hc(li, "push_down")) {
-			// 		u.as(li, "marginTop", block_height+"px", false);
-			// 	}
-			// }
-			//
-			//
-			// // adjust grid padding
-			// var factor = (this.offsetWidth - 600) / 600;
-			// var padding = (10 + (factor * 30))+"px "+(10 + (factor * 20))+"px";
-			// this.article_rule.style.setProperty("padding", padding, "important");
-			// this.tweet_rule.style.setProperty("padding", padding, "important");
-
-
 		}
 
 		// global scroll handler
@@ -124,22 +78,17 @@ Util.Objects["front"] = new function() {
 				}
 
 				// handle tweet
-				if(u.hc(li, "tweet")) {
-					// u.a.transition(li, "all 1.5s ease-in-out");
-					// u.a.scale(li, 1);
-					// u.a.setOpacity(li, 1);
-					
-				}
+				if(u.hc(li, "tweet")) {}
 
 				// handle article page
 				if(u.hc(li, "article")) {
 
-					var link = u.qs("a", li);
-					u.ce(link, {"type":"link"});
+					li.card = u.qs(".card", li);
+					li.link = u.qs(".card a", li);
 
-					// u.a.transition(li, "all 1.5s ease-in-out");
-					// u.a.scale(li, 1);
-					// u.a.setOpacity(li, 1);
+					if(!li.link.target) {
+						u.ce(li, {"type":"link"});
+					}
 
 				}
 
@@ -148,57 +97,69 @@ Util.Objects["front"] = new function() {
 				if(u.hc(li, "ambassador")) {
 					//u.as(li, "height", li.offsetWidth+"px");
 
-					// article
-					li.article = u.qs("li.article", li);
+					li.li_article = u.qs("li.article", li);
 
-					// video
-					li.video = u.qs("li.video", li);
-					li.video.li = li;
+					li.li_article.card = u.qs(".card", li.li_article);
 
-					li.video.video_id = u.cv(li.video, "video_id");
-					li.video.video_format = u.cv(li.video, "video_format");
+					li.li_article.link = u.qs(".card a", li.li_article);
 
-					li.video.image_id = u.cv(li.video, "image_id");
-					li.video.image_format = u.cv(li.video, "image_format");
-
-					if(li.video.image_id && li.video.image_format) {
-						li.video.loaded = function(queue) {
-							u.ae(this, "img", {"src": queue[0].image.src});
-
-						}
-
-						li.video._image_src = "/images/" + li.video.image_id + "/image/720x." + li.video.image_format;
-						u.preloader(li.video, [li.video._image_src])
+					if(!li.li_article.link.target) {
+						u.ce(li.li_article, {"type":"link"});
 					}
 
 
-					if(li.video.video_id && li.video.video_format) {
+					// video
+					li.li_video = u.qs("li.video", li);
+					li.video = u.qs("div.video", li.li_video);
+					li.image = u.qs("div.image", li.li_video);
 
-						li.video._video_url = "/videos/" + li.video.video_id + "/video/720x." + li.video.video_format;
+					li.li_video.li = li;
+					li.video.li = li;
+					li.image.li = li;
 
-						// inject video_wrapper
-						//this.item.video_wrapper = u.ae(node, "div", {"class":"video_wrapper"});
 
-						li.video.play_bn = u.ae(li.video, "div", {"class": "play"});
-						//this.item.play_bn.url = this.item._video_url;
 
-						u.e.click(li.video);
-						li.video.clicked = function(event) {
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
+
+					li.image_id = u.cv(li.image, "image_id");
+					li.image_format = u.cv(li.image, "image_format");
+
+
+					if(li.image_id && li.image_format) {
+						li.image.loaded = function(queue) {
+							u.ae(this, "img", {"src": queue[0].image.src});
+						}
+
+						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
+						u.preloader(li.image, [li._image_src])
+					}
+
+
+					if(li.video_id && li.video_format) {
+
+						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
+						li.bn_play = u.ae(li.image, "div", {"class": "play"});
+
+						u.e.click(li.image);
+						li.image.clicked = function(event) {
 
 							//u.as(this.play_bn, "display", "none");
 							page.videoPlayer.ended = function(event) {
-								//console.log("video player is done playing. LOOOP!");
-								page.videoPlayer.play();
-							}
 
-							u.ae(this, page.videoPlayer);
-							page.videoPlayer.loadAndPlay(this._video_url, {"playpause":true});
+							}
+							
+//							this.li.video.ended;
+
+							u.as(this.li.video, "zIndex", 3);
+							u.ae(this.li.video, page.videoPlayer);
+							page.videoPlayer.current_node = this.li;
+							page.videoPlayer.loadAndPlay(this.li._video_url, {"playpause":true});
 
 						}
 
 					}
-
-				};
+				}
 
 			}
 

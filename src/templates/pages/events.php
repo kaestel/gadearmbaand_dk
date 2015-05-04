@@ -50,9 +50,9 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 	<ul class="legend">
 		<li>Vært</li>
-		<li>Event</li>
+		<li class="event">Event</li>
 		<li>Lokation</li>
-		<li>Tags</li>
+		<li class="tags">Tags</li>
 	</ul>
 
 
