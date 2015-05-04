@@ -29,7 +29,7 @@ Util.Objects["page"] = new function() {
 			// global resize handler 
 			page.resized = function(event) {
 //				u.bug("page.resized:" + u.nodeId(this));
-
+				console.log("resized")
 				// update global values
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
@@ -43,17 +43,17 @@ Util.Objects["page"] = new function() {
 				}
 
 				// navigation adjustments
-				var i, item;
-				if(page.nN.items) {
-					for(i = 0; item = page.nN.items[i]; i++) {
-						u.ass(item, {"height" : ((page.browser_h-50) / 4) + "px"});
-					}
+				// var i, item;
+				// if(page.nN.items) {
+				// 	for(i = 0; item = page.nN.items[i]; i++) {
+				// 		u.ass(item, {"height" : ((u.browserH()-50) / 4) + "px"});
+				// 	}
 
-					// resize open navigation
-					if(u.hc(page.nN, "open")) {
-						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
-					}
-				}
+				// 	// resize open navigation
+				// 	if(u.hc(page.nN, "open")) {
+				// 		u.ass(page.nN, {"height" : u.browserH()+"px", "width" : page.browser_w+"px"});
+				// 	}
+				// }
 
 				// forward scroll event to current scene
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
@@ -237,7 +237,7 @@ Util.Objects["page"] = new function() {
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
-				
+				console.log("first: "+u.browserH())
 				// very simple navigation toggle
 				u.ce(page.bn_nav);
 				page.bn_nav.clicked = function() {
@@ -257,13 +257,23 @@ Util.Objects["page"] = new function() {
 					}
 					// open navigation
 					else {
+
+						// for mobile alculate height on every opeing of the menu
+						if(page.nN.items) {
+							for(i = 0; item = page.nN.items[i]; i++) {
+								console.log(item)
+								u.ass(item, {"height" : ((u.browserH()-50) / 4) + "px"});
+							}
+						}
+
 						u.ac(page.nN, "open");
 
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
 
 						u.a.transition(page.nN, "all 0.3s linear");
-						u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
+
 					}
 
 				}
