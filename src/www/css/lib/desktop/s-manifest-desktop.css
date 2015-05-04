@@ -14,7 +14,17 @@
 .scene.manifest .content h3 {color: #FFFFFF; /*padding-bottom: 1em;*/ padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
 .scene.manifest .content p {color: #FFFFFF; padding-bottom: 1.2em; font-size: 22px; font-weight: 400; /*text-align: center;*/}
 
+.scene.manifest .vp {position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+	background-attachment: fixed; background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
 
+
+.scene.manifest .videoplayer {position: absolute; z-index: 2; top: -1%; left: -1%; width: 102%; height: 102%;}
+.scene.manifest .videoplayer video {width: 100%; height: 100%;}
 
 .scene.manifest svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
 	stroke: #ffffff; stroke-linecap: round;

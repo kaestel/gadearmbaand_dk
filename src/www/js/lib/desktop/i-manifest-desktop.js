@@ -30,6 +30,35 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
+				this.vp = u.ae(this, "div", {"class":"vp"});
+				u.as(this.vp, "backgroundImage", "url(/assets/nav_manifest.jpg)");
+
+				
+
+				var player = u.videoPlayer();
+				u.ae(this.vp, player);
+
+
+				if(this.offsetWidth/this.offsetHeight > 480/270) {
+
+					var height = (this.offsetWidth / (480/270));
+					u.as(this.vp, "height", height + "px");
+					u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
+					u.as(this.vp, "width", "100%");
+					u.as(this.vp, "marginLeft", 0);
+				}
+				else {
+					console.log("this")
+					var width = (this.offsetHeight / (270/480));
+					u.as(this.vp, "width", width + "px");
+					u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
+					u.as(this.vp, "height", "100%");
+					u.as(this.vp, "marginTop", 0);
+				}
+
+				player.load("/assets/nav_manifest_640x360.mp4");
+				player.play(1);
+				player.stop();
 
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
