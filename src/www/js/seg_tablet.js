@@ -6029,15 +6029,17 @@ Util.Objects["front"] = new function() {
 		scene._rotateCard = function() {
 			if(this.cards.length > 1) {
 				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
-				this.cards[this.card].transitioned = function() {
-					u.a.transition(this, "none");
-					u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+				if(!u.hc(page.nN, "open")) {
+					this.cards[this.card].transitioned = function() {
+						u.a.transition(this, "none");
+						u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+					}
+					u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
+					u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
+					u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
+					u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
+					this.card = new_card;
 				}
-				u.a.transition(this.cards[this.card], "all 0.5s ease-in-out");
-				u.as(this.cards[this.card], u.a.vendor("transform"), "rotateX(-180deg)");
-				u.a.transition(this.cards[new_card], "all 0.5s ease-in-out");
-				u.as(this.cards[new_card], u.a.vendor("transform"), "rotateX(0)");
-				this.card = new_card;
 				u.t.setTimer(this, this.rotateCard, 5000);
 			}
 		}
