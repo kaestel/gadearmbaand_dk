@@ -196,7 +196,7 @@ Util.Objects["front"] = new function() {
 					li.link = u.qs(".card a", li);
 
 					if(!li.link.target) {
-						u.ce(li, {"type":"link"});
+						u.ce(li.link, {"type":"link"});
 					}
 
 					this._linkScrambler(li);
@@ -212,9 +212,10 @@ Util.Objects["front"] = new function() {
 					li.li_article.card = u.qs(".card", li.li_article);
 
 					li.li_article.link = u.qs(".card a", li.li_article);
+					li.li_article.link.li = li.li_article;
 
 					if(!li.li_article.link.target) {
-						u.ce(li.li_article, {"type":"link"});
+						u.ce(li.li_article.link, {"type":"link"});
 					}
 
 					this._linkScrambler(li.li_article);
@@ -370,9 +371,9 @@ Util.Objects["front"] = new function() {
 		// scramble text in buttons
 		scene._linkScrambler = function(li) {
 
-			li.default_text = li.link.innerHTML;
-			li.scrambled_count = 0;
-			li.randomizer = function() {
+			li.link.default_text = li.link.innerHTML;
+			li.link.scrambled_count = 0;
+			li.link.randomizer = function() {
 				var indexes = [];
 				var chars = [];
 				var rand;
@@ -388,12 +389,12 @@ Util.Objects["front"] = new function() {
 				return [chars, indexes];
 			}
 
-			li.scramble = function() {
+			li.link.scramble = function() {
 
-				this.scrambled_sequence = this.link.innerHTML.split("");
+				this.scrambled_sequence = this.innerHTML.split("");
 				var c = this.randomizer();
 
-				if(this.scrambled_count < 9) {
+				if(this.scrambled_count < 20) {
 
 					var index, char;
 
@@ -403,26 +404,26 @@ Util.Objects["front"] = new function() {
 
 						this.scrambled_sequence[index] = char;
 					}
-					this.link.innerHTML = this.scrambled_sequence.join("");
+					this.innerHTML = this.scrambled_sequence.join("");
 
 					this.scrambled_count++;
-					u.t.setTimer(this, this.scramble, 100);
+					u.t.setTimer(this, this.scramble, 50);
 				}
 				else {
-					this.link.innerHTML = this.default_text;
+					this.innerHTML = this.default_text;
 				}
 
 			}
-			li.unscramble = function() {
+			li.link.unscramble = function() {
 
 				// u.a.transition(this.link, "all 0.3s ease-in-out");
 				// u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
 
-				this.link.innerHTML = this.default_text;
+				this.innerHTML = this.default_text;
 				this.scrambled_count = 0;
 			}
 
-			li.mousedover = function() {
+			li.link.mousedover = function() {
 				u.t.resetTimer(this.t_scrambler);
 
 				if(!this.scrambled_count) {
@@ -433,13 +434,13 @@ Util.Objects["front"] = new function() {
 					this.scramble();
 				}
 			}
-			li.mousedout = function() {
+			li.link.mousedout = function() {
 				u.t.resetTimer(this.t_scrambler);
 
 				this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
 			}
-			u.e.addEvent(li, "mouseover", li.mousedover);
-			u.e.addEvent(li, "mouseout", li.mousedout);
+			u.e.addEvent(li.link, "mouseover", li.link.mousedover);
+			u.e.addEvent(li.link, "mouseout", li.link.mousedout);
 
 		}
 

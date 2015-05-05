@@ -93,7 +93,7 @@ li {font-size: 14px; line-height: 1.25em;}
 }
 #intro {position: fixed; z-index: 15; width: 100%; height: 100%; background: rgba(0,0,0,1); top: 0; left: 0; opacity: 0;
 	background: transparent url(/img/bg_intro.jpg) no-repeat center center;
-	background-size: 110% auto;
+	background-size: cover;
 }
 #intro .intro_logo {height: 100%; opacity: 0;
 	background: transparent url(/img/logo/logo_00048.png) no-repeat center center;
@@ -128,8 +128,8 @@ li {font-size: 14px; line-height: 1.25em;}
 }
 #navigation ul.navigation li .vp {position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; opacity: 0;}
 #navigation ul.navigation li .vp.show {opacity: 1;}
-#navigation ul.navigation li .videoplayer {width: 100%; height: 100%; }
-#navigation ul.navigation li .videoplayer video {width: 100%; height: 100%;}
+#navigation ul.navigation li .videoplayer {width: 100%; height: 100%; background: transparent;}
+#navigation ul.navigation li .videoplayer video {width: 100%; height: 100%; background: transparent;}
 #navigation.open {display: block;}
 
 /*s-footer-desktop.css*/
@@ -219,7 +219,7 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.front ul li.tweet p {color: #ffffff; font-size: 22px; line-height: 1.363em;}
 .scene.front ul li.tweet p a {color: #19051a;}
 .scene.front ul li.tweet.float {float: right;}
-.scene.front ul li.article {cursor: pointer;
+.scene.front ul li.article {
 	perspective-origin: 50% 0;
 	-ms-perspective-origin: 50% 0;
 	-moz-perspective-origin: 50% 0;
@@ -324,7 +324,11 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer; padding: 4px 0;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
-.scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; opacity: 0;}
+.scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; padding-left: 30px; padding-right: 30px; opacity: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 .scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}

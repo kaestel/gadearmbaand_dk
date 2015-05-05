@@ -87,7 +87,7 @@
 
 
 /* ARTICLE */
-.scene.front ul li.article {cursor: pointer;
+.scene.front ul li.article {
 	perspective-origin: 50% 0;
 	-ms-perspective-origin: 50% 0;
 	-moz-perspective-origin: 50% 0;

@@ -316,25 +316,28 @@ Util.Objects["page"] = new function() {
 					node.mousedover = function() {
 
 						u.ac(this.vp, "show");
-						u.ae(this.vp, page.videoPlayer);
-						page.videoPlayer.ended = function() {
-							this.play();
-						}
-						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
+						if(!u.hc(this, "buy")) {
+							
+							u.ae(this.vp, page.videoPlayer);
+							page.videoPlayer.ended = function() {
+								this.play();
+							}
+							page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
 
-						if(this.offsetWidth/this.offsetHeight > 480/270) {
-							var height = (this.offsetWidth / (480/270));
-							u.as(this.vp, "height", height + "px");
-							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-							u.as(this.vp, "width", "100%");
-							u.as(this.vp, "marginLeft", 0);
-						}
-						else {
-							var width = (this.offsetHeight / (270/480));
-							u.as(this.vp, "width", width + "px");
-							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-							u.as(this.vp, "height", "100%");
-							u.as(this.vp, "marginTop", 0);
+							if(this.offsetWidth/this.offsetHeight > 480/270) {
+								var height = (this.offsetWidth / (480/270));
+								u.as(this.vp, "height", height + "px");
+								u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
+								u.as(this.vp, "width", "100%");
+								u.as(this.vp, "marginLeft", 0);
+							}
+							else {
+								var width = (this.offsetHeight / (270/480));
+								u.as(this.vp, "width", width + "px");
+								u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
+								u.as(this.vp, "height", "100%");
+								u.as(this.vp, "marginTop", 0);
+							}
 						}
 					}
 					
@@ -369,9 +372,9 @@ Util.Objects["page"] = new function() {
 
 							u.a.scale(this.sq, 0);
 
-							u.a.transition(this, "all 0.8s ease-out");
-							u.a.scale(this, 1.05);
-							u.a.setBgPos(this, "23%", "49%");
+							u.a.transition(this, "all 1.2s ease");
+							u.a.scale(this, 1.1);
+//							u.a.setBgPos(this, "23%", "49%");
 
 							// u.a.transition(this, "all 1.5s ease-in 0.5s");
 							// u.a.rotateScale(this, 50, 230);
@@ -386,7 +389,7 @@ Util.Objects["page"] = new function() {
 							//
 								this.sq.transitioned = function() {
 									u.bug("close")
-									u.t.setTimer(page.intro, "clicked", 1500);
+									u.t.setTimer(page.intro, "clicked", 2000);
 //									page.intro.clicked();
 								}
 

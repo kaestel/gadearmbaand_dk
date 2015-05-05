@@ -7,7 +7,7 @@
 		<p>Gadearmbånd er kærlighed til København og til Distortions gadefester.</p>
 		<p>I 1998 satte vi gang i Distortion for at vise København fra sin bedste side. Og for at holde den ultimative fest.</p>
 		<p>Ideen var (og er) at skabe et forløb gennem byen. Gennem havnen og tunnellerne. Under broerne, over forventning. På busser og både, gennem dag og nat. En mobil begivenhed – et ugelangt brag.</p>
-		<p>Og vi synes, at det hvert lykkedes at holde festen, der holder.</p>
+		<p>Og vi synes, at det hvert år lykkedes at holde festen, der holder.</p>
 		<p>Nu har vi Distortion Ø hele weekenden på Refshaleøen og Distortion Club hver nat i byens klubber. Og så har vi Distortions gadefester, som over 100.000 har taget til sig.</p>
 
 		<p>En gadefest er i virkeligheden ikke svær at holde.</p>

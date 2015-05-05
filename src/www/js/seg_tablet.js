@@ -5676,24 +5676,26 @@ Util.Objects["page"] = new function() {
 					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
 					node.mousedover = function() {
 						u.ac(this.vp, "show");
-						u.ae(this.vp, page.videoPlayer);
-						page.videoPlayer.ended = function() {
-							this.play();
-						}
-						page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
-						if(this.offsetWidth/this.offsetHeight > 480/270) {
-							var height = (this.offsetWidth / (480/270));
-							u.as(this.vp, "height", height + "px");
-							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-							u.as(this.vp, "width", "100%");
-							u.as(this.vp, "marginLeft", 0);
-						}
-						else {
-							var width = (this.offsetHeight / (270/480));
-							u.as(this.vp, "width", width + "px");
-							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-							u.as(this.vp, "height", "100%");
-							u.as(this.vp, "marginTop", 0);
+						if(!u.hc(this, "buy")) {
+							u.ae(this.vp, page.videoPlayer);
+							page.videoPlayer.ended = function() {
+								this.play();
+							}
+							page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
+							if(this.offsetWidth/this.offsetHeight > 480/270) {
+								var height = (this.offsetWidth / (480/270));
+								u.as(this.vp, "height", height + "px");
+								u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
+								u.as(this.vp, "width", "100%");
+								u.as(this.vp, "marginLeft", 0);
+							}
+							else {
+								var width = (this.offsetHeight / (270/480));
+								u.as(this.vp, "width", width + "px");
+								u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
+								u.as(this.vp, "height", "100%");
+								u.as(this.vp, "marginTop", 0);
+							}
 						}
 					}
 					node.mousedout = function() {
@@ -5713,12 +5715,11 @@ Util.Objects["page"] = new function() {
 						this.transitioned = function() {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
 							u.a.scale(this.sq, 0);
-							u.a.transition(this, "all 0.8s ease-out");
-							u.a.scale(this, 1.05);
-							u.a.setBgPos(this, "23%", "49%");
+							u.a.transition(this, "all 1.2s ease");
+							u.a.scale(this, 1.1);
 								this.sq.transitioned = function() {
 									u.bug("close")
-									u.t.setTimer(page.intro, "clicked", 1500);
+									u.t.setTimer(page.intro, "clicked", 2000);
 								}
 							u.a.transition(this.sq, "all 0.5s ease-in-out 0.3s");
 							u.a.setOpacity(this.sq, 1);
@@ -5865,7 +5866,7 @@ Util.Objects["front"] = new function() {
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
 					if(!li.link.target) {
-						u.ce(li, {"type":"link"});
+						u.ce(li.link, {"type":"link"});
 					}
 					this._linkScrambler(li);
 				}
@@ -5873,8 +5874,9 @@ Util.Objects["front"] = new function() {
 					li.li_article = u.qs("li.article", li);
 					li.li_article.card = u.qs(".card", li.li_article);
 					li.li_article.link = u.qs(".card a", li.li_article);
+					li.li_article.link.li = li.li_article;
 					if(!li.li_article.link.target) {
-						u.ce(li.li_article, {"type":"link"});
+						u.ce(li.li_article.link, {"type":"link"});
 					}
 					this._linkScrambler(li.li_article);
 					li.li_video = u.qs("li.video", li);
@@ -5976,9 +5978,9 @@ Util.Objects["front"] = new function() {
 			this.isReady();
 		}
 		scene._linkScrambler = function(li) {
-			li.default_text = li.link.innerHTML;
-			li.scrambled_count = 0;
-			li.randomizer = function() {
+			li.link.default_text = li.link.innerHTML;
+			li.link.scrambled_count = 0;
+			li.link.randomizer = function() {
 				var indexes = [];
 				var chars = [];
 				var rand;
@@ -5991,40 +5993,40 @@ Util.Objects["front"] = new function() {
 				}
 				return [chars, indexes];
 			}
-			li.scramble = function() {
-				this.scrambled_sequence = this.link.innerHTML.split("");
+			li.link.scramble = function() {
+				this.scrambled_sequence = this.innerHTML.split("");
 				var c = this.randomizer();
-				if(this.scrambled_count < 9) {
+				if(this.scrambled_count < 20) {
 					var index, char;
 					while(c[0].length) {
 						index = c[1].splice([u.random(0, c[1].length-1)], 1);
 						char = c[0].splice([u.random(0, c[0].length-1)], 1);
 						this.scrambled_sequence[index] = char;
 					}
-					this.link.innerHTML = this.scrambled_sequence.join("");
+					this.innerHTML = this.scrambled_sequence.join("");
 					this.scrambled_count++;
-					u.t.setTimer(this, this.scramble, 100);
+					u.t.setTimer(this, this.scramble, 50);
 				}
 				else {
-					this.link.innerHTML = this.default_text;
+					this.innerHTML = this.default_text;
 				}
 			}
-			li.unscramble = function() {
-				this.link.innerHTML = this.default_text;
+			li.link.unscramble = function() {
+				this.innerHTML = this.default_text;
 				this.scrambled_count = 0;
 			}
-			li.mousedover = function() {
+			li.link.mousedover = function() {
 				u.t.resetTimer(this.t_scrambler);
 				if(!this.scrambled_count) {
 					this.scramble();
 				}
 			}
-			li.mousedout = function() {
+			li.link.mousedout = function() {
 				u.t.resetTimer(this.t_scrambler);
 				this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
 			}
-			u.e.addEvent(li, "mouseover", li.mousedover);
-			u.e.addEvent(li, "mouseout", li.mousedout);
+			u.e.addEvent(li.link, "mouseover", li.link.mousedover);
+			u.e.addEvent(li.link, "mouseout", li.link.mousedout);
 		}
 		scene._rotateCard = function() {
 			if(this.cards.length > 1) {
