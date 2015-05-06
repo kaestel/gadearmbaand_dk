@@ -50,7 +50,9 @@ li {font-size: 14px; line-height: 1.25em;}
 #page .logo {opacity: 0;}
 #page #header {opacity: 0;}
 
-#page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px; z-index: 11;
+#page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px; z-index: 11;}
+
+#page div.logo a {display: block; height: 100%;
 	background: transparent url(/img/logo.png) no-repeat center center;
 }
 

@@ -227,10 +227,32 @@ Util.Objects["page"] = new function() {
 
 				// logo
 				page.logo = u.ae(page, "div", {"class":"logo"});
+				page.logo.a = u.ae(page.logo, "a");
 				u.ce(page.logo);
 				page.logo.clicked = function() {
 					page.navigate("/");
 				}
+
+				// logo animation
+				u.as(page.logo, u.a.vendor("perspective"), (page.logo.offsetWidth) + "px");
+				u.as(page.logo, u.a.vendor("transformStyle"), "preserve-3d");
+				page.logo.mousedover = function() {
+					u.a.transition(this.a, "all 0.5s ease-in-out");
+					u.as(this.a, u.a.vendor("transform"), "rotateY(-180deg)");
+				}
+				page.logo.mousedout = function() {
+					u.a.transition(this.a, "all 0.5s ease-in-out");
+					u.as(this.a, u.a.vendor("transform"), "rotateY(0deg)");
+				}
+				if(u.e.event_pref == "mouse") {
+					u.e.addEvent(page.logo, "mouseenter", page.logo.mousedover);
+					u.e.addEvent(page.logo, "mouseleave", page.logo.mousedout);
+				}
+				else {
+					u.e.addEvent(node, "touchstart", node.mousedover);
+					u.e.addEvent(node, "touchend", node.mousedout);
+				}
+
 
 
 				// get the navigation node from the servicenavigation
@@ -362,8 +384,14 @@ Util.Objects["page"] = new function() {
 						}
 					}
 
-					u.e.addEvent(node, "mouseenter", node.mousedover);
-					u.e.addEvent(node, "mouseleave", node.mousedout);
+					if(u.e.event_pref == "mouse") {
+						u.e.addEvent(node, "mouseenter", node.mousedover);
+						u.e.addEvent(node, "mouseleave", node.mousedout);
+					}
+					else {
+						u.e.addEvent(node, "touchstart", node.mousedover);
+						u.e.addEvent(node, "touchend", node.mousedout);
+					}
 
 				}
 
