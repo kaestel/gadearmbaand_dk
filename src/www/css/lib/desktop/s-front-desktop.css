@@ -84,7 +84,7 @@
 .scene.front ul li.tweet p {color: #ffffff; font-size: 22px; line-height: 1.363em;}
 .scene.front ul li.tweet p a {color: #19051a;}
 .scene.front ul li.tweet.float {float: right;}
-
+.scene.front ul li.tweet span.emoji {display: none;}
 
 /* ARTICLE */
 .scene.front ul li.article {
@@ -184,7 +184,14 @@
 
 .scene.front ul li.ambassador ul li.video .videoplayer {position: absolute; z-index: 2; top: -1%; left: -1%; width: 102%; height: 102%;}
 .scene.front ul li.ambassador ul li.video .videoplayer video {width: 100%; height: 100%;}
-
+.scene.front ul li.ambassador ul li.video .videoplayer .controls {z-index: 3; width: 100%; height: 100%; position: absolute; top: 0; left: 0;}
+.scene.front ul li.ambassador ul li.video .videoplayer .controls .playpause {width: 100%; height: 100%; display: block;
+	background: transparent url(/img/gx_pause.png) no-repeat center center;
+}
+.scene.front ul li.ambassador ul li.video .videoplayer.paused .controls .playpause {
+	background-image: url(/img/gx_play.png)
+	
+}
 
 
 
