@@ -38,6 +38,7 @@
 #content .twitterList .stats {padding: 5px 30px; border-bottom: 1px solid #dedede;}
 #content .twitterList .stats p {padding: 0;}
 #content .twitterList ul.items > li h3 {padding-bottom: 16px; font-size: 14px; padding-right: 250px;}
+#content .twitterList ul.items > li span.emoji {display: none;}
 
 
 /* NAVIGATION */
