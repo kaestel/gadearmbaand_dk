@@ -114,8 +114,9 @@ Util.Objects["events"] = new function() {
 					_event._media._item_id = u.cv(_event._media, "item_id")
 					_event._media._format = u.cv(_event._media, "format")
 
-					// inject img
-					u.ae(_event._media, "img", {"src" : "/images/" + _event._media._item_id + "/single_media/300x." + _event._media._format});
+					_event._image_src = "/images/" + _event._media._item_id + "/single_media/300x." + _event._media._format;
+					_event._image = u.ae(_event._media, "img");
+
 
 					_event._event_tags_array = [];
 
@@ -138,6 +139,12 @@ Util.Objects["events"] = new function() {
 					_event._location._string = _event._location.innerHTML.toLowerCase()
 
 					_event.clicked = function(event) {
+
+						// inject img
+						if(!this._image.is_loaded) {
+							this._image.src = this._image_src;
+							this._image.is_loaded = true;
+						}
 
 						if(u.hc(this, "selected")) {
 							u.a.transition(this, "all 0.5s ease-out");
@@ -175,6 +182,8 @@ Util.Objects["events"] = new function() {
 
 				var i, day;
 				for(i = 0; day = this._days[i]; i++) {
+
+					u.linkScrambler(day);
 
 					day.clicked = function() {
 
@@ -217,6 +226,8 @@ Util.Objects["events"] = new function() {
 
 				var i, tag;
 				for(i = 0; tag = this._tags[i]; i++) {
+
+					u.linkScrambler(tag);
 
 					tag.clicked = function() {
 
@@ -317,6 +328,9 @@ Util.Objects["events"] = new function() {
 			this._tag_filter._title = u.qs("h2", this._tag_filter);
 			this._tag_filter._title.innerHTML = "Søg";
 
+			this._tag_filter._title.fixed_width = true;
+			u.linkScrambler(this._tag_filter._title);
+
 			this._tag_filter._height = this._tag_filter.offsetHeight;
 
 			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
@@ -332,6 +346,8 @@ Util.Objects["events"] = new function() {
 
 			this._tag_filter._title.clicked = function() {
 
+				this.unscramble();
+
 				if(!scene._tag_filter.open) {
 
 					scene._tag_filter.transitioned = function() {
@@ -346,6 +362,7 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._search, "opacity", 1);
 
 						scene._tag_filter._title.innerHTML = "Luk";
+						scene._tag_filter._title.default_text = scene._tag_filter._title.innerHTML;
 
 					}
 
@@ -363,6 +380,7 @@ Util.Objects["events"] = new function() {
 						u.as(scene._tag_filter._search, "display", "none");
 
 						scene._tag_filter._title.innerHTML = "Søg";
+						scene._tag_filter._title.default_text = scene._tag_filter._title.innerHTML;
 
 					}
 
@@ -399,8 +417,147 @@ Util.Objects["events"] = new function() {
 
 				this.is_built = true;
 
-				u.a.transition(this, "all 1s linear");
-				u.a.setOpacity(this, 1);
+				var shape, svg, y2, x2;
+				var svg_object = {
+					"name":"event_build",
+					"width":page.browser_w,
+					"height":page.browser_h,
+					"shapes":[]
+				};
+
+				this.svg = u.svg(svg_object);
+				this.svg = u.ae(this, this.svg);
+				this.svg.scene = this;
+
+
+
+				x1 = 0;
+				y1 = 0;
+
+				x2 = page.browser_w;
+				y2 = Math.round(page.browser_h/2) - 150;
+
+				y3 = Math.round(page.browser_h/2) - 100;
+				y4 = page.browser_h;
+
+				f = page.browser_w/20;
+
+				var points_x = [x1, x1+f,  x1+f*2, x1+f*3, x1+f*4, x1+f*5, x1+f*6, x1+f*7, x1+f*8, x1+f*9, x1+f*10, x1+f*11, x1+f*12, x1+f*13, x1+f*14, x1+f*15, x1+f*16, x1+f*17, x1+f*18, x1+f*19, x2];
+				var points_y = [y2, y2+80, y2+20,  y2+170, y2+70,  y2+200, y2+120, y2+270, y2+180, y2+320,  y2+200,  y2+280,  y2+190,  y2+230,  y2+120,  y2+200,  y2+110,  y2+180,  y2+50,  y2+130,  y2];
+
+
+				this.top_points = x1+","+y1+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.top_points += points_x[i]+","+points_y[i]+" ";
+				}
+				this.top_points += x2+","+y1;
+
+				this.bottom_points = x1+","+y4+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.bottom_points += points_x[i]+","+points_y[i]+" ";
+				}
+				this.bottom_points += x2+","+y4;
+
+				this.bottom_points2 = x1+","+y4+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.bottom_points2 += (points_x[i]-u.random(-10, 10))+","+points_y[i]+" ";
+				}
+				this.bottom_points2 += x2+","+y4;
+
+				this.top_points2 = x1+","+y1+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.top_points2 += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-10)+" ";
+				}
+				this.top_points2 += x2+","+y1;
+
+
+				this._top = {"type":"polygon", "points": this.top_points};
+				this._top = u.svgShape(this.svg, this._top);
+				this._top.scene = this;
+
+				this._bottom = {"type":"polygon", "points": this.bottom_points};
+				this._bottom = u.svgShape(this.svg, this._bottom);
+				this._bottom.scene = this;
+
+
+
+				this.top_mid = x1+","+(y1-30)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.top_mid += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-30)+" ";
+				}
+				this.top_mid += x2+","+(y1-30);
+
+				this.bottom_mid = x1+","+(y4+20)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.bottom_mid += (points_x[i]-u.random(-10, 10))+","+(points_y[i]+20)+" ";
+				}
+				this.bottom_mid += x2+","+(y4+20);
+
+
+
+				this.top_flat = x1+","+(y1-y4)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.top_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-y4)+" ";
+				}
+				this.top_flat += x2+","+(y1-y4);
+
+				this.bottom_flat = x1+","+(y4+y4)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					this.bottom_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]+y4)+" ";
+				}
+				this.bottom_flat += x2+","+(y4+y4);
+
+
+				this._bottom.transitioned = function() {
+					this.transitioned = null;
+
+					this.transitioned = function() {
+						this.transitioned = null;
+
+						this.transitioned = function() {
+							this.transitioned = null;
+							this.scene.removeChild(this.scene.svg);
+						//
+						//
+						// 	this.scene._top.transitioned = function() {
+						//
+						// 		this.transitioned = null;
+						//
+						// 		u.a.to(this, "all 0.5s ease-in", {"points":this.scene.top_flat});
+						// 		u.a.to(this.scene._bottom, "all 0.4s ease-in", {"points":this.scene.bottom_flat});
+						// 	}
+						//
+						// 	u.a.to(this.scene._top, "all 0.5s ease-in", {"points":this.scene.top_points2});
+						//
+						//
+						}
+
+						u.a.to(this.scene._top, "all 0.5s ease-in", {"points":this.scene.top_flat});
+						u.a.to(this.scene._bottom, "all 0.4s ease-in", {"points":this.scene.bottom_flat});
+
+						// u.a.to(this.scene._top, "all 0.5s ease-in", {"points":this.scene.top_points});
+						// u.a.to(this, "all 0.5s ease-in", {"points":this.scene.bottom_points2});
+					}
+
+					u.a.to(this.scene._top, "all 0.8s ease-in", {"points":this.scene.top_points2});
+					u.a.to(this.scene._bottom, "all 0.8s ease-in", {"points":this.scene.bottom_points2});
+				}
+
+				u.a.to(this._top, "all 0.8s ease-in", {"stroke-width":"2px"});
+				u.a.to(this._bottom, "all 0.8s ease-in", {"stroke-width":"2px"});
+
+				// u.a.to(this._top, "all 0.8s ease-out", {"points":this.top_mid});
+				// u.a.to(this._bottom, "all 0.8s ease-out", {"points":this.bottom_mid});
+
+
+				// u.a.transition(this, "all 1s linear");
+				// u.a.setOpacity(this, 1);
+				//
+				// eye1 = u.svgShape(svg, {"type":"path","d":"M "+(page.browser_w/2 - 200)+" "+(page.browser_h/2 - 150)+" a 0 30 90 1 1 60 0z"});
+				// eye2 = u.svgShape(svg, {"type":"path","d":"M "+(page.browser_w/2 + 200)+" "+(page.browser_h/2 - 150)+" a 0 30 90 1 1 60 0z"});
+				//
+				// u.a.to(eye1, "all 0.3s linear", {"d":"M "+(page.browser_w/2 - 200)+" "+(page.browser_h/2 - 150)+" a 30 30 90 1 1 60 0z"});
+				// u.a.to(eye2, "all 0.2s linear", {"d":"M "+(page.browser_w/2 + 200)+" "+(page.browser_h/2 - 150)+" a 30 30 90 1 1 60 0z"});
 
 			}
 		}
@@ -408,7 +565,7 @@ Util.Objects["events"] = new function() {
 
 		// destroy scene - scene needs to be removed
 		scene.destroy = function() {
-			// u.bug("scene.destroy:" + u.nodeId(this))
+			u.bug("scene.destroy:" + u.nodeId(this))
 
 			// destruction is a one time, oneway street
 			this.destroy = null;
@@ -429,9 +586,51 @@ Util.Objects["events"] = new function() {
 				this.finalizeDestruction();
 			}
 
+			var svg_object = {
+				"name":"event_build",
+				"width":page.browser_w,
+				"height":page.browser_h,
+				"shapes":[]
+			};
+
+			this.svg = u.svg(svg_object);
+			this.svg = u.ae(this, this.svg);
+			this.svg.scene = this;
+
+			this._top = {"type":"polygon", "points": this.top_flat, "stroke-width":"2px"};
+			this._top = u.svgShape(this.svg, this._top);
+			this._top.scene = this;
+
+			this._bottom = {"type":"polygon", "points": this.bottom_flat, "stroke-width":"2px"};
+			this._bottom = u.svgShape(this.svg, this._bottom);
+			this._bottom.scene = this;
+
+			this._bottom.transitioned = function() {
+				this.transitioned = null;
+
+				this.transitioned = function() {
+					this.transitioned = null;
+
+					this.transitioned = function() {
+						this.transitioned = null;
+
+						this.scene.finalizeDestruction();
+					}
+					u.a.to(this.scene._top, "all 0.5s ease-in", {"stroke-width":"0px"});
+					u.a.to(this.scene._bottom, "all 0.5s ease-in", {"stroke-width":"0px"});
+
+				}
+
+				u.a.to(this.scene._top, "all 0.3s ease-in", {"points":this.scene.top_points});
+				u.a.to(this.scene._bottom, "all 0.3s ease-in", {"points":this.scene.bottom_points});
+			}
+
+			u.a.to(this._top, "all 0.5s ease-in", {"points":this.top_points2});
+			u.a.to(this._bottom, "all 0.5s ease-in", {"points":this.bottom_points2});
+
 			// make up some page destruction
-			u.a.transition(this, "all 1s linear");
-			u.a.setOpacity(this, 0);
+			// u.a.transition(this, "all 1s linear");
+			// u.a.setOpacity(this, 0);
 
 		}
 

@@ -4931,13 +4931,35 @@ Util.Animation = u.a = new function() {
 			var duration = transition.match(/[0-9.]+[ms]+/g);
 			if(duration) {
 				node.duration = duration[0].match("ms") ? parseFloat(duration[0]) : (parseFloat(duration[0]) * 1000);
-				u.e.addEvent(node, this.vendor("transitionEnd"), this._transitioned);
+				if(callback) {
+					var transitioned;
+					transitioned = (function(event) {
+						u.e.removeEvent(event.target, u.a.vendor("transitionEnd"), transitioned);
+						if(event.target == this) {
+							u.a.transition(this, "none");
+							if(typeof(callback) == "function") {
+								var key = u.randomString(4);
+								node[key] = callback;
+								node[key].callback(event);
+								node[key] = null;
+								callback = null;
+							}
+							else if(typeof(this[callback]) == "function") {
+								this[callback](event);
+								this[callback] = null;
+							}
+						}
+						else {
+						}
+					});
+					u.e.addEvent(node, this.vendor("transitionEnd"), transitioned);
+				}
+				else {
+					u.e.addEvent(node, this.vendor("transitionEnd"), this._transitioned);
+				}
 			}
 			else {
 				node.duration = false;
-				if(transition.match(/none/i)) {
-					node.transitioned = null;
-				}
 			}
 			node.style[this.vendor("Transition")] = transition;
 		}
@@ -4946,11 +4968,12 @@ Util.Animation = u.a = new function() {
 		}
 	}
 	this._transitioned = function(event) {
-		u.e.removeEvent(this, u.a.vendor("transitionEnd"), u.a._transitioned);
+		u.e.removeEvent(event.target, u.a.vendor("transitionEnd"), u.a._transitioned);
 		if(event.target == this && typeof(this.transitioned) == "function") {
 			this.transitioned(event);
+			this.transitioned = null;
 		}
-		this.transitioned = null;
+		u.a.transition(event.target, "none");
 	}
 	this.removeTransform = function(node) {
 		node.style[this.vendor("Transform")] = "none";
@@ -5232,6 +5255,18 @@ u.textscaler = function(node, _settings) {
 }
 
 /*beta-u-animation-to.js*/
+	u.a.parseSVGPolygon = function(value) {
+		var pairs = value.trim().split(" ");
+		var sets = [];
+		for(x in pairs) {
+			parts = pairs[x].trim().split(",");
+			for(part in parts) {
+				parts[part] = Number(parts[part]);
+			}
+			sets[x] = parts;
+		}
+		return sets;
+	}
 	u.a.parseSVGPath = function(value) {
 		var pairs = {"m":2, "l":2, "a":7, "c":6, "s":4, "q":4, "z":0};
 		value = value.replace(/-/g, " -");
@@ -5251,7 +5286,7 @@ u.textscaler = function(node, _settings) {
 	}
 	u.a.getInitialValue = function(node, attribute) {
 		var value = (node.getAttribute(attribute) ? node.getAttribute(attribute) : u.gcs(node, attribute)).replace(node._unit[attribute], "")
-		if(attribute.match(/^(d)$/)) {
+		if(attribute.match(/^(d|points)$/)) {
 			return value;
 		}
 		else {
@@ -5259,9 +5294,14 @@ u.textscaler = function(node, _settings) {
 		}
 	}
 	u.a.to = function(node, transition, attributes) {
-		var duration = transition.match(/[0-9.]+[ms]+/g);
-		if(duration) {
-			node.duration = duration[0].match("ms") ? parseFloat(duration[0]) : (parseFloat(duration[0]) * 1000);
+		var transition_parts = transition.split(" ");
+		if(transition_parts.length >= 3) {
+			node._target = transition_parts[0];
+			node.duration = transition_parts[1].match("ms") ? parseFloat(transition_parts[1]) : (parseFloat(transition_parts[1]) * 1000);
+			node._ease = transition_parts[2];
+			if(transition_parts.length == 4) {
+				node.delay = transition_parts[3].match("ms") ? parseFloat(transition_parts[3]) : (parseFloat(transition_parts[3]) * 1000);
+			}
 		}
 		var value, d;
 		node._start = {};
@@ -5272,23 +5312,29 @@ u.textscaler = function(node, _settings) {
 				node._start[attribute] = this.parseSVGPath(this.getInitialValue(node, attribute));
 				node._end[attribute] = this.parseSVGPath(attributes[attribute]);
 			}
+			else if(attribute.match(/^(points)$/)) {
+				node._start[attribute] = this.parseSVGPolygon(this.getInitialValue(node, attribute));
+				node._end[attribute] = this.parseSVGPolygon(attributes[attribute]);
+			}
 			else {
 				node._unit[attribute] = attributes[attribute].toString().match(/\%|px/);
 				node._start[attribute] = this.getInitialValue(node, attribute);
 				node._end[attribute] = attributes[attribute].toString().replace(node._unit[attribute], "");
 			}
 		}
+		node.easing = u.easings[node._ease];
 		node.transitionTo = function(progress) {
+			var easing = node.easing(progress);
 			for(attribute in attributes) {
 				if(attribute.match(/^(translate|rotate|scale)$/)) {
 					if(attribute == "translate") {
-						u.a.translate(this, Math.round((this._end_x - this._start_x) * progress), Math.round((this._end_y - this._start_y) * progress))
+						u.a.translate(this, Math.round((this._end_x - this._start_x) * easing), Math.round((this._end_y - this._start_y) * easing))
 					}
 					else if(attribute == "rotate") {
 					}
 				}
 				else if(attribute.match(/^(x1|y1|x2|y2|r|cx|cy|stroke-width)$/)) {
-					var new_value = (this._start[attribute] + ((this._end[attribute] - this._start[attribute]) * progress)) +  this._unit[attribute]
+					var new_value = (this._start[attribute] + ((this._end[attribute] - this._start[attribute]) * easing)) +  this._unit[attribute]
 					this.setAttribute(attribute, new_value);
 				}
 				else if(attribute.match(/^(d)$/)) {
@@ -5296,7 +5342,7 @@ u.textscaler = function(node, _settings) {
 					for(x in this._start[attribute]) {
 						for(y in this._start[attribute][x]) {
 							if(parseFloat(this._start[attribute][x][y]) == this._start[attribute][x][y]) {
-								new_value += (Number(this._start[attribute][x][y]) + ((Number(this._end[attribute][x][y]) - Number(this._start[attribute][x][y])) * progress)) + " ";
+								new_value += (Number(this._start[attribute][x][y]) + ((Number(this._end[attribute][x][y]) - Number(this._start[attribute][x][y])) * easing)) + " ";
 							}
 							else {
 								new_value += this._end[attribute][x][y] + " ";
@@ -5305,8 +5351,16 @@ u.textscaler = function(node, _settings) {
 					}
 					this.setAttribute(attribute, new_value);
 				}
+				else if(attribute.match(/^(points)$/)) {
+					var new_value = "";
+					for(x in this._start[attribute]) {
+						new_value += (this._start[attribute][x][0] + ((this._end[attribute][x][0] - this._start[attribute][x][0]) * easing)) + ",";
+						new_value += (this._start[attribute][x][1] + ((this._end[attribute][x][1] - this._start[attribute][x][1]) * easing)) + " ";
+					}
+					this.setAttribute(attribute, new_value);
+				}
 				else {
-					var new_value = (this._start[attribute] + ((this._end[attribute] - this._start[attribute]) * progress)) +  this._unit[attribute]
+					var new_value = (this._start[attribute] + ((this._end[attribute] - this._start[attribute]) * easing)) +  this._unit[attribute]
 					u.as(node, attribute, new_value, false);
 				}
 			}

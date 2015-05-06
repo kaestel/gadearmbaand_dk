@@ -191,7 +191,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	-webkit-backface-visibility: hidden;
 }
 .scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
-.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
+.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 10px; font-weight: 800;}
 .scene.front ul li.tweet {
 	perspective-origin: 50% 0;
 	-ms-perspective-origin: 50% 0;
@@ -289,6 +289,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	background: transparent url(/img/gx_play.png) no-repeat center center;
 }
 .scene.front ul li.ambassador ul li.video div.video {overflow: hidden; height: 100%; width: 100%; z-index: 1; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	background: #000000 url(/img/gx_loader.gif) no-repeat center center;
 	backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
@@ -307,6 +308,7 @@ li {font-size: 14px; line-height: 1.25em;}
 
 /*s-events-desktop.css*/
 .fixed #content .scene.event {width: 1200px; margin: 0 auto; text-align: center;}
+#content .scene.event {opacity: 1;}
 .scene.event {padding: 0 50px; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -314,7 +316,7 @@ li {font-size: 14px; line-height: 1.25em;}
 }
 .scene.event h1 {}
 .scene.event > ul.days {width: 100%; text-align: center;}
-.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
+.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800; white-space: nowrap;}
 .scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
 .scene.event > .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
 	-webkit-box-sizing: border-box;
@@ -330,7 +332,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
+.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800; white-space: nowrap;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
 .scene.event > .filter .search {opacity: 0;}
@@ -383,7 +385,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item .description .media img {width: 150px; display: inline-block; vertical-align: top;
+.scene.event > ul.items li.item .description .media img {width: 150px; height: 150px; display: inline-block; vertical-align: top;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
@@ -401,9 +403,13 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event > ul.items li.item.selected p.location {color: #FFFFFF;}
 .scene.event > ul.items li.item.selected ul.tags {}
 .scene.event > ul.items li.item.selected ul.tags li {color: #FFFFFF;}
+.scene.event svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+	stroke: #180619; stroke-linecap: round; fill: #ffffff; stroke-width: 0px;
+}
 
 
 /*s-manifest-desktop.css*/
+#content .scene.manifest {opacity: 1;}
 .scene.manifest {width: 100%; overflow: scroll;
 	background-image: url(/img/bg_manifest.jpg); background-attachment: fixed; background-repeat: no-repeat;
 	-webkit-background-size: cover;
@@ -411,14 +417,12 @@ li {font-size: 14px; line-height: 1.25em;}
 	-o-background-size: cover;
 	background-size: cover;
 }
-.scene.manifest .forgroundPerson {position: absolute; bottom: 0; left: -180px; width: 568px; height: 376px; z-index: 4;
-	background-repeat: no-repeat; background-size: 100%; background-position: left bottom;
-}
-.scene.manifest h1 { color: #ffffff;}
-.scene.manifest .content {width: 600px; margin: 0 auto; position: relative; z-index: 3;}
-.scene.manifest .content h2 { color: #ffffff; padding-bottom: 1.1em; font-size: 45px; font-weight: 800; text-align: center;}
-.scene.manifest .content h3 { color: #ffffff; padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
-.scene.manifest .content p { color: #ffffff; padding-bottom: 1.2em; font-size: 22px; font-weight: 400;}
+.scene.manifest h1 {color: #ffffff;}
+.scene.manifest .content {width: 600px; margin: 0 auto; position: relative; z-index: 3; padding: 150px 0;}
+.scene.manifest .content h2 {color: #ffffff; padding-bottom: 1.1em; font-size: 45px; font-weight: 800; text-align: center;}
+.scene.manifest .content h3 {color: #ffffff; padding-top: 30px; font-size: 28px; font-weight: 400; text-align: center;}
+.scene.manifest .content p {color: #ffffff; padding-bottom: 1.2em; font-size: 22px; font-weight: 400;}
+.scene.manifest .content a {text-decoration: underline;}
 .scene.manifest .vp {position: absolute; top: 0; right: 0; bottom: 0; left: 0;
 	background-attachment: fixed; background-repeat: no-repeat;
 	-webkit-background-size: cover;
@@ -430,5 +434,8 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.manifest .videoplayer video {width: 100%; height: 100%;}
 .scene.manifest svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
 	stroke: #ffffff; stroke-linecap: round;
+}
+.scene.manifest .forgroundPerson {position: absolute; bottom: 0; left: -180px; width: 568px; height: 376px; z-index: 4;
+	background-repeat: no-repeat; background-size: 100%; background-position: left bottom;
 }
 

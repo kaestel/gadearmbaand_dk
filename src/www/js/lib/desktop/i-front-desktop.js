@@ -74,30 +74,33 @@ Util.Objects["front"] = new function() {
 				var i, li;
 				for (i = 0; li = this.lis[i]; i++) {
 
-//					u.bug("check render:" + li.is_built)
+//					u.bug("check render:" + li.is_built + ", " + li.i  + "==" + this.rendered)
 
-					var li_y = u.absY(li);
-					if(!li.is_built && ((li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h - 100))) {
+					if(!li.is_built && li.i == this.rendered) {
 
-//						u.bug("go render:" + li.is_built)
-						this.renderNode(li);
+						var li_y = u.absY(li);
+						if(
+							(li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || 
+							(li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h - 100))
+						) {
 
+	//						u.bug("go render:" + li.is_built)
+							this.renderNode(li);
+							break;
+
+						}
+						
+					}
+					else if(li.i > this.rendered) {
+						break;
 					}
 				}
 			}
 		}
 
-		// scene ready-check
-		scene.isReady = function() {
-//			u.bug("is almost ready:" + this.is_almost_ready + "," + this.load_image_count + "=" + this.loaded_image_count)
-			if(this.is_almost_ready && this.load_image_count == this.loaded_image_count) {
-				this.is_ready = true;
-				page.cN.ready();
-			}
-		}
 
 		scene.ready = function() {
-			u.bug("scene.ready:" + u.nodeId(this));
+//			u.bug("scene.ready:" + u.nodeId(this));
 
 
 			// create padding rule for grid
@@ -135,6 +138,8 @@ Util.Objects["front"] = new function() {
 			for (i = 0; li = this.lis[i]; i++) {
 
 				li.scene = this;
+				li.i = i;
+				u.ac(li, "i"+i);
 
 				// pre-index for resizing
 				if(u.hc(li, "forty")) {
@@ -153,30 +158,36 @@ Util.Objects["front"] = new function() {
 
 					// img
 					li.image = u.qs("div.image", li);
+					li.image.li = li;
+					li.image.p = u.qs("div.image p", li);
+
 					if(li.image) {
 
-
+						// set starting point
 						u.as(li, "perspective", (li.offsetWidth) + "px");
 						u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
 						u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
 
-
-						li.image.li = li;
+						// get image src if information is available
 						li.image.image_id = u.cv(li.image, "image_id");
 						li.image.format = u.cv(li.image, "format");
-
 						if(li.image.image_id && li.image.format) {
-							li.image.loaded = function(queue) {
-								
-								this.img = u.ae(this, "img", {"src": queue[0].image.src});
-								this.li.scene.loaded_image_count++;
-								this.li.scene.isReady();
-
-							}
 							li.image._image_src = "/images/" + li.image.image_id + "/image/400x." + li.image.format;
-							this.load_image_count++;
+						}
 
-							u.preloader(li.image, [li.image._image_src])
+						// username hover effect
+						if(u.e.event_pref == "mouse") {
+							li.image.mousedover = function() {
+								u.a.transition(this.p, "all 0.2s ease-in");
+								u.as(this.p, "fontSize", "14px");
+							}
+							li.image.mousedout = function() {
+								u.a.transition(this.p, "all 0.1s ease-in");
+								u.as(this.p, "fontSize", "10px");
+							}
+
+							u.e.addEvent(li.image, "mouseover", li.image.mousedover);
+							u.e.addEvent(li.image, "mouseout", li.image.mousedout);
 						}
 
 					}
@@ -199,7 +210,8 @@ Util.Objects["front"] = new function() {
 						u.ce(li.link, {"type":"link"});
 					}
 
-					this._linkScrambler(li);
+//					this._linkScrambler(li);
+					u.linkScrambler(li.link);
 				}
 
 				// handle ambassador
@@ -218,7 +230,8 @@ Util.Objects["front"] = new function() {
 						u.ce(li.li_article.link, {"type":"link"});
 					}
 
-					this._linkScrambler(li.li_article);
+//					this._linkScrambler(li.li_article);
+					u.linkScrambler(li.li_article.link);
 
 
 					// video
@@ -234,9 +247,6 @@ Util.Objects["front"] = new function() {
 					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
 					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
-
-					// u.as(li.li_video, "perspective", (li.li_video.offsetWidth*2) + "px");
-					// u.as(li.image, u.a.vendor("transform"), "rotateX(133deg) translateZ(-"+li.li_video.offsetWidth+"px)");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 
 
@@ -248,17 +258,8 @@ Util.Objects["front"] = new function() {
 
 
 					if(li.image_id && li.image_format) {
-						li.image.loaded = function(queue) {
-							u.ae(this, "img", {"src": queue[0].image.src});
-							this.li.scene.loaded_image_count++;
-							this.li.scene.isReady();
-						}
-
 						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
-						u.preloader(li.image, [li._image_src])
-						this.load_image_count++;
 					}
-
 
 					if(li.video_id && li.video_format) {
 
@@ -306,7 +307,7 @@ Util.Objects["front"] = new function() {
 								u.as(this.parentNode.li.image, u.a.vendor("transform"), "rotateX(0deg)");
 
 							}
-							
+
 //							this.li.video.ended;
 
 							u.as(this.li.video, "zIndex", 3);
@@ -363,86 +364,85 @@ Util.Objects["front"] = new function() {
 
 
 			// call middle step which checks for images loaded
-			this.is_almost_ready = true;
-			this.isReady();
-
+			this.is_ready = true;
+			page.cN.ready();
 		}
 
 		// scramble text in buttons
-		scene._linkScrambler = function(li) {
-
-			li.link.default_text = li.link.innerHTML;
-			li.link.scrambled_count = 0;
-			li.link.randomizer = function() {
-				var indexes = [];
-				var chars = [];
-				var rand;
-				while(chars.length < this.scrambled_sequence.length/3) {
-
-					rand = u.random(0, this.scrambled_sequence.length-1);
-					if(indexes.indexOf(rand) == -1) {
-						indexes.push(rand);
-						chars.push(this.scrambled_sequence[rand]);
-					}
-
-				}
-				return [chars, indexes];
-			}
-
-			li.link.scramble = function() {
-
-				this.scrambled_sequence = this.innerHTML.split("");
-				var c = this.randomizer();
-
-				if(this.scrambled_count < 20) {
-
-					var index, char;
-
-					while(c[0].length) {
-						index = c[1].splice([u.random(0, c[1].length-1)], 1);
-						char = c[0].splice([u.random(0, c[0].length-1)], 1);
-
-						this.scrambled_sequence[index] = char;
-					}
-					this.innerHTML = this.scrambled_sequence.join("");
-
-					this.scrambled_count++;
-					u.t.setTimer(this, this.scramble, 50);
-				}
-				else {
-					this.innerHTML = this.default_text;
-				}
-
-			}
-			li.link.unscramble = function() {
-
-				// u.a.transition(this.link, "all 0.3s ease-in-out");
-				// u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
-
-				this.innerHTML = this.default_text;
-				this.scrambled_count = 0;
-			}
-
-			li.link.mousedover = function() {
-				u.t.resetTimer(this.t_scrambler);
-
-				if(!this.scrambled_count) {
-
-					// u.a.transition(this.link, "all 0.3s ease-in-out");
-					// u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
-
-					this.scramble();
-				}
-			}
-			li.link.mousedout = function() {
-				u.t.resetTimer(this.t_scrambler);
-
-				this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
-			}
-			u.e.addEvent(li.link, "mouseover", li.link.mousedover);
-			u.e.addEvent(li.link, "mouseout", li.link.mousedout);
-
-		}
+		// scene._linkScrambler = function(li) {
+		//
+		// 	li.link.default_text = li.link.innerHTML;
+		// 	li.link.scrambled_count = 0;
+		// 	li.link.randomizer = function() {
+		// 		var indexes = [];
+		// 		var chars = [];
+		// 		var rand;
+		// 		while(chars.length < this.scrambled_sequence.length/3) {
+		//
+		// 			rand = u.random(0, this.scrambled_sequence.length-1);
+		// 			if(indexes.indexOf(rand) == -1) {
+		// 				indexes.push(rand);
+		// 				chars.push(this.scrambled_sequence[rand]);
+		// 			}
+		//
+		// 		}
+		// 		return [chars, indexes];
+		// 	}
+		//
+		// 	li.link.scramble = function() {
+		//
+		// 		this.scrambled_sequence = this.innerHTML.split("");
+		// 		var c = this.randomizer();
+		//
+		// 		if(this.scrambled_count < 7) {
+		//
+		// 			var index, char;
+		//
+		// 			while(c[0].length) {
+		// 				index = c[1].splice([u.random(0, c[1].length-1)], 1);
+		// 				char = c[0].splice([u.random(0, c[0].length-1)], 1);
+		//
+		// 				this.scrambled_sequence[index] = char;
+		// 			}
+		// 			this.innerHTML = this.scrambled_sequence.join("");
+		//
+		// 			this.scrambled_count++;
+		// 			u.t.setTimer(this, this.scramble, 50);
+		// 		}
+		// 		else {
+		// 			this.innerHTML = this.default_text;
+		// 		}
+		//
+		// 	}
+		// 	li.link.unscramble = function() {
+		//
+		// 		// u.a.transition(this.link, "all 0.3s ease-in-out");
+		// 		// u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
+		//
+		// 		this.innerHTML = this.default_text;
+		// 		this.scrambled_count = 0;
+		// 	}
+		//
+		// 	li.link.mousedover = function() {
+		// 		u.t.resetTimer(this.t_scrambler);
+		//
+		// 		if(!this.scrambled_count) {
+		//
+		// 			// u.a.transition(this.link, "all 0.3s ease-in-out");
+		// 			// u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
+		//
+		// 			this.scramble();
+		// 		}
+		// 	}
+		// 	li.link.mousedout = function() {
+		// 		u.t.resetTimer(this.t_scrambler);
+		//
+		// 		this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
+		// 	}
+		// 	u.e.addEvent(li.link, "mouseover", li.link.mousedover);
+		// 	u.e.addEvent(li.link, "mouseout", li.link.mousedout);
+		//
+		// }
 
 		// twitter card rotator
 		scene._rotateCard = function() {
@@ -471,6 +471,17 @@ Util.Objects["front"] = new function() {
 		// render timestamp
 		scene.next_render = new Date().getTime();
 
+		scene.renderControl = function() {
+//			return 0;
+
+			var now = new Date().getTime();
+
+			// delay rendering for a minimum of 100ms between each render
+			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
+
+			return this.next_render-now;
+		}
+
 		// render a node
 		scene.renderNode = function(li) {
 
@@ -478,53 +489,99 @@ Util.Objects["front"] = new function() {
 
 			li.is_built = true;
 
-			var now = new Date().getTime();
-
-			// delay rendering for a minimum of 100ms between each render
-			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
-
 
 			// instagram
 			if(u.hc(li, "instagram")) {
 
-				li.image.transitioned = function() {
-					u.a.removeTransform(this);
+				// do we have information
+				if(li.image._image_src) {
+
+					li.image.loaded = function(queue) {
+
+						this.img = u.ae(this, "img", {"src": queue[0].image.src});
+						this.transitioned = function() {
+							u.a.removeTransform(this);
+
+						}
+						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+						u.as(this, u.a.vendor("transform"), "rotateX(0)");
+
+						// continue rendering
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+
+					}
+
+					u.preloader(li.image, [li.image._image_src])
 				}
-				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
+
+				// skip element
+				else {
+
+					// continue rendering
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
+
+
 			}
 
 			// ambassador
 			else if(u.hc(li, "ambassador")) {
 
-				li.image.transitioned = function() {
+				// do we have enough information
+				if(li._image_src) {
 
-					u.a.transition(this, "none");
-					u.a.removeTransform(this);
+					li.image.loaded = function(queue) {
+						u.ae(this, "img", {"src": queue[0].image.src});
 
-					u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
+						this.transitioned = function() {
 
-					u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
-					u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
-					u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+							u.a.transition(this, "none");
+							u.a.removeTransform(this);
+
+
+							u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
+
+							u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
+							u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
+							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+
+						}
+
+						// continue rendering
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+
+						u.a.transition(this, "all 1s ease-in-out "+(li.scene.renderControl())+"ms");
+						u.as(this, u.a.vendor("transform"), "rotateX(0)");
+
+					}
+					u.preloader(li.image, [li._image_src])
 
 				}
+				// skip element
+				else {
+					// continue rendering
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
 
-				u.a.transition(li.image, "all 1s ease-in-out "+(this.next_render-now)+"ms");
-				u.as(li.image, u.a.vendor("transform"), "rotateX(0)");
 
-				// u.a.transition(li.image, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
-				// u.as(li.image, u.a.vendor("transform"), "rotateX(0deg) translateZ(0)");
-
-				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				// show article
+				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
 			}
 
 			// article
 			else if(u.hc(li, "article")) {
 
-				u.a.transition(li.card, "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.a.transition(li.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
 
 			}
 
@@ -536,16 +593,32 @@ Util.Objects["front"] = new function() {
 					u.a.removeTransform(this);
 				}
 
-				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(this.next_render-now)+"ms");
+				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
 				li.card = 0;
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
 
 				// enable card rotation
 				li.rotateCard = this._rotateCard;
 
 				u.t.setTimer(li, li.rotateCard, 5000);
 			}
+
+			// blank
+			else if(u.hc(li, "blank")) {
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
+
+			}
+
 		}
+
+
 
 		// build scene - start actual rendering of scene
 		scene.build = function() {
@@ -556,11 +629,12 @@ Util.Objects["front"] = new function() {
 				u.a.transition(this.h1, "all 0.5s ease-in");
 				u.a.setOpacity(this.h1, 1);
 
-
+				this.rendered = 0;
 				this.is_built = true;
 
 				// scroll handler handles rendering when is_built is set
 				this.scrolled();
+
 			}
 		}
 

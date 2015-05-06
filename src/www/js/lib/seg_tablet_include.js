@@ -7,6 +7,10 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-animat
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-textscaler.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-animation-to.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-sequence.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/src/u-easings.js"></script>');
+
+document.write('<script type="text/javascript" src="/js/lib/u-extensions.js"></script>');
+
 
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-desktop.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-front-desktop.js"></script>');

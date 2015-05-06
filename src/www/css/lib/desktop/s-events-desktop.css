@@ -1,5 +1,7 @@
 .fixed #content .scene.event {width: 1200px; margin: 0 auto; text-align: center;}
 
+#content .scene.event {opacity: 1;}
+
 .scene.event {padding: 0 50px; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -9,7 +11,7 @@
 .scene.event h1 {}
 
 .scene.event > ul.days {width: 100%; text-align: center;}
-.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800;}
+.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800; white-space: nowrap;}
 .scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
 
 .scene.event > .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
@@ -26,7 +28,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800;}
+.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800; white-space: nowrap;}
 .scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
 .scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
 
@@ -82,7 +84,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item .description .media img {width: 150px; display: inline-block; vertical-align: top;
+.scene.event > ul.items li.item .description .media img {width: 150px; height: 150px; display: inline-block; vertical-align: top;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
@@ -105,4 +107,6 @@
 
 
 
-
+.scene.event svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+	stroke: #180619; stroke-linecap: round; fill: #ffffff; stroke-width: 0px;
+}

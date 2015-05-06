@@ -18,7 +18,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 	<h1>#gadearmbaand</h1>
 
 	<ul class="grid">
-		<li class="article twenty i0">
+		<li class="article twenty">
 			<div class="card">
 				<h3>Gadearmbånd</h3>
 				<h2>Køb. Så tryller vi</h2>
@@ -27,36 +27,36 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				</ul>
 			</div>
 		</li>
-		<li class="instagram forty i2">
+		<li class="instagram forty">
 			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[0]["username"] ?></p>
 			</div>
 		</li>
-		<li class="blank twenty i3"></li>
-		<li class="instagram twenty i4">
+		<li class="blank twenty"></li>
+		<li class="instagram twenty">
 			<div class="image image_id:<?= $instagrams[1]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[1]["username"] ?></p>
 			</div>
 		</li>
-		<li class="blank sixty i5"></li>
-		<li class="instagram forty push_up_half mfull i6">
+		<li class="blank sixty"></li>
+		<li class="instagram forty push_up_half mfull">
 			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[2]["username"] ?></p>
 			</div>
 		</li>
-		<li class="instagram twenty push_up i7">
+		<li class="instagram twenty push_up">
 			<div class="image image_id:<?= $instagrams[3]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[3]["username"] ?></p>
 			</div>
 		</li>
-		<li class="blank twenty i8"></li>
-		<li class="instagram twenty push_up i9">
+		<li class="blank twenty"></li>
+		<li class="instagram twenty push_up">
 			<div class="image image_id:<?= $instagrams[4]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[4]["username"] ?></p>
 			</div>
 		</li>
-		<li class="blank forty i10"></li>
-		<li class="article forty i11">
+		<li class="blank forty"></li>
+		<li class="article forty">
 			<div class="card">
 				<h3>Manifest</h3>
 				<h2>En gadefest er i virkelig­&shy;heden ikke svær at holde</h2>
@@ -65,7 +65,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				</ul>
 			</div>
 		</li>
-		<li class="tweet forty i12">
+		<li class="tweet forty">
 			<div class="card">
 				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[0]["username"]) ?>" target="_blank"><?= $tweets[0]["username"] ?></a></h3>
 				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[0]["text"]) ?></p>
@@ -75,7 +75,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<p><?= preg_replace("/(http[a-z0-9A-Z\:\/\.]+)/", "<a href=\"$1\" target=\"_blank\">$1</a>", $tweets[1]["text"]) ?></p>
 			</div>
 		</li>
-		<li class="instagram twenty push_down mfull i13">
+		<li class="instagram twenty push_down mfull">
 			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
 				<p>@<?= $instagrams[5]["username"] ?></p>
 			</div>

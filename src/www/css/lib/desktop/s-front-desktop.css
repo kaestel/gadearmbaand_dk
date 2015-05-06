@@ -51,7 +51,7 @@
 
 }
 .scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
-.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
+.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 10px; font-weight: 800;}
 
 
 
@@ -171,6 +171,7 @@
 }
 
 .scene.front ul li.ambassador ul li.video div.video {overflow: hidden; height: 100%; width: 100%; z-index: 1; position: absolute; top: 0; left: 0; box-sizing: border-box;
+	background: #000000 url(/img/gx_loader.gif) no-repeat center center;
 	backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;

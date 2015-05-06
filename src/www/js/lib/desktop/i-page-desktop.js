@@ -237,15 +237,22 @@ Util.Objects["page"] = new function() {
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
-				
+
+				page.bn_nav.a.fixed_width = true;
+				u.linkScrambler(page.bn_nav.a);
+
+
 				// very simple navigation toggle
 				u.ce(page.bn_nav);
 				page.bn_nav.clicked = function() {
+
+					this.a.unscramble();
 
 					// close navigation
 					if(u.hc(page.nN, "open")) {
 
 						this.a.innerHTML = "Menu";
+						this.a.default_text = this.a.innerHTML;
 						u.rc(this, "open");
 
 						page.nN.transitioned = function() {
@@ -260,6 +267,7 @@ Util.Objects["page"] = new function() {
 						u.ac(page.nN, "open");
 
 						this.a.innerHTML = "Luk";
+						this.a.default_text = this.a.innerHTML;
 						u.ac(this, "open");
 
 						u.a.transition(page.nN, "all 0.3s linear");
@@ -315,36 +323,43 @@ Util.Objects["page"] = new function() {
 
 					node.mousedover = function() {
 
+						if(this.offsetWidth/this.offsetHeight > 480/270) {
+							var height = (this.offsetWidth / (480/270));
+							u.as(this.vp, "height", height + "px");
+							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
+							u.as(this.vp, "width", "100%");
+							u.as(this.vp, "marginLeft", 0);
+						}
+						else {
+							var width = (this.offsetHeight / (270/480));
+							u.as(this.vp, "width", width + "px");
+							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
+							u.as(this.vp, "height", "100%");
+							u.as(this.vp, "marginTop", 0);
+						}
+
 						u.ac(this.vp, "show");
+
+						// no video for buy button
 						if(!u.hc(this, "buy")) {
-							
+
 							u.ae(this.vp, page.videoPlayer);
 							page.videoPlayer.ended = function() {
 								this.play();
 							}
 							page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
 
-							if(this.offsetWidth/this.offsetHeight > 480/270) {
-								var height = (this.offsetWidth / (480/270));
-								u.as(this.vp, "height", height + "px");
-								u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-								u.as(this.vp, "width", "100%");
-								u.as(this.vp, "marginLeft", 0);
-							}
-							else {
-								var width = (this.offsetHeight / (270/480));
-								u.as(this.vp, "width", width + "px");
-								u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-								u.as(this.vp, "height", "100%");
-								u.as(this.vp, "marginTop", 0);
-							}
+
 						}
 					}
-					
+
 					node.mousedout = function() {
 						u.rc(this.vp, "show");
-						page.videoPlayer.stop();
-						page.videoPlayer.parentNode.removeChild(page.videoPlayer);
+
+						if(!u.hc(this, "buy")) {
+							page.videoPlayer.stop();
+							page.videoPlayer.parentNode.removeChild(page.videoPlayer);
+						}
 					}
 
 					u.e.addEvent(node, "mouseenter", node.mousedover);
@@ -357,7 +372,7 @@ Util.Objects["page"] = new function() {
 
 			// initialize intro
 			page.initIntro = function() {
-				u.bug("initIntro")
+//				u.bug("initIntro")
 
 				// create intro layer
 				if(u.hc(document.body, "front")) {
@@ -365,35 +380,13 @@ Util.Objects["page"] = new function() {
 
 					page.intro.loaded = function() {
 
-						this.transitioned = function() {
+						this.step1 = function(event) {
 							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-
-//							u.a.transition(this, "none");
-
 							u.a.scale(this.sq, 0);
 
-							u.a.transition(this, "all 1.2s ease");
+
+							u.a.transition(this, "all 1.2s ease", "step2");
 							u.a.scale(this, 1.1);
-//							u.a.setBgPos(this, "23%", "49%");
-
-							// u.a.transition(this, "all 1.5s ease-in 0.5s");
-							// u.a.rotateScale(this, 50, 230);
-
-							// u.a.transition(this.sq, "none");
-							//
-							// this.sq.transitioned = function() {
-							//
-							//
-							// 	u.a.transition(this, "none");
-							// 	u.as(this, "transformOrigin", "49% 57%");
-							//
-								this.sq.transitioned = function() {
-									u.bug("close")
-									u.t.setTimer(page.intro, "clicked", 2000);
-//									page.intro.clicked();
-								}
-
-//							}
 
 
 							u.a.transition(this.sq, "all 0.5s ease-in-out 0.3s");
@@ -401,16 +394,8 @@ Util.Objects["page"] = new function() {
 							u.a.scale(this.sq, 1);
 
 							// this.sp = u.sequencePlayer(this.sq);
-							// u.as(this.sp, "transformOrigin", "49% 57%");
-							//
 							// this.sp.ended = function() {
 							//
-							// 	this.transitioned = function() {
-							// 		page.intro.clicked();
-							// 	}
-							//
-							// 	u.a.transition(this, "all 0.8s ease-in");
-							// 	u.a.rotateScale(this, 50, 230);
 							// }
 							//
 							// var images = [];
@@ -420,59 +405,23 @@ Util.Objects["page"] = new function() {
 							// }
 							// this.sp.loadAndPlay(images);
 						}
-						u.a.transition(this, "all 1s ease-in");
+
+						this.step2 = function() {
+
+							this.sq.transitioned = function() {
+								page.intro.clicked();
+							}
+
+							u.as(this.sq, "transformOrigin", "49% 57%");
+							u.a.transition(this.sq, "all 0.5s ease-in 0.5s");
+							u.a.rotateScale(this.sq, 50, 230);
+						}
+
+
+						u.a.transition(this, "all 1s ease-in", "step1");
 						u.a.setOpacity(this, 1);
-//						u.a.scale(this, 1.1);
 					}
 					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
-
-
-// 					page.intro.svg = u.svg({
-// 						"node":page.intro,
-// 						"width":page.browser_w,
-// 						"height":page.browser_h,
-// 						"class":"intro",
-// 						"shapes":[
-// 							{
-// 								"type":"line",
-// 								"x1":-10,
-// 								"y1":page.browser_h/2,
-// 								"x2":-8,
-// 								"y2":page.browser_h/2
-// 							}
-// 						]
-//
-// 					});
-//
-//
-// 					page.intro.line1 = u.qs("line", page.intro.svg);
-//
-// 					page.intro.line1.transitioned = function() {
-//
-// 						page.intro.line1.transitioned = function() {
-//
-//
-//
-// 							page.intro.path1 = u.svgShape(page.intro.svg, {
-// 								"type":"path",
-// 								"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 0 100 90 1 1 200 0z"
-// //								"d":"M28.7,83.3c-4.3,4.3-6.9,10.2-6.9,16.7c0,2.9,0.5,5.8,1.5,8.3c1,2.6,2.4,5,4.2,7"
-// 							});
-// 							u.a.to(page.intro.path1, "all 0.2s linear", {"d":"M "+(page.browser_w/2 - 100)+" "+(page.browser_h/2)+" a 100 100 90 1 1 200 0z"});
-//
-// 							// u.svgShape(page.intro.svg, {
-// 							// 	"type":"circle",
-// 							// 	"cx":page.browser_w/2,
-// 							// 	"cy":page.browser_h/2,
-// 							// 	"r":100
-// 							// });
-// 						}
-//
-// 						u.a.to(page.intro.line1, "all 0.2s linear", {"x1":page.browser_w/2 - 100});
-//
-//
-// 					}
-// 					u.a.to(page.intro.line1, "all 0.4s linear", {"x2":page.browser_w/2 + 100});
 
 
 

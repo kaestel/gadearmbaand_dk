@@ -6,6 +6,10 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-naviga
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-animation.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-textscaler.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-animation-to.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/src/u-easings.js"></script>');
+
+document.write('<script type="text/javascript" src="/js/lib/u-extensions.js"></script>');
+
 
 document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-page-mobile_touch.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-front-mobile_touch.js"></script>');
