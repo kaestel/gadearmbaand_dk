@@ -7100,6 +7100,7 @@ Util.Objects["events"] = new function() {
 			this.initSearch();
 			this.initFilters();
 			this.h1 = u.qs("h1", this);
+			this.h1.scene = this;
 			this.div_events = u.qs("div.events", this);
 			this.div_filters = u.qs("div.filters", this);
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
@@ -7126,7 +7127,7 @@ Util.Objects["events"] = new function() {
 				page.cN.ready();
 			}
 			this.h1.transitioned = function() {
-				this.finalizeDestruction();
+				this.scene.finalizeDestruction();
 			}
 			u.a.transition(this.h1, "all 0.6s ease-in-out");
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");

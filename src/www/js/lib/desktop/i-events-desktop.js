@@ -480,6 +480,7 @@ Util.Objects["events"] = new function() {
 
 
 			this.h1 = u.qs("h1", this);
+			this.h1.scene = this;
 			this.div_events = u.qs("div.events", this);
 			this.div_filters = u.qs("div.filters", this);
 
@@ -532,7 +533,7 @@ Util.Objects["events"] = new function() {
 			this.h1.transitioned = function() {
 
 				// destruction is done
-				this.finalizeDestruction();
+				this.scene.finalizeDestruction();
 			}
 
 			u.a.transition(this.h1, "all 0.6s ease-in-out");
