@@ -15,8 +15,8 @@
 
 	<meta property="og:title" content="Gadearmbaand.dk" />
 	<meta property="og:description" content="Alt om Distortions gadefester, gadearmbånd og en masse rare ord om, hvorfor du skal købe det." />
-	<meta property="og:image" content="http://gadearmbaand.dk/img/share.jpg" />
-	<meta property="og:url" content="http://gadearmbaand.dk" />
+	<meta property="og:image" content="http://gadearmbaand.kaestel.dk/img/share.jpg" />
+	<meta property="og:url" content="http://gadearmbaand.kaestel.dk" />
 
 	<link rel="apple-touch-icon" href="touchicon.png" />
 	<link rel="icon" href="favicon.png" />
