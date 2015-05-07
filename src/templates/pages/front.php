@@ -23,35 +23,35 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<h3>Gadearmbånd</h3>
 				<h2>Køb. Så tryller vi</h2>
 				<ul class="actions">
-					<li><a href="http://burl.nu/jbjpcu" target="_blank" data-scramble="øb Kun">Køb nu</a></li>
+					<li><a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a></li>
 				</ul>
 			</div>
 		</li>
 		<li class="instagram forty">
-			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[0]["item_id"] ?> image_format:<?= $instagrams[0]["image"] ?><?= $instagrams[0]["video"] ? " video_format:".$instagrams[0]["video"] : "" ?>">
 				<p>@<?= $instagrams[0]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty">
-			<div class="image image_id:<?= $instagrams[1]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[1]["item_id"] ?> image_format:<?= $instagrams[1]["image"] ?><?= $instagrams[1]["video"] ? " video_format:".$instagrams[1]["video"] : "" ?>">
 				<p>@<?= $instagrams[1]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank sixty"></li>
 		<li class="instagram forty push_up_half mfull">
-			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[2]["item_id"] ?> image_format:<?= $instagrams[2]["image"] ?><?= $instagrams[2]["video"] ? " video_format:".$instagrams[2]["video"] : "" ?>">
 				<p>@<?= $instagrams[2]["username"] ?></p>
 			</div>
 		</li>
 		<li class="instagram twenty push_up">
-			<div class="image image_id:<?= $instagrams[3]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[3]["item_id"] ?> image_format:<?= $instagrams[3]["image"] ?><?= $instagrams[3]["video"] ? " video_format:".$instagrams[3]["video"] : "" ?>">
 				<p>@<?= $instagrams[3]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty push_up">
-			<div class="image image_id:<?= $instagrams[4]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[4]["item_id"] ?> image_format:<?= $instagrams[4]["image"] ?><?= $instagrams[4]["video"] ? " video_format:".$instagrams[4]["video"] : "" ?>">
 				<p>@<?= $instagrams[4]["username"] ?></p>
 			</div>
 		</li>
@@ -61,7 +61,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<h3>Manifest</h3>
 				<h2>En gadefest er i virkelig­&shy;heden ikke svær at holde</h2>
 				<ul class="actions">
-					<li><a href="/manifest" data-scramble="fåDor radgearmbend">Derfor gadearmbånd</a></li>
+					<li><a href="/manifest">Derfor gadearmbånd</a></li>
 				</ul>
 			</div>
 		</li>
@@ -76,7 +76,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram twenty push_down mfull">
-			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[5]["item_id"] ?> image_format:<?= $instagrams[5]["image"] ?><?= $instagrams[5]["video"] ? " video_format:".$instagrams[5]["video"] : "" ?>">
 				<p>@<?= $instagrams[5]["username"] ?></p>
 			</div>
 		</li>
@@ -112,7 +112,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram forty mfull">
-			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[6]["item_id"] ?> image_format:<?= $instagrams[6]["image"] ?><?= $instagrams[6]["video"] ? " video_format:".$instagrams[6]["video"] : "" ?>">
 				<p>@<?= $instagrams[6]["username"] ?></p>
 			</div>
 		</li>
@@ -126,18 +126,18 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram twenty">
-			<div class="image image_id:<?= $instagrams[7]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[7]["item_id"] ?> image_format:<?= $instagrams[7]["image"] ?><?= $instagrams[7]["video"] ? " video_format:".$instagrams[7]["video"] : "" ?>">
 				<p>@<?= $instagrams[7]["username"] ?></p>
 			</div>
 		</li>
 		<li class="instagram forty">
-			<div class="image image_id:<?= $instagrams[8]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[8]["item_id"] ?> image_format:<?= $instagrams[8]["image"] ?><?= $instagrams[8]["video"] ? " video_format:".$instagrams[8]["video"] : "" ?>">
 				<p>@<?= $instagrams[8]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty mfull">
-			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[9]["item_id"] ?> image_format:<?= $instagrams[9]["image"] ?><?= $instagrams[9]["video"] ? " video_format:".$instagrams[9]["video"] : "" ?>">
 				<p>@<?= $instagrams[9]["username"] ?></p>
 			</div>
 		</li>
@@ -173,12 +173,12 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 
 	<ul class="grid">
 		<li class="instagram twenty push_down">
-			<div class="image image_id:<?= $instagrams[10]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[10]["item_id"] ?> image_format:<?= $instagrams[10]["image"] ?><?= $instagrams[10]["video"] ? " video_format:".$instagrams[10]["video"] : "" ?>">
 				<p>@<?= $instagrams[10]["username"] ?></p>
 			</div>
 		</li>
 		<li class="instagram forty">
-			<div class="image image_id:<?= $instagrams[11]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[11]["item_id"] ?> image_format:<?= $instagrams[11]["image"] ?><?= $instagrams[11]["video"] ? " video_format:".$instagrams[11]["video"] : "" ?>">
 				<p>@<?= $instagrams[11]["username"] ?></p>
 			</div>
 		</li>
@@ -192,7 +192,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram twenty mfull">
-			<div class="image image_id:<?= $instagrams[12]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[12]["item_id"] ?> image_format:<?= $instagrams[12]["image"] ?><?= $instagrams[12]["video"] ? " video_format:".$instagrams[12]["video"] : "" ?>">
 				<p>@<?= $instagrams[12]["username"] ?></p>
 			</div>
 		</li>
@@ -208,7 +208,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram forty push_up_half mfull">
-			<div class="image image_id:<?= $instagrams[13]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[13]["item_id"] ?> image_format:<?= $instagrams[13]["image"] ?><?= $instagrams[13]["video"] ? " video_format:".$instagrams[13]["video"] : "" ?>">
 				<p>@<?= $instagrams[13]["username"] ?></p>
 			</div>
 		</li>
@@ -234,41 +234,41 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 
 	<ul class="grid">
 		<li class="instagram twenty">
-			<div class="image image_id:<?= $instagrams[14]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[14]["item_id"] ?> image_format:<?= $instagrams[14]["image"] ?><?= $instagrams[14]["video"] ? " video_format:".$instagrams[14]["video"] : "" ?>">
 				<p>@<?= $instagrams[14]["username"] ?></p>
 			</div>
 		</li>
 		<li class="instagram forty">
-			<div class="image image_id:<?= $instagrams[15]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[15]["item_id"] ?> image_format:<?= $instagrams[15]["image"] ?><?= $instagrams[15]["video"] ? " video_format:".$instagrams[15]["video"] : "" ?>">
 				<p>@<?= $instagrams[15]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty mfull">
-			<div class="image image_id:<?= $instagrams[16]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[16]["item_id"] ?> image_format:<?= $instagrams[16]["image"] ?><?= $instagrams[16]["video"] ? " video_format:".$instagrams[16]["video"] : "" ?>">
 				<p>@<?= $instagrams[16]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank sixty"></li>
 		<li class="instagram forty push_up_half">
-			<div class="image image_id:<?= $instagrams[17]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[17]["item_id"] ?> image_format:<?= $instagrams[17]["image"] ?><?= $instagrams[17]["video"] ? " video_format:".$instagrams[17]["video"] : "" ?>">
 				<p>@<?= $instagrams[17]["username"] ?></p>
 			</div>
 		</li>
 		<li class="instagram twenty push_up">
-			<div class="image image_id:<?= $instagrams[18]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[18]["item_id"] ?> image_format:<?= $instagrams[18]["image"] ?><?= $instagrams[18]["video"] ? " video_format:".$instagrams[18]["video"] : "" ?>">
 				<p>@<?= $instagrams[18]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank twenty"></li>
 		<li class="instagram twenty push_up">
-			<div class="image image_id:<?= $instagrams[19]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[19]["item_id"] ?> image_format:<?= $instagrams[19]["image"] ?><?= $instagrams[19]["video"] ? " video_format:".$instagrams[19]["video"] : "" ?>">
 				<p>@<?= $instagrams[19]["username"] ?></p>
 			</div>
 		</li>
 		<li class="blank forty"></li>
 		<li class="instagram forty">
-			<div class="image image_id:<?= $instagrams[20]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[20]["item_id"] ?> image_format:<?= $instagrams[20]["image"] ?><?= $instagrams[20]["video"] ? " video_format:".$instagrams[20]["video"] : "" ?>">
 				<p>@<?= $instagrams[20]["username"] ?></p>
 			</div>
 		</li>
@@ -283,7 +283,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 			</div>
 		</li>
 		<li class="instagram twenty push_down mfull">
-			<div class="image image_id:<?= $instagrams[21]["item_id"] ?> format:<?= $instagrams[0]["image"] ?>">
+			<div class="image image_id:<?= $instagrams[21]["item_id"] ?> image_format:<?= $instagrams[21]["image"] ?><?= $instagrams[21]["video"] ? " video_format:".$instagrams[21]["video"] : "" ?>">
 				<p>@<?= $instagrams[21]["username"] ?></p>
 			</div>
 		</li>

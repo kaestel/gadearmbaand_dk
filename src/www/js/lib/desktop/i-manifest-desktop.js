@@ -17,6 +17,12 @@ Util.Objects["manifest"] = new function() {
 
 			page.resized();
 
+			this.link = u.qs("a", this);
+			u.ce(this.link);
+			this.link.clicked = function(event) {
+				u.gotoBuy();
+			}
+
 			this.is_ready = true;
 			page.cN.ready();
 		}
@@ -29,6 +35,11 @@ Util.Objects["manifest"] = new function() {
 //				u.bug("scene.build:" + u.nodeId(this));
 
 				this.is_built = true;
+
+				// wrap up building by removing svg
+				this.finalizeBuild = function() {
+					this.removeChild(this.svg);
+				}
 
 				this.content = u.qs(".content", this);
 
@@ -85,7 +96,7 @@ Util.Objects["manifest"] = new function() {
 
 				//player.loadAndPlay("/assets/nav_manifest_640x360.mp4");
 
-				var lines = 50;
+				var lines = 25;
 				var svg_object = {
 					"name":"manifest_build",
 					"width":page.browser_w,
@@ -97,9 +108,8 @@ Util.Objects["manifest"] = new function() {
 
 				// start lines
 				for(i = 0; i < lines; i++) {
-
-					var x1 = (i*page.browser_w/lines) - 10 + u.random(5, 10);
-					var x2 = (i*page.browser_w/lines) - 10 + u.random(5, 10);
+					var x1 = (i*page.browser_w/lines) - 10;// + u.random(5, 10);
+					var x2 = (i*page.browser_w/lines) - 10 + u.random(-20, 20);
 					shape = {
 						"type":"line",
 						"class":"id"+i,
@@ -107,47 +117,39 @@ Util.Objects["manifest"] = new function() {
 						"x2":x2,
 						"y1": -10,
 						"y2": page.browser_h + 10,
-						// "y1":i%2 ? -10 : page.browser_h + 10-2,
-						// "y2":i%2 ? -8 : page.browser_h + 10,
-//						new_coords[i]["stroke-width"] = u.random(2+j*0.5, 28+(Math.pow(j*0.5, 2)));
-						"stroke-width": u.random(20, 50)
+						"stroke-width": u.random(45, 65)
 					}
 					svg_object.shapes.push(shape);
 				}
-
 
 				// new end coords
 				for(i = 0; i < lines; i++) {
 					shape = {
 						"y1":page.browser_h + 10,
-//						"y2":-10,
 						"stroke-width":2
 					}
 					new_coords[i] = shape;
 				}
 
-				var svg = u.svg(svg_object);
-				svg.scene = this;
-				svg._c = u.qs(".content");
+				this.svg = u.svg(svg_object);
+				this.svg.scene = this;
+				this.svg._c = u.qs(".content");
 
-				u.ae(this, svg);
+				u.ae(this, this.svg);
 
 				// get all lines in array to parse them randomly
-				lines = u.qsa("line", svg);
+				lines = u.qsa("line", this.svg);
 				new_lines = [];
 				for(i = 0; i < lines.length; i++) {
 					new_lines.push(lines[i]);
 				}
 
 				// start animation sequence
-//				j = 50;
-				svg._animate = function() {
-//					j--;
+				this.svg._animate = function() {
 					if(new_lines.length) {
 						i = u.random(0, new_lines.length-1);
 						line = new_lines[i];
 						new_lines.splice(i, 1);
-//						new_coords[i]["stroke-width"] = 2; //u.random(2+j*0.5, 28+(Math.pow(j*0.5, 2)));
 
 
 						u.a.to(line, "all 0.3s linear", new_coords[i]);
@@ -157,18 +159,11 @@ Util.Objects["manifest"] = new function() {
 						u.t.setTimer(this, "_animate", 10);
 					}
 					else {
-						this.parentNode.removeChild(this);
-//						u.t.setTimer(this.scene, this.scene.finalizeDestruction, 500);
-	//					this.scene.finalizeDestruction();
+						u.t.setTimer(this.scene, this.scene.finalizeBuild, 500);
 					}
 
 				}
-				svg._animate();
-
-
-				// u.a.transition(this, "all 1s linear");
-				// u.a.setOpacity(this, 1);
-
+				this.svg._animate();
 			}
 		}
 
@@ -212,8 +207,6 @@ Util.Objects["manifest"] = new function() {
 					"x2":x1,
 					"y1":-10,
 					"y2":-8,
-					// "y1":i%2 ? -10 : page.browser_h + 10-2,
-					// "y2":i%2 ? -8 : page.browser_h + 10,
 					"stroke-width":2
 				}
 				svg_object.shapes.push(shape);
@@ -230,14 +223,14 @@ Util.Objects["manifest"] = new function() {
 				new_coords[i] = shape;
 			}
 
-			var svg = u.svg(svg_object);
-			svg.scene = this;
-			svg._c = u.qs(".content");
+			this.svg = u.svg(svg_object);
+			this.svg.scene = this;
+			this.svg._c = u.qs(".content");
 
-			u.ae(this, svg);
+			u.ae(this, this.svg);
 
 			// get all lines in array to parse them randomly
-			lines = u.qsa("line", svg);
+			lines = u.qsa("line", this.svg);
 			new_lines = [];
 			for(i = 0; i < lines.length; i++) {
 				new_lines.push(lines[i]);
@@ -245,7 +238,7 @@ Util.Objects["manifest"] = new function() {
 
 			// start animation sequence
 			j = 0;
-			svg._animate = function() {
+			this.svg._animate = function() {
 				j++;
 				if(new_lines.length) {
 					i = u.random(0, new_lines.length-1);
@@ -278,11 +271,10 @@ Util.Objects["manifest"] = new function() {
 				}
 				else {
 					u.t.setTimer(this.scene, this.scene.finalizeDestruction, 500);
-//					this.scene.finalizeDestruction();
 				}
 
 			}
-			svg._animate();
+			this.svg._animate();
 
 		}
 

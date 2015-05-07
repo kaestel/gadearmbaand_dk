@@ -5,6 +5,8 @@ Util.Objects["front"] = new function() {
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
+
+			// get block size to make grid add up
 			var block_height = Math.ceil(this.offsetWidth/5);
 
 			var i, li;
@@ -57,12 +59,12 @@ Util.Objects["front"] = new function() {
 			var h2_40_padding = "0 0 " + (20 + (factor * 25))+"px";
 			var h2_20_padding = "0 0 " + (10 + (factor * 12))+"px";
 
+			// update paddings
 			this.article_rule.style.setProperty("padding", padding, "important");
 			this.article_h2_40_rule.style.setProperty("padding", h2_40_padding, "important");
 			this.article_h2_20_rule.style.setProperty("padding", h2_20_padding, "important");
 			this.article_p_rule.style.setProperty("padding", h2_40_padding, "important");
 			this.tweet_rule.style.setProperty("padding", padding, "important");
-
 
 		}
 
@@ -70,14 +72,18 @@ Util.Objects["front"] = new function() {
 		scene.scrolled = function() {
 //			u.bug("page.scrolled:" + u.nodeId(this))
 
+			// only do scroll adjustments if scene is built
 			if(this.is_built) {
+
 				var i, li;
 				for (i = 0; li = this.lis[i]; i++) {
 
 //					u.bug("check render:" + li.is_built + ", " + li.i  + "==" + this.rendered)
 
+					// only consider unbuilt lis which are next in line for rendering
 					if(!li.is_built && li.i == this.rendered) {
 
+						// get position on screen
 						var li_y = u.absY(li);
 						if(
 							(li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || 
@@ -89,21 +95,41 @@ Util.Objects["front"] = new function() {
 							break;
 
 						}
-						
 					}
+
+					// avoid loop without purpose
 					else if(li.i > this.rendered) {
 						break;
+					}
+
+					// check for videos to stop when out of view and start when reentering
+					else if(li.is_built && li.image && li.image.video_player) {
+
+						var li_y = u.absY(li);
+						// if video is not playing and in sight - start playing
+						if(!li.image.video_player.is_playing &&
+							(li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h-100)) || 
+							(li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h - 100))
+						) {
+							li.image.video_player.play();
+						}
+						// stop video
+						else {
+							li.image.video_player.stop();
+						}
+
 					}
 				}
 			}
 		}
 
 
+		// get scene ready for building
 		scene.ready = function() {
 //			u.bug("scene.ready:" + u.nodeId(this));
 
 
-			// create padding rule for grid
+			// create padding rules for grid padding scaling
 			this.style_tag = document.createElement("style");
 			this.style_tag.setAttribute("media", "all")
 			this.style_tag.setAttribute("type", "text/css")
@@ -125,21 +151,21 @@ Util.Objects["front"] = new function() {
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 
 
+			// primary elements
 			this.h1 = u.qs("h1", this);
-
-
-			//this.ul = u.qs(".grid");
 			this.lis = u.qsa("ul.grid > li", this);
 
-			this.load_image_count = 0;
-			this.loaded_image_count = 0;
 
+			// prepare all nodes
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 
 				li.scene = this;
+
+				// save order (to control rendering)
 				li.i = i;
 				u.ac(li, "i"+i);
+
 
 				// pre-index for resizing
 				if(u.hc(li, "forty")) {
@@ -156,85 +182,143 @@ Util.Objects["front"] = new function() {
 				// handle instagram images
 				if(u.hc(li, "instagram")) {
 
-					// img
+
+					// get elements
 					li.image = u.qs("div.image", li);
 					li.image.li = li;
 					li.image.p = u.qs("div.image p", li);
 
-					if(li.image) {
+					// add 3d settings
+					u.as(li, "perspectiveOrigin", "50% 50%");
+					u.as(li, "perspective", (li.offsetWidth) + "px");
 
-						// set starting point
-						u.as(li, "perspective", (li.offsetWidth) + "px");
-						u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
-						u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
+					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
+					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
 
-						// get image src if information is available
-						li.image.image_id = u.cv(li.image, "image_id");
-						li.image.format = u.cv(li.image, "format");
-						if(li.image.image_id && li.image.format) {
-							li.image._image_src = "/images/" + li.image.image_id + "/image/400x." + li.image.format;
-						}
 
-						// username hover effect
-						if(u.e.event_pref == "mouse") {
-							li.image.mousedover = function() {
-								u.a.transition(this.p, "all 0.2s ease-in");
-								u.as(this.p, "fontSize", "14px");
-							}
-							li.image.mousedout = function() {
-								u.a.transition(this.p, "all 0.1s ease-in");
-								u.as(this.p, "fontSize", "10px");
-							}
-
-							u.e.addEvent(li.image, "mouseover", li.image.mousedover);
-							u.e.addEvent(li.image, "mouseout", li.image.mousedout);
-						}
-
+					// get image src if information is available
+					li.image.image_id = u.cv(li.image, "image_id");
+					li.image.image_format = u.cv(li.image, "image_format");
+					if(li.image.image_id && li.image.image_format) {
+						li.image._image_src = "/images/" + li.image.image_id + "/image/400x." + li.image.image_format;
 					}
+					// get video src if information is available
+					li.image.video_format = u.cv(li.image, "video_format");
+					if(li.image.image_id && li.image.video_format) {
+						li.image._video_src = "/videos/" + li.image.image_id + "/video/400x." + li.image.video_format;
+					}
+
+
+					// username hover effect
+					if(u.e.event_pref == "mouse") {
+						li.image.mousedover = function() {
+							u.a.transition(this.p, "all 0.2s ease-in");
+							u.as(this.p, "fontSize", "14px");
+						}
+						li.image.mousedout = function() {
+							u.a.transition(this.p, "all 0.1s ease-in");
+							u.as(this.p, "fontSize", "10px");
+						}
+
+						u.e.addEvent(li.image, "mouseover", li.image.mousedover);
+						u.e.addEvent(li.image, "mouseout", li.image.mousedout);
+					}
+
 				}
 
 				// handle tweet
 				else if(u.hc(li, "tweet")) {
 
+
+					// get elements
 					li.cards = u.qsa(".card", li);
+
+					// add 3d settings
+					u.as(li, "perspectiveOrigin", "50% 0");
+					u.as(li, "perspective", "500px");
+					u.as(li, "transformStyle", "preserve-3d");
+
+					var j, card;
+					for(j = 0; card = li.cards[j]; j++) {
+						u.as(card, u.a.vendor("backfaceVisibility"), "hidden");
+						u.as(card, u.a.vendor("transform"), "rotateX(180deg)");
+					}
 
 				}
 
 				// handle article
 				else if(u.hc(li, "article")) {
 
+
+					// get elements
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
 
+					// add 3d settings
+					u.as(li, "perspectiveOrigin", "50% 0");
+					u.as(li, "perspective", "500px");
+					u.as(li, "transformStyle", "preserve-3d");
+
+					u.as(li.card, u.a.vendor("backfaceVisibility"), "hidden");
+					u.as(li.card, u.a.vendor("transform"), "rotateX(-180deg)");
+
+
+					// add internal link handler - unless link has target (external link)
 					if(!li.link.target) {
 						u.ce(li.link, {"type":"link"});
 					}
+					else {
+						u.ce(li.link);
+						li.link.clicked = function(event) {
+							u.gotoBuy();
+						}
+					}
 
-//					this._linkScrambler(li);
+					// add link scrambling
 					u.linkScrambler(li.link);
+
 				}
 
 				// handle ambassador
 				else if(u.hc(li, "ambassador")) {
-					//u.as(li, "height", li.offsetWidth+"px");
 
-					// article
+
+					// ARTICLE
+
+					// get elements
 					li.li_article = u.qs("li.article", li);
-
 					li.li_article.card = u.qs(".card", li.li_article);
-
 					li.li_article.link = u.qs(".card a", li.li_article);
-					li.li_article.link.li = li.li_article;
 
+
+					// add 3d settings
+					u.as(li.li_article, "perspectiveOrigin", "50% 0");
+					u.as(li.li_article, "perspective", "500px");
+					u.as(li.li_article, "transformStyle", "preserve-3d");
+
+					u.as(li.li_article.card, u.a.vendor("backfaceVisibility"), "hidden");
+					u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(-180deg)");
+
+
+					// add internal link handler - unless link has target (external link)
 					if(!li.li_article.link.target) {
 						u.ce(li.li_article.link, {"type":"link"});
 					}
+					else {
+						u.ce(li.li_article.link);
+						li.li_article.link.clicked = function(event) {
+							u.gotoBuy();
+						}
+					}
 
-//					this._linkScrambler(li.li_article);
+					// add link scrambling
 					u.linkScrambler(li.li_article.link);
 
 
-					// video
+					// VIDEO
+
+					// get elements
 					li.li_video = u.qs("li.video", li);
 					li.video = u.qs("div.video", li.li_video);
 					li.image = u.qs("div.image", li.li_video);
@@ -244,33 +328,45 @@ Util.Objects["front"] = new function() {
 					li.image.li = li;
 
 
+					// add 3d settings
+					u.as(li.li_video, "perspectiveOrigin", "50% 50%");
 					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
+
+					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
 					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
+
+					u.as(li.video, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 
 
-					li.video_id = u.cv(li.video, "video_id");
-					li.video_format = u.cv(li.video, "video_format");
-
+					// get image src if information is available
 					li.image_id = u.cv(li.image, "image_id");
 					li.image_format = u.cv(li.image, "image_format");
-
-
 					if(li.image_id && li.image_format) {
 						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
 					}
 
-					if(li.video_id && li.video_format) {
 
+					// get video src if information is available
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
+					if(li.video_id && li.video_format) {
 						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
+
+						// add play button
 						li.bn_play = u.ae(li.image, "div", {"class": "play"});
 
+						// add play handler
 						u.e.click(li.image);
 						li.image.clicked = function(event) {
 
 							u.a.transition(this, "all 0.5s ease-in-out");
 							u.as(this, u.a.vendor("transform"), "rotateX(180deg)");
+
+							this.li.video.transitioned = function() {
+								u.a.removeTransform(this);
+							}
 
 							u.a.transition(this.li.video, "all 0.5s ease-in-out");
 							u.as(this.li.video, u.a.vendor("transform"), "rotateX(0deg)");
@@ -289,38 +385,35 @@ Util.Objects["front"] = new function() {
 								
 							}
 
+							// if video player is currently used, make sure to reset existing instance
 							if(page.videoPlayer.current_node) {
 								page.videoPlayer.current_node.resetPlayer();
 							}
 
-							//u.as(this.play_bn, "display", "none");
+							// reset video when playback is dont
 							page.videoPlayer.ended = function(event) {
+
+								this.current_node.resetPlayer();
 								this.current_node = false;
-
-								this.parentNode.transitioned = function() {
-									u.as(this, "zIndex", 1);
-								}
-								u.a.transition(this.parentNode, "all 0.5s ease-in-out");
-								u.as(this.parentNode, u.a.vendor("transform"), "rotateX(-180deg)");
-
-								u.a.transition(this.parentNode.li.image, "all 0.5s ease-in-out");
-								u.as(this.parentNode.li.image, u.a.vendor("transform"), "rotateX(0deg)");
-
 							}
 
-//							this.li.video.ended;
-
+							// move video to top
 							u.as(this.li.video, "zIndex", 3);
+							// add video player
 							u.ae(this.li.video, page.videoPlayer);
+							// remember current position in hierarchy
 							page.videoPlayer.current_node = this.li;
+
+							// load and start playback as fast as posible
 							page.videoPlayer.loadAndPlay(this.li._video_url, {"playpause":true});
 
 						}
 
 					}
+
 				}
 
-
+				// li is ready
 				li.is_ready = true;
 
 				// resize grid
@@ -332,6 +425,7 @@ Util.Objects["front"] = new function() {
 			this.resized();
 
 
+			// add text scaling
 			u.textscaler(this, {
 				"min_width":800,
 				"max_width":1200,
@@ -368,88 +462,14 @@ Util.Objects["front"] = new function() {
 			page.cN.ready();
 		}
 
-		// scramble text in buttons
-		// scene._linkScrambler = function(li) {
-		//
-		// 	li.link.default_text = li.link.innerHTML;
-		// 	li.link.scrambled_count = 0;
-		// 	li.link.randomizer = function() {
-		// 		var indexes = [];
-		// 		var chars = [];
-		// 		var rand;
-		// 		while(chars.length < this.scrambled_sequence.length/3) {
-		//
-		// 			rand = u.random(0, this.scrambled_sequence.length-1);
-		// 			if(indexes.indexOf(rand) == -1) {
-		// 				indexes.push(rand);
-		// 				chars.push(this.scrambled_sequence[rand]);
-		// 			}
-		//
-		// 		}
-		// 		return [chars, indexes];
-		// 	}
-		//
-		// 	li.link.scramble = function() {
-		//
-		// 		this.scrambled_sequence = this.innerHTML.split("");
-		// 		var c = this.randomizer();
-		//
-		// 		if(this.scrambled_count < 7) {
-		//
-		// 			var index, char;
-		//
-		// 			while(c[0].length) {
-		// 				index = c[1].splice([u.random(0, c[1].length-1)], 1);
-		// 				char = c[0].splice([u.random(0, c[0].length-1)], 1);
-		//
-		// 				this.scrambled_sequence[index] = char;
-		// 			}
-		// 			this.innerHTML = this.scrambled_sequence.join("");
-		//
-		// 			this.scrambled_count++;
-		// 			u.t.setTimer(this, this.scramble, 50);
-		// 		}
-		// 		else {
-		// 			this.innerHTML = this.default_text;
-		// 		}
-		//
-		// 	}
-		// 	li.link.unscramble = function() {
-		//
-		// 		// u.a.transition(this.link, "all 0.3s ease-in-out");
-		// 		// u.as(this.link, u.a.vendor("transform"), "rotateX(0deg)");
-		//
-		// 		this.innerHTML = this.default_text;
-		// 		this.scrambled_count = 0;
-		// 	}
-		//
-		// 	li.link.mousedover = function() {
-		// 		u.t.resetTimer(this.t_scrambler);
-		//
-		// 		if(!this.scrambled_count) {
-		//
-		// 			// u.a.transition(this.link, "all 0.3s ease-in-out");
-		// 			// u.as(this.link, u.a.vendor("transform"), "rotateX(360deg)");
-		//
-		// 			this.scramble();
-		// 		}
-		// 	}
-		// 	li.link.mousedout = function() {
-		// 		u.t.resetTimer(this.t_scrambler);
-		//
-		// 		this.t_scrambler = u.t.setTimer(this, "unscramble", 100);
-		// 	}
-		// 	u.e.addEvent(li.link, "mouseover", li.link.mousedover);
-		// 	u.e.addEvent(li.link, "mouseout", li.link.mousedout);
-		//
-		// }
 
-		// twitter card rotator
+		// twitter card rotator - attached to tweet li
 		scene._rotateCard = function() {
 
 			if(this.cards.length > 1) {
 				var new_card = this.card+1 < this.cards.length ? this.card+1 : 0;
 
+				// don't flip if menu is open
 				if(!u.hc(page.nN, "open")) {
 					this.cards[this.card].transitioned = function() {
 						u.a.transition(this, "none");
@@ -464,29 +484,34 @@ Util.Objects["front"] = new function() {
 					this.card = new_card;
 				}
 
-				u.t.setTimer(this, this.rotateCard, 5000);
+				// only continue loop if tweet is still part of DOM
+				if(this.offsetHeight) {
+					u.t.setTimer(this, this.rotateCard, 5000);
+				}
 			}
+
 		}
 
 		// render timestamp
 		scene.next_render = new Date().getTime();
 
+		// render controller - calculates delays for rendering
 		scene.renderControl = function() {
-//			return 0;
-
 			var now = new Date().getTime();
 
-			// delay rendering for a minimum of 100ms between each render
-			this.next_render = now - this.next_render > 100 ? now : now + (100 - (now - this.next_render));
+			// delay rendering for a minimum of 150ms between each render
+			this.next_render = now - this.next_render > 150 ? now : now + (150 - (now - this.next_render));
 
 			return this.next_render-now;
 		}
 
-		// render a node
-		scene.renderNode = function(li) {
 
+		// render a node - invoked by scene.scrolled
+		scene.renderNode = function(li) {
 //			u.bug("renderNode:" + u.nodeId(li) + ", " + li.is_built);
 
+
+			// set build state
 			li.is_built = true;
 
 
@@ -496,33 +521,53 @@ Util.Objects["front"] = new function() {
 				// do we have information
 				if(li.image._image_src) {
 
+					// load image
 					li.image.loaded = function(queue) {
 
 						this.img = u.ae(this, "img", {"src": queue[0].image.src});
 						this.transitioned = function() {
+							// remove transform to fix safari bug
 							u.a.removeTransform(this);
+
+							if(this._video_src) {
+
+								this.video_player = u.videoPlayer({"volume":true});
+								this.video_player.img = this.img;
+								u.ae(this, this.video_player);
+
+								this.video_player.playing = function() {
+									u.a.transition(this.img, "all 0.3s linear");
+									u.a.setOpacity(this.img, 0);
+								}
+
+								this.video_player.ended = function() {
+									this.play();
+								}
+								this.video_player.loadAndPlay(this._video_src);
+
+								// turn off volume as default
+								this.video_player.volume(0);
+							}
 
 						}
 						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
 						u.as(this, u.a.vendor("transform"), "rotateX(0)");
+
 
 						// continue rendering
 						this.li.scene.rendered++;
 						this.li.scene.scrolled();
 
 					}
-
 					u.preloader(li.image, [li.image._image_src])
 				}
-
-				// skip element
+				// skip element on missing information
 				else {
 
 					// continue rendering
 					li.scene.rendered++;
 					li.scene.scrolled();
 				}
-
 
 			}
 
@@ -532,41 +577,42 @@ Util.Objects["front"] = new function() {
 				// do we have enough information
 				if(li._image_src) {
 
+					// load image
 					li.image.loaded = function(queue) {
 						u.ae(this, "img", {"src": queue[0].image.src});
 
 						this.transitioned = function() {
 
 							u.a.transition(this, "none");
+							// remove transform to fix safari bug
 							u.a.removeTransform(this);
 
-
-							u.as(this.li.li_video, u.a.vendor("perspective"), 500 + "px");
-
+							// update perspective and origin for flip when play is clicked
+							u.as(this.li.li_video, u.a.vendor("perspective"), "500px");
 							u.as(this.li.li_video, u.a.vendor("transformStyle"), "preserve-3d");
 							u.as(this.li.li_video, u.a.vendor("perspectiveOrigin"), "50% 0");
 							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
 
 						}
+						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+						u.as(this, u.a.vendor("transform"), "rotateX(0)");
+
 
 						// continue rendering
 						this.li.scene.rendered++;
 						this.li.scene.scrolled();
 
-						u.a.transition(this, "all 1s ease-in-out "+(li.scene.renderControl())+"ms");
-						u.as(this, u.a.vendor("transform"), "rotateX(0)");
-
 					}
 					u.preloader(li.image, [li._image_src])
 
 				}
-				// skip element
+				// skip element on missing information
 				else {
+
 					// continue rendering
 					li.scene.rendered++;
 					li.scene.scrolled();
 				}
-
 
 				// show article
 				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
@@ -579,10 +625,10 @@ Util.Objects["front"] = new function() {
 				u.a.transition(li.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
 
+
 				// continue rendering
 				li.scene.rendered++;
 				li.scene.scrolled();
-
 			}
 
 			// tweet
@@ -592,19 +638,19 @@ Util.Objects["front"] = new function() {
 					u.a.transition(this, "none");
 					u.a.removeTransform(this);
 				}
-
 				u.a.transition(li.cards[0], "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.cards[0], u.a.vendor("transform"), "rotateX(0)");
 				li.card = 0;
 
-				// continue rendering
-				li.scene.rendered++;
-				li.scene.scrolled();
 
 				// enable card rotation
 				li.rotateCard = this._rotateCard;
-
 				u.t.setTimer(li, li.rotateCard, 5000);
+
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
 			}
 
 			// blank
@@ -613,11 +659,9 @@ Util.Objects["front"] = new function() {
 				// continue rendering
 				li.scene.rendered++;
 				li.scene.scrolled();
-
 			}
 
 		}
-
 
 
 		// build scene - start actual rendering of scene
@@ -626,9 +670,11 @@ Util.Objects["front"] = new function() {
 			if(!this.is_built) {
 //				u.bug("scene.build:" + u.nodeId(this));
 
+				// show header
 				u.a.transition(this.h1, "all 0.5s ease-in");
 				u.a.setOpacity(this.h1, 1);
 
+				// set render control counter
 				this.rendered = 0;
 				this.is_built = true;
 
@@ -654,7 +700,7 @@ Util.Objects["front"] = new function() {
 				// remove style tag
 				this.style_tag.parentNode.removeChild(this.style_tag);
 
-
+				// remove scene and get on with the party
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 
@@ -664,8 +710,8 @@ Util.Objects["front"] = new function() {
 			u.a.transition(this.h1, "all 0.5s ease-out");
 			u.a.setOpacity(this.h1, 0);
 
-			var i, li, j = 0;
 
+			var i, li, j = 0;
 			for(i = 0; li = this.lis[i]; i++) {
 				var li_y = u.absY(li);
 
@@ -674,13 +720,17 @@ Util.Objects["front"] = new function() {
 //					u.bug("move:" + u.nodeId(li))
 					u.as(li, "zIndex", 100-j);
 
-					u.ac(li.parentNode, "destroy");
+					// add 3d settings
+					u.as(li.parentNode, "perspectiveOrigin", "50% 0");
+					u.as(li.parentNode, "perspective", "500px");
+					u.as(li.parentNode, "transformStyle", "preserve-3d");
 
 					u.a.transition(li, "all 0.5s ease-in "+(150*j++)+"ms");
 					u.as(li, u.a.vendor("transform"), "translateY(1500px) rotateX(-540deg)");
 				}
 			}
 
+			// get on with it
 			u.t.setTimer(this, this.finalizeDestruction, (150*j)+500);
 
 		}

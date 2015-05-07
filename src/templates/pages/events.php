@@ -14,89 +14,88 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 	<h1>Program</h1>
 
-	<ul class="days">
-		<li>Onsdag</li>
-		<li>Torsdag</li>
-		<li>Fredag</li>
-<? //		if($days): ?>
-<? //			foreach($days as $day): ?>
-				<!--li><?//= $day["value"] ?></li-->
-<? //			endforeach; ?>
-<? //		endif; ?>
-	</ul>
-
-	<div class="filter">
-
-		<h2>Søg</h2>
-		
-		<form class="search">
-			<fieldset>
-				<div class="field string">
-					<input type="text" />
-				</div>
-			</fieldset>
-		</form>
-
-		
-		<ul class="tag_list">
-<?			if($tags): ?>
-<?				foreach($tags as $tag): ?>
-					<li><?= $tag["value"] ?></li>
-<?				endforeach; ?>
-<?			endif; ?>
+	<div class="filters">
+		<ul class="days">
+			<li>Onsdag</li>
+			<li>Torsdag</li>
+			<li>Fredag</li>
 		</ul>
+
+		<div class="filter">
+
+			<h2>Søg</h2>
 		
+			<form class="search">
+				<fieldset>
+					<div class="field string">
+						<input type="text" />
+					</div>
+				</fieldset>
+			</form>
+
+		
+			<ul class="tag_list">
+<?				if($tags): ?>
+<?					foreach($tags as $tag): ?>
+						<li><?= $tag["value"] ?></li>
+<?					endforeach; ?>
+<?				endif; ?>
+			</ul>
+		
+		</div>
 	</div>
 
-	<ul class="legend">
-		<li>Vært</li>
-		<li class="event">Event</li>
-		<li>Lokation</li>
-		<li class="tags">Tags</li>
-	</ul>
+	<div class="events">
+		<ul class="legend">
+			<li>Vært</li>
+			<li class="event">Event</li>
+			<li>Lokation</li>
+			<li class="tags">Tags</li>
+		</ul>
 
 
 <?	if($items): ?>
-	<ul class="items">
+		<ul class="items">
 <?		foreach($items as $item): 
-		$media = $IC->sliceMedia($item);
-?>
+			$media = $IC->sliceMedia($item);
+	?>
 
-		<li class="item person id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
+			<li class="item person id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
 
-			<h3 class="host"><?= $item["host"] ?></h3>
-			<h2 class="name"><?= $item["name"] ?></h2>
-			<p class="location"><a href="http://maps.google.com/maps/place/<?= $item["latitude"] ?>,<?= $item["longitude"] ?>" target="_blank"><?= $item["location"] ?></a></p>
+				<h3 class="host"><?= $item["host"] ?></h3>
+				<h2 class="name"><?= $item["name"] ?></h2>
+				<p class="location"><a href="http://maps.google.com/maps/place/<?= $item["latitude"] ?>,<?= $item["longitude"] ?>" target="_blank"><?= $item["location"] ?></a></p>
 
 <?			if($item["tags"]): ?>
 				<ul class="tags">
-<?					foreach($item["tags"] as $item_tag): ?>
-<?						if($item_tag["context"] == $itemtype): ?>
-							<li><?= $item_tag["value"] ?></li>
-<?						endif; ?>
-<?					endforeach; ?>
+<?				foreach($item["tags"] as $item_tag): ?>
+<?					if($item_tag["context"] == $itemtype): ?>
+					<li><?= $item_tag["value"] ?></li>
+<?					endif; ?>
+<?				endforeach; ?>
 				</ul>
 <?			endif; ?>
 
-			<div class="description">
-				<div class="media item_id:<?= $item["item_id"] ?> format:<?= $media["format"] ?>"></div>
+				<div class="description">
+					<div class="media item_id:<?= $item["item_id"] ?> format:<?= $media["format"] ?>"></div>
 				
-				<div class="text">
-					<p><?= $item["description"] ?></p>
-				
-					<ul class="action">
-						<li>
-							<a href="<?= $item["facebook_link"] ?>" target="_blank">Facebook event</a>
-						</li>
-					</ul>
+					<div class="text">
+						<p><?= $item["description"] ?></p>
+						<ul class="action">
+							<li>
+								<a href="<?= $item["facebook_link"] ?>" target="_blank">Facebook event</a>
+							</li>
+						</ul>
+					</div>
+
 				</div>
 
-			</div>
-
-		</li>
+			</li>
 
 <?		endforeach; ?>
-	</ul>
+		</ul>
 <?	endif; ?>
+
+	</div>
 
 </div>

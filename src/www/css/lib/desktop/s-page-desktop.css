@@ -71,5 +71,8 @@ li {font-size: 14px; line-height: 1.25em;}
 
 #content .scene {opacity: 0;}
 
+#page svg.buywristband {position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200;
+	stroke: #180619; stroke-linecap: round; fill: #ffffff; stroke-width: 0px;
+}
 
 

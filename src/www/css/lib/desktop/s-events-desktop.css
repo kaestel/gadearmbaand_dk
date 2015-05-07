@@ -10,103 +10,97 @@
 
 .scene.event h1 {}
 
-.scene.event > ul.days {width: 100%; text-align: center;}
-.scene.event > ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800; white-space: nowrap;}
-.scene.event > ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
+.scene.event .filters ul.days {width: 100%; text-align: center;}
+.scene.event .filters ul.days li {padding: 4px 20px 6px; margin: 0 7px; border: 2px solid #70B857; display: inline-block; color: #180619; cursor: pointer; font-weight: 800; white-space: nowrap;}
+.scene.event .filters ul.days li.selected {background-color: #70B857; color: #FFFFFF;}
 
-.scene.event > .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
+.scene.event .filters .filter {text-align: center; padding: 0; background-color: #ffffff; border: 2px solid #70B857; margin: 30px auto 0; overflow: hidden;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter.open {background-color: #70B857;}
-.scene.event > .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer; padding: 4px 0;
+.scene.event .filters .filter.open {background-color: #70B857;}
+.scene.event .filters .filter h2 {width: 100%; text-align: center; font-size: 14px; cursor: pointer; padding: 4px 0;
 	font-family: "DINPro", Verdana, Arial, sans-serif
 }
-.scene.event > .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; padding-left: 30px; padding-right: 30px; opacity: 0;
+.scene.event .filters .filter ul.tag_list {width: 100%; text-align: center; padding-bottom: 30px; padding-left: 30px; padding-right: 30px; opacity: 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800; white-space: nowrap;}
-.scene.event > .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
-.scene.event > .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
+.scene.event .filters .filter ul.tag_list li {padding: 4px 20px 6px; margin: 0 7px 10px; border: 2px solid #180619; display: inline-block; color: #ffffff; cursor: pointer; font-weight: 800; white-space: nowrap;}
+.scene.event .filters .filter ul.tag_list li.selected {background-color: #180619; color: #FFFFFF;}
+.scene.event .filters .filter ul.tag_list li.unavailable {color: #FFFFFF; border: 2px solid gray; color: gray; background-color: #FFFFFF;}
 
-.scene.event > .filter .search {opacity: 0;}
-.scene.event > .filter .search fieldset {}
-.scene.event > .filter .search fieldset .field {padding: 30px 0 50px;}
-.scene.event > .filter .search fieldset .field input {border: none; background-color: transparent; border-bottom: 2px solid #180619; width: 230px; padding: 4px 20px 6px; font-weight: 800; color: #ffffff; text-align: center;}
+.scene.event .filters .filter .search {opacity: 0;}
+.scene.event .filters .filter .search fieldset {}
+.scene.event .filters .filter .search fieldset .field {padding: 30px 0 50px;}
+.scene.event .filters .filter .search fieldset .field input {border: none; background-color: transparent; border-bottom: 2px solid #180619; width: 230px; padding: 4px 20px 6px; font-weight: 800; color: #ffffff; text-align: center;}
 
-.scene.event > ul.legend {padding: 80px 0px 0; text-align: left;}
-.scene.event > ul.legend li {width: 25%; display: inline-block; border-bottom: 2px solid #180619; padding-bottom: 10px; color: #70B857; font-weight: 600;}
-.scene.event > ul.legend li {padding-left: 10px;
+.scene.event .events ul.legend {padding: 80px 0px 0; text-align: left;}
+.scene.event .events ul.legend li {width: 25%; display: inline-block; border-bottom: 2px solid #180619; padding-bottom: 10px; color: #70B857; font-weight: 600;}
+.scene.event .events ul.legend li {padding-left: 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-.scene.event > ul.items {padding: 0 0 100px; text-align: left;
+.scene.event .events ul.items {padding: 0 0 100px; text-align: left;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item {width: 100%; font-size: 0; border-bottom: 2px solid #180619; overflow: hidden; cursor: pointer;}
-.scene.event > ul.items li.item h3.host {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px; line-height: 1em;
+.scene.event .events ul.items li.item {width: 100%; font-size: 0; border-bottom: 2px solid #180619; overflow: hidden; cursor: pointer;}
+.scene.event .events ul.items li.item h3.host {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px; line-height: 1em;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event > ul.items li.item h2.name {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px;
+.scene.event .events ul.items li.item h2.name {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; font-weight: 800; padding: 10px 0 0 10px;
 	font-family: "DINPro", Verdana, Arial, sans-serif;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event > ul.items li.item p.location {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; padding: 10px 0 0 10px; font-weight: 800;
+.scene.event .events ul.items li.item p.location {line-height: 1em; vertical-align: top; overflow: hidden; white-space: nowrap; display: inline-block; width: 25%; font-size: 14px; padding: 10px 0 10px 10px; font-weight: 800;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event > ul.items li.item ul.tags {vertical-align: top; display: inline-block; width: 25%; font-size: 0; padding: 10px 0 0 10px; white-space: nowrap;
+.scene.event .events ul.items li.item ul.tags {vertical-align: top; display: inline-block; width: 25%; font-size: 0; padding: 10px 0 0 10px; white-space: nowrap;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item ul.tags li {display: inline-block; vertical-align: top; line-height: 1em; font-weight: 800; padding-right: 6px;}
-.scene.event > ul.items li.item ul.tags li:after {content: ","}
-.scene.event > ul.items li.item ul.tags li:last-child:after {content: ""}
-.scene.event > ul.items li.item .description {width: 100%; margin: 15px 0 0 0;}
-.scene.event > ul.items li.item .description .media {display: inline-block; width: 25%; padding: 10px 0 10px 15px; vertical-align: top; text-align: center;
+.scene.event .events ul.items li.item ul.tags li {display: inline-block; vertical-align: top; line-height: 1em; font-weight: 800; padding-right: 6px;}
+.scene.event .events ul.items li.item ul.tags li:after {content: ","}
+.scene.event .events ul.items li.item ul.tags li:last-child:after {content: ""}
+.scene.event .events ul.items li.item .description {width: 100%; margin: 15px 0 0 0;}
+.scene.event .events ul.items li.item .description .media {display: inline-block; width: 25%; padding: 10px 0 10px 15px; vertical-align: top; text-align: center;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.scene.event > ul.items li.item .description .media img {width: 150px; height: 150px; display: inline-block; vertical-align: top;
+.scene.event .events ul.items li.item .description .media img {width: 150px; height: 150px; display: inline-block; vertical-align: top;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
 }
-.scene.event > ul.items li.item .description .text {display: inline-block; padding-top: 10px; width: 45%; vertical-align: top;}
-.scene.event > ul.items li.item .description .text p {color: #FFFFFF;}
-.scene.event > ul.items li.item .description .text ul.action {margin: 20px 0 50px;}
-.scene.event > ul.items li.item .description .text ul.action li {padding: 4px 20px 6px; border: 2px solid #70B857; display: inline-block;}
-.scene.event > ul.items li.item .description .text ul.action li a {color: #FFFFFF; font-weight: 800;}
+.scene.event .events ul.items li.item .description .text {display: inline-block; padding-top: 10px; padding-left: 10px; width: 45%; vertical-align: top;}
+.scene.event .events ul.items li.item .description .text p {color: #FFFFFF;}
+.scene.event .events ul.items li.item .description .text ul.action {margin: 20px 0 50px;}
+.scene.event .events ul.items li.item .description .text ul.action li {padding: 4px 20px 6px; border: 2px solid #70B857; display: inline-block;}
+.scene.event .events ul.items li.item .description .text ul.action li a {color: #FFFFFF; font-weight: 800;}
 
-.scene.event > ul.items li.item .description ul.action li:hover {background-color: #70B857;}
-.scene.event > ul.items li.item .description ul.action li:hover a {color: #FFFFFF;}
+.scene.event .events ul.items li.item .description ul.action li:hover {background-color: #70B857;}
+.scene.event .events ul.items li.item .description ul.action li:hover a {color: #FFFFFF;}
 
-.scene.event > ul.items li.item.selected {background-color: #180619; border-bottom: 2px solid #FFFFFF;}
-.scene.event > ul.items li.item.selected h3.host {color: #FFFFFF;}
-.scene.event > ul.items li.item.selected h2.name {color: #FFFFFF;}
-.scene.event > ul.items li.item.selected p.location {color: #FFFFFF;}
-.scene.event > ul.items li.item.selected ul.tags {}
-.scene.event > ul.items li.item.selected ul.tags li {color: #FFFFFF;}
-
-
-
-.scene.event svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-	stroke: #180619; stroke-linecap: round; fill: #ffffff; stroke-width: 0px;
-}
+.scene.event .events ul.items li.item.selected {background-color: #180619; border-bottom: 2px solid #FFFFFF;}
+.scene.event .events ul.items li.item.selected h3.host {color: #FFFFFF;}
+.scene.event .events ul.items li.item.selected h2.name {color: #FFFFFF;}
+.scene.event .events ul.items li.item.selected p.location {color: #FFFFFF;}
+.scene.event .events ul.items li.item.selected ul.tags {}
+.scene.event .events ul.items li.item.selected ul.tags li {color: #FFFFFF;}
