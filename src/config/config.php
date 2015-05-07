@@ -19,8 +19,8 @@ define("SITE_EMAIL", "friedlistephan@gmail.com");
 /**
 * Optional constants
 */
-define("DEFAULT_PAGE_DESCRIPTION", "");
-define("DEFAULT_LANGUAGE_ISO", "EN"); // Reginal language English
+define("DEFAULT_PAGE_DESCRIPTION", "Alt om Distortions gadefester, gadearmbånd og en masse rare ord om, hvorfor du skal købe det.");
+define("DEFAULT_LANGUAGE_ISO", "DA"); // Reginal language English
 define("DEFAULT_COUNTRY_ISO", "DK"); // Regional country Denmark
 
 

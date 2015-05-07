@@ -7,14 +7,14 @@
 	<!-- All material protected by copyrightlaws, as if you didnt know //-->
 	<title><?= SITE_URL ?> - <?= $this->pageTitle() ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="keywords" content="development frontend HTML JavaScript CSS idealism web" />
+	<meta name="keywords" content="Distortion støtte festival musik gade københavn vesterbro nørrebro refshaleøen" />
 	<meta name="description" content="<?= $this->pageDescription() ?>" />
 	<meta name="viewport" content="initial-scale=1, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-	<meta property="og:title" content="Distortion Gadearmbånd" />
-	<meta property="og:description" content="" />
+	<meta property="og:title" content="Gadearmbaand.dk" />
+	<meta property="og:description" content="Alt om Distortions gadefester, gadearmbånd og en masse rare ord om, hvorfor du skal købe det." />
 	<meta property="og:image" content="http://gadearmbaand.dk/img/share.jpg" />
 	<meta property="og:url" content="http://gadearmbaand.dk" />
 

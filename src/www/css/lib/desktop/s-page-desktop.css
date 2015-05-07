@@ -61,7 +61,7 @@ li {font-size: 14px; line-height: 1.25em;}
 	background-size: cover;
 }
 #intro .intro_logo {height: 100%; opacity: 0;
-	background: transparent url(/img/logo/logo_00048.png) no-repeat center center;
+	background: transparent url(/img/logo_intro.png) no-repeat center center;
 }
 #intro .intro_logo .sequenceplayer,
 #intro .intro_logo .sequenceplayer ul,

@@ -6353,22 +6353,29 @@ Util.Objects["page"] = new function() {
 				if(u.hc(document.body, "front")) {
 					page.intro = u.ae(document.body, "div", {"id":"intro"});
 					page.intro.loaded = function() {
+						u.as(this, "perspectiveOrigin", "50% 50%");
+						u.as(this, "perspective", (this.offsetWidth) + "px");
+						this.sq = u.ae(this, "div", {"class":"intro_logo"});
+						this.sq.intro = this;
+						u.as(this.sq, u.a.vendor("transform"), "rotateX(-720deg) scale(0)");
+						u.a.setOpacity(this.sq, 1);
 						this.step1 = function(event) {
-							this.sq = u.ae(this, "div", {"class":"intro_logo"});
-							u.a.scale(this.sq, 0);
-							u.a.transition(this, "all 1.2s ease", "step2");
-							u.a.scale(this, 1.1);
-							u.a.transition(this.sq, "all 0.5s ease-in-out 0.3s");
-							u.a.setOpacity(this.sq, 1);
-							u.a.scale(this.sq, 1);
+							u.as(this.sq, "transformOrigin", "50% 52%");
+							u.a.transition(this.sq, "all 1s cubic-bezier(0.320, 1.640, 0.700, 0.140) 0.5s", "step1");
+							u.as(this.sq, u.a.vendor("transform"), "rotateX(0) scale(1)");
 						}
-						this.step2 = function() {
-							this.sq.transitioned = function() {
+						this.sq.ended = function() {
+							this.intro.transitioned = function() {
 								page.intro.clicked();
 							}
-							u.as(this.sq, "transformOrigin", "49% 57%");
-							u.a.transition(this.sq, "all 0.5s ease-in 0.5s");
-							u.a.rotateScale(this.sq, 50, 230);
+							u.a.transition(this.intro, "opacity 0.3s ease-in");
+							u.a.setOpacity(this.intro, 0);
+						}
+						this.sq.step1 = function() {
+							u.a.transition(this, "none");
+							u.as(this, u.a.vendor("transform"), "rotateX(0) scale(1)");
+							u.a.transition(this, "all 0.5s ease-in 1.5s", "ended");
+							u.as(this, u.a.vendor("transform"), "rotateX(720deg) scale(10)");
 						}
 						u.a.transition(this, "all 1s ease-in", "step1");
 						u.a.setOpacity(this, 1);
