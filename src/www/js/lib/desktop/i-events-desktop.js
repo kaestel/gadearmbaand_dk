@@ -479,7 +479,7 @@ Util.Objects["events"] = new function() {
 			this.initFilters();
 
 
-			this.h1 = u.qs("h1");
+			this.h1 = u.qs("h1", this);
 			this.div_events = u.qs("div.events", this);
 			this.div_filters = u.qs("div.filters", this);
 
