@@ -6487,7 +6487,6 @@ Util.Objects["front"] = new function() {
 					}
 				}
 				li.is_ready = true;
-				this.resized();
 			}
 			this.resized();
 			u.textscaler(this, {

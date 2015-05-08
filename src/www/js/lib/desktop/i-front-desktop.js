@@ -455,7 +455,7 @@ Util.Objects["front"] = new function() {
 				li.is_ready = true;
 
 				// resize grid
-				this.resized();
+//				this.resized();
 
 			}
 
