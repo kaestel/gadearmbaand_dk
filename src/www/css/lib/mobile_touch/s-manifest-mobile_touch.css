@@ -1,4 +1,4 @@
-.scene.manifest {width: 100%; background-image: url(/img/bg_manifest.jpg); background-size: cover; background-position: center center; background-repeat: no-repeat;}
+.scene.manifest {width: 100%; background: #19051a;}
 
 .scene.manifest h1 {text-align: center; color: #FFFFFF;}
 .scene.manifest .content {margin: 0 auto; padding: 0 15px 60px;}
