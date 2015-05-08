@@ -6084,8 +6084,8 @@ Util.Objects["page"] = new function() {
 					u.e.addEvent(page.logo, "mouseleave", page.logo.mousedout);
 				}
 				else {
-					u.e.addEvent(page.logo, "touchstart", node.mousedover);
-					u.e.addEvent(page.logo, "touchend", node.mousedout);
+					u.e.addEvent(page.logo, "touchstart", page.logo.mousedover);
+					u.e.addEvent(page.logo, "touchend", page.logo.mousedout);
 				}
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
