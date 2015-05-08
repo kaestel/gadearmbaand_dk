@@ -157,7 +157,7 @@ Util.Objects["front"] = new function() {
 
 							// reset video (if playback is started elsewhere)
 							this.li.resetPlayer = function() {
-
+								u.bug("video done - should reset")
 								u.as(this.video, "zIndex", 1);
 							}
 
@@ -168,6 +168,7 @@ Util.Objects["front"] = new function() {
 
 							// reset video when playback is dont
 							page.videoPlayer.ended = function(event) {
+								u.bug("video done - should call reset")
 
 								this.current_node.resetPlayer();
 								this.current_node = false;

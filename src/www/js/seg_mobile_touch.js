@@ -6005,9 +6005,7 @@ Util.Objects["page"] = new function() {
 					if(u.e.event_pref == "touch") {
 						u.e.addEvent(window, "orientationchange", page.orientationchanged);
 					}
-					else {
 						u.e.addEvent(window, "resize", page.resized);
-					}
 					this.initHeader();
 					this.resized();
 					this.scrolled();
@@ -6249,12 +6247,14 @@ Util.Objects["front"] = new function() {
 						u.e.click(li.image);
 						li.image.clicked = function(event) {
 							this.li.resetPlayer = function() {
+								u.bug("video done - should reset")
 								u.as(this.video, "zIndex", 1);
 							}
 							if(page.videoPlayer.current_node) {
 								page.videoPlayer.current_node.resetPlayer();
 							}
 							page.videoPlayer.ended = function(event) {
+								u.bug("video done - should call reset")
 								this.current_node.resetPlayer();
 								this.current_node = false;
 							}

@@ -103,9 +103,9 @@ Util.Objects["page"] = new function() {
 						u.e.addEvent(window, "orientationchange", page.orientationchanged);
 					}
 					// set resize handler
-					else {
+//					else {
 						u.e.addEvent(window, "resize", page.resized);
-					}
+//					}
 
 					// build header
 					this.initHeader();
