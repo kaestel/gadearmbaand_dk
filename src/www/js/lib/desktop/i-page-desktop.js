@@ -415,24 +415,9 @@ Util.Objects["page"] = new function() {
 //							u.bug("step1")
 
 							u.as(this.sq, "transformOrigin", "50% 52%");
-//							u.as(this.sq, u.a.vendor("backfaceVisibility"), "hidden");
 
 							u.a.transition(this.sq, "all 1s cubic-bezier(0.320, 1.640, 0.700, 0.140) 0.5s", "step1");
 							u.as(this.sq, u.a.vendor("transform"), "rotateX(0) scale(1)");
-//							u.a.scale(this.sq, 1);
-
-
-							// this.sp = u.sequencePlayer(this.sq);
-							// this.sp.ended = function() {
-							//
-							// }
-							//
-							// var images = [];
-							// var i;
-							// for(i = 0; i < 49; i++) {
-							// 	images.push("/img/logo/logo_000" + (i < 10 ? "0" : "") + i + ".png");
-							// }
-							// this.sp.loadAndPlay(images);
 						}
 
 						this.sq.ended = function() {
