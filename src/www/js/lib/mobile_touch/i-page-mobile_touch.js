@@ -29,7 +29,7 @@ Util.Objects["page"] = new function() {
 
 			// global resize handler 
 			page.resized = function(event) {
-				u.bug("page.resized");
+//				u.bug("page.resized");
 
 				// update global values
 				page.browser_w = u.browserW();
@@ -104,9 +104,9 @@ Util.Objects["page"] = new function() {
 						u.e.addEvent(window, "orientationchange", page.orientationchanged);
 					}
 					// set resize handler
-//					else {
+					else {
 						u.e.addEvent(window, "resize", page.resized);
-//					}
+					}
 
 					// build header
 					this.initHeader();
@@ -265,8 +265,10 @@ Util.Objects["page"] = new function() {
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
 
+						u.bug("in:" + window.innerHeight + ", " + page.browser_h);
+
 						u.a.transition(page.nN, "all 0.3s ease-out");
-						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":window.innerHeight+"px", "top": 0, "right": 0});
 
 					}
 

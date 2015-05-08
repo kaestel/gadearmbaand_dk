@@ -158,7 +158,7 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.front ul li.instagram {overflow: hidden; position: relative; opacity: 0;}
 .scene.front ul li.instagram div.image {}
 .scene.front ul li.instagram div.image img {width: 100%;}
-.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 3px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
+.scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 1px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
 .scene.front ul li.tweet {background-color:#6eb951; width: 100%; display: block; opacity: 0;}
 .scene.front ul li.tweet .card {padding: 15px 15px 20px; background-color: #6eb951; 
 	-webkit-box-sizing: border-box;

@@ -5980,7 +5980,6 @@ Util.Objects["page"] = new function() {
 			page.fN = u.qs("#footer");
 			page.videoPlayer = u.videoPlayer();
 			page.resized = function(event) {
-				u.bug("page.resized");
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 				// 	
@@ -6007,7 +6006,9 @@ Util.Objects["page"] = new function() {
 					if(u.e.event_pref == "touch") {
 						u.e.addEvent(window, "orientationchange", page.orientationchanged);
 					}
+					else {
 						u.e.addEvent(window, "resize", page.resized);
+					}
 					this.initHeader();
 					this.resized();
 					this.scrolled();
@@ -6084,8 +6085,9 @@ Util.Objects["page"] = new function() {
 						u.ac(page.nN, "open");
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
+						u.bug("in:" + window.innerHeight + ", " + page.browser_h);
 						u.a.transition(page.nN, "all 0.3s ease-out");
-						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
+						u.ass(page.nN, {"width":page.browser_w+"px", "height":window.innerHeight+"px", "top": 0, "right": 0});
 					}
 				}
 			}
