@@ -6657,7 +6657,6 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
-				this.bg_manifest = u.ae(document.body, "div", {"class":"bg_manifest"});
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
 			}
@@ -6665,7 +6664,6 @@ Util.Objects["manifest"] = new function() {
 		scene.destroy = function() {
 			this.destroy = null;
 			this.finalizeDestruction = function() {
-				document.body.removeChild(this.bg_manifest);
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}

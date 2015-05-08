@@ -298,15 +298,7 @@ li {font-size: 14px; line-height: 1.25em;}
 
 
 /*s-manifest-mobile_touch.css*/
-.scene.manifest {width: 100%;}
-body div.bg_manifest {position: fixed; width: 100%; height: 100%; top: 0; left: 0;
-	background-image: url(/img/bg_manifest.jpg);
-	background-attachment: fixed; background-repeat: no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
+.scene.manifest {width: 100%; background: #19051a;}
 .scene.manifest h1 {text-align: center; color: #FFFFFF;}
 .scene.manifest .content {margin: 0 auto; padding: 0 15px 60px;}
 .scene.manifest .content h2 {color: #FFFFFF; padding-bottom: 1em; font-size: 35px; font-weight: 400;}
