@@ -30,7 +30,7 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
-				u.as(document.body, "background-image", "url(/img/bg_manifest.jpg)");
+				this.bg_manifest = u.ae(document.body, "div", {"class":"bg_manifest"});
 
 
 				u.a.transition(this, "all 1s linear");
@@ -52,7 +52,7 @@ Util.Objects["manifest"] = new function() {
 			// to continue building the new scene
 			this.finalizeDestruction = function() {
 
-				u.as(document.body, "background-image", "none");
+				document.body.removeChild(this.bg_manifest);
 
 				this.parentNode.removeChild(this);
 				page.cN.ready();
