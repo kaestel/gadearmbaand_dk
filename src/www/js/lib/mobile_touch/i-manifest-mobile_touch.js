@@ -54,84 +54,14 @@ Util.Objects["manifest"] = new function() {
 				page.cN.ready();
 
 			}
+			this.transitioned = function() {
 
-			
-
-			var lines = 10;
-			var svg_object = {
-				"name":"destruction",
-				"width":page.browser_w,
-				"height":page.browser_h,
-				"shapes":[]
-			};
-
-			var i, shape, x1, new_coords = [];
-
-			// start lines
-			for(i = 0; i < lines; i++) {
-
-				var x1 = (i*page.browser_w/lines) - 10 + u.random(5, 10);
-				shape = {
-					"type":"line",
-					"class":"id"+i,
-					"x1":x1,
-					"x2":x1,
-					"y1":-10,
-					"y2":-8,
-					"stroke-width":2
-				}
-				svg_object.shapes.push(shape);
-			}
-
-
-			// new end coords
-			for(i = 0; i < lines; i++) {
-				shape = {
-					"x2":(i*page.browser_w/lines) + u.random(-35, 35),
-					"y1":-10,
-					"y2":page.browser_h + 10
-				}
-				new_coords[i] = shape;
-			}
-
-			var svg = u.svg(svg_object);
-			svg.scene = this;
-			svg._c = u.qs(".content");
-
-			u.ae(this, svg);
-
-			// get all lines in array to parse them randomly
-			lines = u.qsa("line", svg);
-			new_lines = [];
-			for(i = 0; i < lines.length; i++) {
-				new_lines.push(lines[i]);
-			}
-
-			// start animation sequence
-			j = 0;
-			svg._animate = function() {
-				j++;
-				if(new_lines.length) {
-					i = u.random(0, new_lines.length-1);
-					line = new_lines[i];
-					new_lines.splice(i, 1);
-					new_coords[i]["stroke-width"] = u.random(2+j*0.5, 28+(Math.pow(j*0.5, 2)));
-
-
-					u.a.to(line, "all 0.3s linear", new_coords[i]);
-					new_coords.splice(i, 1);
-
-
-					// continue animation
-					u.t.setTimer(this, "_animate", 10);
-				}
-				else {
-					u.t.setTimer(this.scene, this.scene.finalizeDestruction, 500);
-//					this.scene.finalizeDestruction();
-				}
+				u.t.setTimer(this, this.finalizeDestruction, 300);
 
 			}
-			svg._animate();
+
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
 
 		}
 

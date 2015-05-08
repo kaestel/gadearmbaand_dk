@@ -384,7 +384,7 @@ Util.Objects["front"] = new function() {
 				}
 			}
 
-			u.t.setTimer(this, this.finalizeDestruction, (100*j)+300);
+			u.t.setTimer(this, this.finalizeDestruction, (100*j)+600);
 
 		}
 

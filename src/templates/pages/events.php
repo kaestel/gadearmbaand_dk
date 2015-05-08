@@ -49,7 +49,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 		<ul class="legend">
 			<li>Vært</li>
 			<li class="event">Event</li>
-			<li>Lokation</li>
+			<li class="location">Lokation</li>
 			<li class="tags">Tags</li>
 		</ul>
 
@@ -60,7 +60,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 			$media = $IC->sliceMedia($item);
 	?>
 
-			<li class="item person id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
+			<li class="item event id:<?= $item["item_id"] ?> <?= arrayKeyValue($item["tags"], "context", "day") !== false ? strtolower($item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"]) : "" ?> day:<?= arrayKeyValue($item["tags"], "context", "day") !== false ? $item["tags"][arrayKeyValue($item["tags"], "context", "day")]["value"] : "" ?> i:article">
 
 				<h3 class="host"><?= $item["host"] ?></h3>
 				<h2 class="name"><?= $item["name"] ?></h2>
