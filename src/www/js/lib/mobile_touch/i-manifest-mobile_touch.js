@@ -30,8 +30,6 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
-				this.bg_manifest = u.ae(document.body, "div", {"class":"bg_manifest"});
-
 
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
@@ -51,8 +49,6 @@ Util.Objects["manifest"] = new function() {
 			// when destruction is done, remove scene from content and notify content.ready
 			// to continue building the new scene
 			this.finalizeDestruction = function() {
-
-				document.body.removeChild(this.bg_manifest);
 
 				this.parentNode.removeChild(this);
 				page.cN.ready();
