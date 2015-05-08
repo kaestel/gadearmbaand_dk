@@ -6456,6 +6456,12 @@ Util.Objects["events"] = new function() {
 				u.ae(node._text, node._tags_ul);
 				u.ie(node._text, node._location_p);
 				node._facebook = u.qs(".text .action a", node);
+				node._facebook_action = u.qs(".text .action", node);
+				u.e.click(node._facebook_action);
+				u.e.click(node._location_p);
+				node._location_p.clicked = node._facebook_action.clicked = function(event) {
+					u.e.kill(event);
+				}
 				node._host._string = node._host.innerHTML.toLowerCase()
 				node._name._string = node._name.innerHTML.toLowerCase()
 				node._location._string = node._location.innerHTML.toLowerCase()

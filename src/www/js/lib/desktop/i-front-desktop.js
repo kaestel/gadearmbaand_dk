@@ -314,7 +314,9 @@ Util.Objects["front"] = new function() {
 					// }
 
 					// add link scrambling
-					u.linkScrambler(li.link);
+					if(u.e.event_pref == "mouse") {
+						u.linkScrambler(li.link);
+					}
 
 				}
 
@@ -351,7 +353,9 @@ Util.Objects["front"] = new function() {
 					// }
 
 					// add link scrambling
-					u.linkScrambler(li.li_article.link);
+					if(u.e.event_pref == "mouse") {
+						u.linkScrambler(li.li_article.link);
+					}
 
 
 					// VIDEO
@@ -465,7 +469,7 @@ Util.Objects["front"] = new function() {
 
 			// add text scaling
 			u.textscaler(this, {
-				"min_width":800,
+				"min_width":768,
 				"max_width":1200,
 				"unit":"px",
 				"li .actions a":{

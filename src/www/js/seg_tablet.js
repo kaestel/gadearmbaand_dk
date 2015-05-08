@@ -6416,7 +6416,9 @@ Util.Objects["front"] = new function() {
 					if(!li.link.target) {
 						u.ce(li.link, {"type":"link"});
 					}
-					u.linkScrambler(li.link);
+					if(u.e.event_pref == "mouse") {
+						u.linkScrambler(li.link);
+					}
 				}
 				else if(u.hc(li, "ambassador")) {
 					li.li_article = u.qs("li.article", li);
@@ -6430,7 +6432,9 @@ Util.Objects["front"] = new function() {
 					if(!li.li_article.link.target) {
 						u.ce(li.li_article.link, {"type":"link"});
 					}
-					u.linkScrambler(li.li_article.link);
+					if(u.e.event_pref == "mouse") {
+						u.linkScrambler(li.li_article.link);
+					}
 					li.li_video = u.qs("li.video", li);
 					li.video = u.qs("div.video", li.li_video);
 					li.image = u.qs("div.image", li.li_video);
@@ -6490,7 +6494,7 @@ Util.Objects["front"] = new function() {
 			}
 			this.resized();
 			u.textscaler(this, {
-				"min_width":800,
+				"min_width":768,
 				"max_width":1200,
 				"unit":"px",
 				"li .actions a":{
@@ -6767,8 +6771,17 @@ Util.Objects["events"] = new function() {
 				node._name = u.qs(".name", node);
 				node._host = u.qs(".host", node);
 				node._location = u.qs(".location a", node);
+				node._location_p = u.qs(".location", node);
 				node._facebook = u.qs(".text .action a", node);
-				u.linkScrambler(node._facebook);
+				node._facebook_action = u.qs(".text .action", node);
+				if(u.e.event_pref == "mouse") {
+					u.linkScrambler(node._facebook);
+				}
+				u.e.click(node._facebook_action);
+				u.e.click(node._location_p);
+				node._location_p.clicked = node._facebook_action.clicked = function(event) {
+					u.e.kill(event);
+				}
 				node._host._string = node._host.innerHTML.toLowerCase()
 				node._name._string = node._name.innerHTML.toLowerCase()
 				node._location._string = node._location.innerHTML.toLowerCase()

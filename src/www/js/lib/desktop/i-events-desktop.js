@@ -150,9 +150,22 @@ Util.Objects["events"] = new function() {
 				node._name = u.qs(".name", node);
 				node._host = u.qs(".host", node);
 				node._location = u.qs(".location a", node);
+				node._location_p = u.qs(".location", node);
 
 				node._facebook = u.qs(".text .action a", node);
-				u.linkScrambler(node._facebook);
+				node._facebook_action = u.qs(".text .action", node);
+
+
+				if(u.e.event_pref == "mouse") {
+					u.linkScrambler(node._facebook);
+				}
+
+
+				u.e.click(node._facebook_action);
+				u.e.click(node._location_p);
+				node._location_p.clicked = node._facebook_action.clicked = function(event) {
+					u.e.kill(event);
+				}
 
 				node._host._string = node._host.innerHTML.toLowerCase()
 				node._name._string = node._name.innerHTML.toLowerCase()

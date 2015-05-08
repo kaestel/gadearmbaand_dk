@@ -64,7 +64,7 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 
 				<h3 class="host"><?= $item["host"] ?></h3>
 				<h2 class="name"><?= $item["name"] ?></h2>
-				<p class="location"><a href="http://maps.google.com/maps/place/<?= $item["latitude"] ?>,<?= $item["longitude"] ?>" target="_blank"><?= $item["location"] ?></a></p>
+				<p class="location"><a href="http://maps.google.dk/maps/place/<?= $item["latitude"] ?>,<?= $item["longitude"] ?>" target="_blank"><?= $item["location"] ?></a></p>
 
 <?			if($item["tags"]): ?>
 				<ul class="tags">
