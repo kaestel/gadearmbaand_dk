@@ -28,7 +28,7 @@ Util.Objects["page"] = new function() {
 
 			// global resize handler 
 			page.resized = function(event) {
-//				u.bug("page.resized:" + u.nodeId(this));
+				u.bug("page.resized");
 
 				// update global values
 				page.browser_w = u.browserW();
