@@ -1,6 +1,3 @@
-u.bug_console_only = true;
-u.bug_force = true;
-
 
 Util.Objects["page"] = new function() {
 	this.init = function(page) {

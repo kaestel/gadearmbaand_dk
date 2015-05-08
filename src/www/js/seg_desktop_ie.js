@@ -6352,6 +6352,7 @@ u.gotoBuy = function() {
 
 
 /*i-page-desktop.js*/
+u.bug_force = true;
 u.bug_console_only = true;
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
@@ -6714,6 +6715,7 @@ Util.Objects["front"] = new function() {
 			}
 		}
 		scene.ready = function() {
+			u.bug("scene.ready:" + u.nodeId(this));
 			this.style_tag = document.createElement("style");
 			this.style_tag.setAttribute("media", "all")
 			this.style_tag.setAttribute("type", "text/css")
@@ -6901,6 +6903,7 @@ Util.Objects["front"] = new function() {
 					"max_size":22
 				}
 			});
+			u.bug("front ready")
 			this.is_ready = true;
 			page.cN.ready();
 		}

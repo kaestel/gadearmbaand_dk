@@ -163,7 +163,7 @@ Util.Objects["front"] = new function() {
 
 		// get scene ready for building
 		scene.ready = function() {
-//			u.bug("scene.ready:" + u.nodeId(this));
+			u.bug("scene.ready:" + u.nodeId(this));
 
 
 			// create padding rules for grid padding scaling
@@ -494,6 +494,8 @@ Util.Objects["front"] = new function() {
 				}
 			});
 
+
+			u.bug("front ready")
 
 			// call middle step which checks for images loaded
 			this.is_ready = true;

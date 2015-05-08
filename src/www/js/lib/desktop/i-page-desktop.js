@@ -1,3 +1,4 @@
+u.bug_force = true;
 u.bug_console_only = true;
 
 
