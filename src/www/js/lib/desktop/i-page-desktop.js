@@ -241,10 +241,10 @@ Util.Objects["page"] = new function() {
 					u.e.addEvent(page.logo, "mouseenter", page.logo.mousedover);
 					u.e.addEvent(page.logo, "mouseleave", page.logo.mousedout);
 				}
-				else {
-					u.e.addEvent(page.logo, "touchstart", page.logo.mousedover);
-					u.e.addEvent(page.logo, "touchend", page.logo.mousedout);
-				}
+				// else {
+				// 	u.e.addEvent(page.logo, "touchstart", page.logo.mousedover);
+				// 	u.e.addEvent(page.logo, "touchend", page.logo.mousedout);
+				// }
 
 
 
@@ -286,7 +286,12 @@ Util.Objects["page"] = new function() {
 						u.ac(this, "open");
 
 						u.a.transition(page.nN, "all 0.3s linear");
-						u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
+						if(u.e.event_pref == "mouse") {
+							u.ass(page.nN, {"width":page.browser_w+"px", "height":page.browser_h+"px", "top": 0, "right": 0});
+						}
+						else {
+							u.ass(page.nN, {"width":page.browser_w+"px", "height":window.innerHeight+"px", "top": 0, "right": 0});
+						}
 					}
 
 				}
@@ -333,8 +338,10 @@ Util.Objects["page"] = new function() {
 
 					}
 
-					node.vp = u.ae(node, "div", {"class":"vp"});
-					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
+					if(u.e.event_pref == "mouse") {
+						node.vp = u.ae(node, "div", {"class":"vp"});
+						u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
+					}
 
 					node.mousedover = function() {
 
@@ -380,10 +387,6 @@ Util.Objects["page"] = new function() {
 					if(u.e.event_pref == "mouse") {
 						u.e.addEvent(node, "mouseenter", node.mousedover);
 						u.e.addEvent(node, "mouseleave", node.mousedout);
-					}
-					else {
-						u.e.addEvent(node, "touchstart", node.mousedover);
-						u.e.addEvent(node, "touchend", node.mousedout);
 					}
 
 				}
