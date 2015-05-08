@@ -4,7 +4,7 @@ Util.Objects["manifest"] = new function() {
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
-			u.as(this, "height", page.browser_h + "px");
+			u.as(this, "height", page.browser_h + "px", false);
 
 		}
 
@@ -17,11 +17,11 @@ Util.Objects["manifest"] = new function() {
 
 			page.resized();
 
-			this.link = u.qs("a", this);
-			u.ce(this.link);
-			this.link.clicked = function(event) {
-				u.gotoBuy();
-			}
+			// this.link = u.qs("a", this);
+			// u.ce(this.link);
+			// this.link.clicked = function(event) {
+			// 	u.gotoBuy();
+			// }
 
 			this.is_ready = true;
 			page.cN.ready();

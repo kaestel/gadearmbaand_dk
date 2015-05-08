@@ -6,8 +6,21 @@ Util.Objects["front"] = new function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
 
+			// adjust scene width manually to avoid half pixels
+			if(page.browser_w > 1200) {
+				var excess = page.browser_w-1200;
+				var left = Math.round(excess/2);
+				var right = excess - left;
+				u.as(this, "margin", "0 "+right+"px 0 "+left+"px", false);
+			}
+			else {
+				u.as(this, "margin", 0, false);
+			}
+
+
 			// get block size to make grid add up
 			var block_height = Math.ceil(this.offsetWidth/5);
+			u.as(this.grid, "width", (block_height*5)+"px", false);
 
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
@@ -18,24 +31,48 @@ Util.Objects["front"] = new function() {
 					if(u.hc(li, "article|instagram")) {
 						if(li._forty) {
 							u.as(li, "height", (block_height*2)+"px", false);
+							u.as(li, "width", (block_height*2)+"px", false);
 						}
 						else {
 							u.as(li, "height", block_height+"px", false);
+							u.as(li, "width", block_height+"px", false);
 						}
 					}
 
 					// handle tweet items
-					if(u.hc(li, "tweet")) {
+					else if(u.hc(li, "tweet")) {
 						u.as(li, "height", block_height+"px", false);
+						u.as(li, "width", (block_height*2)+"px", false);
+					}
+
+					// blank
+					else if(u.hc(li, "blank")) {
+						if(li._forty) {
+							u.as(li, "width", (block_height*2)+"px", false);
+						}
+						else if(li._sixty) {
+							u.as(li, "width", (block_height*3)+"px", false);
+						}
+						else {
+							u.as(li, "width", block_height+"px", false);
+						}
+
+//						u.as(li, "height", block_height+"px", false);
 					}
 
 
 					// handle ambassador
-					if(u.hc(li, "ambassador")) {
+					else if(u.hc(li, "ambassador")) {
+
+						u.as(li, "width", (block_height*5)+"px", false);
+
 						// video height
 						u.as(li.li_video, "height", (block_height*2)+"px", false);
+						u.as(li.li_video, "width", (block_height*3)+"px", false);
+
 						// article height
 						u.as(li.li_article, "height", (block_height*2)+"px", false);
+						u.as(li.li_article, "width", (block_height*2)+"px", false);
 					}
 
 
@@ -43,7 +80,7 @@ Util.Objects["front"] = new function() {
 					if(u.hc(li, "push_up|push_up_half")) {
 						u.as(li, "marginTop", -(block_height)+"px", false);
 					}
-					if(u.hc(li, "push_down")) {
+					else if(u.hc(li, "push_down")) {
 						u.as(li, "marginTop", block_height+"px", false);
 					}
 
@@ -153,6 +190,7 @@ Util.Objects["front"] = new function() {
 
 			// primary elements
 			this.h1 = u.qs("h1", this);
+			this.grid = u.qs("ul.grid", this);
 			this.lis = u.qsa("ul.grid > li", this);
 
 
@@ -268,12 +306,12 @@ Util.Objects["front"] = new function() {
 					if(!li.link.target) {
 						u.ce(li.link, {"type":"link"});
 					}
-					else {
-						u.ce(li.link);
-						li.link.clicked = function(event) {
-							u.gotoBuy();
-						}
-					}
+					// else {
+					// 	u.ce(li.link);
+					// 	li.link.clicked = function(event) {
+					// 		u.gotoBuy();
+					// 	}
+					// }
 
 					// add link scrambling
 					u.linkScrambler(li.link);
@@ -305,12 +343,12 @@ Util.Objects["front"] = new function() {
 					if(!li.li_article.link.target) {
 						u.ce(li.li_article.link, {"type":"link"});
 					}
-					else {
-						u.ce(li.li_article.link);
-						li.li_article.link.clicked = function(event) {
-							u.gotoBuy();
-						}
-					}
+					// else {
+					// 	u.ce(li.li_article.link);
+					// 	li.li_article.link.clicked = function(event) {
+					// 		u.gotoBuy();
+					// 	}
+					// }
 
 					// add link scrambling
 					u.linkScrambler(li.li_article.link);
@@ -615,12 +653,21 @@ Util.Objects["front"] = new function() {
 				}
 
 				// show article
+				li.li_article.card.transitioned = function() {
+					// remove transform to fix safari bug
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
 			}
 
 			// article
 			else if(u.hc(li, "article")) {
+
+				li.card.transitioned = function() {
+					// remove transform to fix safari bug
+					u.a.removeTransform(this);
+				}
 
 				u.a.transition(li.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");

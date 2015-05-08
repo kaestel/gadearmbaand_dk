@@ -1,7 +1,6 @@
 .fixed #content .scene.event {width: 1200px; margin: 0 auto; text-align: center;}
 
-#content .scene.event {opacity: 1;}
-
+/*#content .scene.event {opacity: 1;}*/
 .scene.event {padding: 0 50px; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;

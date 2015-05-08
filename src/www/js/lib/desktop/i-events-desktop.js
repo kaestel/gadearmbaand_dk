@@ -3,6 +3,19 @@ Util.Objects["events"] = new function() {
 
 		scene.resized = function() {
 			// u.bug("scene.resized:" + u.nodeId(this));
+
+
+			// adjust scene width manually to avoid half pixels
+			if(page.browser_w > 1200) {
+				var excess = page.browser_w-1200;
+				var left = Math.round(excess/2);
+				var right = excess - left;
+				u.as(this, "margin", "0 "+right+"px 0 "+left+"px", false);
+			}
+			else {
+				u.as(this, "margin", 0, false);
+			}
+
 		}
 
 		scene.scrolled = function() {
@@ -501,6 +514,7 @@ Util.Objects["events"] = new function() {
 // 				u.bug("scene.build:" + u.nodeId(this));
 
 				this.is_built = true;
+				u.a.setOpacity(this, 1);
 
 				u.a.transition(this.h1, "all 0.6s ease-in-out");
 				u.as(this.h1, u.a.vendor("transform"), "translate(0, 0) rotate(0)");

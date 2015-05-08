@@ -5529,9 +5529,10 @@ u.gotoBuy = function() {
 			this.transitioned = function() {
 				this.transitioned = null;
 				location.href = "http://burl.nu/jbjpcu";
+				page.removeChild(page.svg);
 			}
-			u.a.to(this.page.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
-			u.a.to(this.page.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
+			u.a.to(page.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
+			u.a.to(page.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
 		}
 		u.a.to(page.svg._top, "all 0.3s ease-in", {"points":page.svg.top_points});
 		u.a.to(page.svg._bottom, "all 0.3s ease-in", {"points":page.svg.bottom_points});

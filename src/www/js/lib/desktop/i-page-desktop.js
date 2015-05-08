@@ -35,23 +35,16 @@ Util.Objects["page"] = new function() {
 				page.browser_h = u.browserH();
 
 
-				if(page.browser_w >= 1200) {
-					u.ac(page, "fixed");
-				}
-				else {
-					u.rc(page, "fixed");
-				}
-
 				// navigation adjustments
 				var i, item;
 				if(page.nN.items) {
 					for(i = 0; item = page.nN.items[i]; i++) {
-						u.ass(item, {"height" : page.browser_h / 2 + "px"});
+						u.ass(item, {"height" : page.browser_h / 2 + "px"}, false);
 					}
 
 					// resize open navigation
 					if(u.hc(page.nN, "open")) {
-						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
+						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"}, false);
 					}
 				}
 
@@ -81,7 +74,7 @@ Util.Objects["page"] = new function() {
 
 			// global orientation change handler
 			page.orientationchanged = function(event) {
-
+				page.resized();
 			}
 
 

@@ -85,7 +85,7 @@ ul,
 ol {font-size: 0;}
 li {font-size: 14px; line-height: 1.25em;}
 #page {position: relative; min-height: 100%; min-width: 800px;}
-#page #content {opacity: 0; position: relative; z-index: 10;}
+#page #content {opacity: 0; position: relative; z-index: 10; overflow: hidden;}
 #page .logo {opacity: 0;}
 #page #header {opacity: 0;}
 #page div.logo {width: 62px; height: 62px; position: fixed; top: 25px; left: 30px; z-index: 11;}
@@ -159,20 +159,18 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.front ul li.article ul.actions li a:hover {background-color: #70B857;}
 
 /*s-front-desktop.css*/
-.fixed #content .scene.front {width: 1200px; margin: 0 auto;}
 #content .scene.front {opacity: 1;}
 .scene.front h1 {opacity: 0;}
 .scene.front ul {width: 100%; font-size: 0;}
-.scene.front ul li {position: relative; display: inline-block; vertical-align: top; box-sizing: border-box;}
+.scene.front ul li {position: relative; display: inline-block; vertical-align: top; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 .scene.front ul li.blank {}
-.scene.front ul li.twenty {width: 20%;}
-.scene.front ul li.forty {width: 40%;}
-.scene.front ul li.sixty {width: 60%;}
-.scene.front ul li.eighty {width: 80%;}
-.scene.front ul li.ambassador {width: 100%;}
 .scene.front ul li.instagram {}
 .scene.front ul li.instagram div.image {overflow: hidden; height: 100%; width: 100%; z-index: 10; position: absolute; top: 0; left: 0; box-sizing: border-box;}
-.scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%; z-index: 3; position: relative;}
+.scene.front ul li.instagram div.image img {width: 100%; height: 100%; z-index: 3; position: relative;}
 .scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 10px; font-weight: 800;}
 .scene.front ul li.instagram .videoplayer {overflow: hidden; height: 100%; width: 100%; z-index: 2; position: absolute; top: 0; left: 0; box-sizing: border-box;}
 .scene.front ul li.instagram .videoplayer video {position: relative; height: 102%; width: 102%; margin: -1%; z-index: 2; background: transparent;}
@@ -214,14 +212,10 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.front ul li.ambassador ul li.video .videoplayer.paused .controls .playpause {
 	background-image: url(/img/gx_play.png)
 }
-@media screen and (max-width: 800px) {
-	.scene.front {width: 800px;}
-}
 
 
 /*s-events-desktop.css*/
 .fixed #content .scene.event {width: 1200px; margin: 0 auto; text-align: center;}
-#content .scene.event {opacity: 1;}
 .scene.event {padding: 0 50px; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;

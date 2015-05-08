@@ -6120,9 +6120,10 @@ u.gotoBuy = function() {
 			this.transitioned = function() {
 				this.transitioned = null;
 				location.href = "http://burl.nu/jbjpcu";
+				page.removeChild(page.svg);
 			}
-			u.a.to(this.page.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
-			u.a.to(this.page.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
+			u.a.to(page.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
+			u.a.to(page.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
 		}
 		u.a.to(page.svg._top, "all 0.3s ease-in", {"points":page.svg.top_points});
 		u.a.to(page.svg._bottom, "all 0.3s ease-in", {"points":page.svg.bottom_points});
@@ -6146,19 +6147,13 @@ Util.Objects["page"] = new function() {
 			page.resized = function(event) {
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
-				if(page.browser_w >= 1200) {
-					u.ac(page, "fixed");
-				}
-				else {
-					u.rc(page, "fixed");
-				}
 				var i, item;
 				if(page.nN.items) {
 					for(i = 0; item = page.nN.items[i]; i++) {
-						u.ass(item, {"height" : page.browser_h / 2 + "px"});
+						u.ass(item, {"height" : page.browser_h / 2 + "px"}, false);
 					}
 					if(u.hc(page.nN, "open")) {
-						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"});
+						u.ass(page.nN, {"height" : page.browser_h+"px", "width" : page.browser_w+"px"}, false);
 					}
 				}
 				if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
@@ -6174,6 +6169,7 @@ Util.Objects["page"] = new function() {
 				page.offsetHeight;
 			}
 			page.orientationchanged = function(event) {
+				page.resized();
 			}
 			page.ready = function() {
 				if(!this.is_ready) {
@@ -6404,29 +6400,56 @@ u.e.addDOMReadyEvent(static_init);
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
+			if(page.browser_w > 1200) {
+				var excess = page.browser_w-1200;
+				var left = Math.round(excess/2);
+				var right = excess - left;
+				u.as(this, "margin", "0 "+right+"px 0 "+left+"px", false);
+			}
+			else {
+				u.as(this, "margin", 0, false);
+			}
 			var block_height = Math.ceil(this.offsetWidth/5);
+			u.as(this.grid, "width", (block_height*5)+"px", false);
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
 				if(li.is_ready) {
 					if(u.hc(li, "article|instagram")) {
 						if(li._forty) {
 							u.as(li, "height", (block_height*2)+"px", false);
+							u.as(li, "width", (block_height*2)+"px", false);
 						}
 						else {
 							u.as(li, "height", block_height+"px", false);
+							u.as(li, "width", block_height+"px", false);
 						}
 					}
-					if(u.hc(li, "tweet")) {
+					else if(u.hc(li, "tweet")) {
 						u.as(li, "height", block_height+"px", false);
+						u.as(li, "width", (block_height*2)+"px", false);
 					}
-					if(u.hc(li, "ambassador")) {
+					else if(u.hc(li, "blank")) {
+						if(li._forty) {
+							u.as(li, "width", (block_height*2)+"px", false);
+						}
+						else if(li._sixty) {
+							u.as(li, "width", (block_height*3)+"px", false);
+						}
+						else {
+							u.as(li, "width", block_height+"px", false);
+						}
+					}
+					else if(u.hc(li, "ambassador")) {
+						u.as(li, "width", (block_height*5)+"px", false);
 						u.as(li.li_video, "height", (block_height*2)+"px", false);
+						u.as(li.li_video, "width", (block_height*3)+"px", false);
 						u.as(li.li_article, "height", (block_height*2)+"px", false);
+						u.as(li.li_article, "width", (block_height*2)+"px", false);
 					}
 					if(u.hc(li, "push_up|push_up_half")) {
 						u.as(li, "marginTop", -(block_height)+"px", false);
 					}
-					if(u.hc(li, "push_down")) {
+					else if(u.hc(li, "push_down")) {
 						u.as(li, "marginTop", block_height+"px", false);
 					}
 				}
@@ -6489,6 +6512,7 @@ Util.Objects["front"] = new function() {
 			this.style_tag.sheet.insertRule("#content .scene.front li.tweet .card {}", 0);
 			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 			this.h1 = u.qs("h1", this);
+			this.grid = u.qs("ul.grid", this);
 			this.lis = u.qsa("ul.grid > li", this);
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
@@ -6557,12 +6581,6 @@ Util.Objects["front"] = new function() {
 					if(!li.link.target) {
 						u.ce(li.link, {"type":"link"});
 					}
-					else {
-						u.ce(li.link);
-						li.link.clicked = function(event) {
-							u.gotoBuy();
-						}
-					}
 					u.linkScrambler(li.link);
 				}
 				else if(u.hc(li, "ambassador")) {
@@ -6576,12 +6594,6 @@ Util.Objects["front"] = new function() {
 					u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(-180deg)");
 					if(!li.li_article.link.target) {
 						u.ce(li.li_article.link, {"type":"link"});
-					}
-					else {
-						u.ce(li.li_article.link);
-						li.li_article.link.clicked = function(event) {
-							u.gotoBuy();
-						}
 					}
 					u.linkScrambler(li.li_article.link);
 					li.li_video = u.qs("li.video", li);
@@ -6758,10 +6770,16 @@ Util.Objects["front"] = new function() {
 					li.scene.rendered++;
 					li.scene.scrolled();
 				}
+				li.li_article.card.transitioned = function() {
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.li_article.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.li_article.card, u.a.vendor("transform"), "rotateX(0)");
 			}
 			else if(u.hc(li, "article")) {
+				li.card.transitioned = function() {
+					u.a.removeTransform(this);
+				}
 				u.a.transition(li.card, "all 0.5s ease-in-out "+(li.scene.renderControl())+"ms");
 				u.as(li.card, u.a.vendor("transform"), "rotateX(0)");
 				li.scene.rendered++;
@@ -6826,6 +6844,15 @@ Util.Objects["front"] = new function() {
 Util.Objects["events"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
+			if(page.browser_w > 1200) {
+				var excess = page.browser_w-1200;
+				var left = Math.round(excess/2);
+				var right = excess - left;
+				u.as(this, "margin", "0 "+right+"px 0 "+left+"px", false);
+			}
+			else {
+				u.as(this, "margin", 0, false);
+			}
 		}
 		scene.scrolled = function() {
 		}
@@ -7112,6 +7139,7 @@ Util.Objects["events"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
+				u.a.setOpacity(this, 1);
 				u.a.transition(this.h1, "all 0.6s ease-in-out");
 				u.as(this.h1, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
 				u.a.transition(this.div_filters, "all 0.6s ease-in-out");
@@ -7145,17 +7173,12 @@ Util.Objects["events"] = new function() {
 Util.Objects["manifest"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
-			u.as(this, "height", page.browser_h + "px");
+			u.as(this, "height", page.browser_h + "px", false);
 		}
 		scene.scrolled = function() {
 		}
 		scene.ready = function() {
 			page.resized();
-			this.link = u.qs("a", this);
-			u.ce(this.link);
-			this.link.clicked = function(event) {
-				u.gotoBuy();
-			}
 			this.is_ready = true;
 			page.cN.ready();
 		}

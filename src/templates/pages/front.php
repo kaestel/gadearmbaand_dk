@@ -98,9 +98,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				</li>
 			</ul>
 		</li>
-	</ul>
 
-	<ul class="grid">
 		<li class="tweet forty">
 			<div class="card">
 				<h3 class="author"><a href="https://twitter.com/<?= preg_replace("/@/", "", $tweets[2]["username"]) ?>" target="_blank"><?= $tweets[2]["username"] ?></a></h3>
@@ -169,9 +167,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				</li>
 			</ul>
 		</li>
-	</ul>
 
-	<ul class="grid">
 		<li class="instagram twenty push_down">
 			<div class="image image_id:<?= $instagrams[10]["item_id"] ?> image_format:<?= $instagrams[10]["image"] ?><?= $instagrams[10]["video"] ? " video_format:".$instagrams[10]["video"] : "" ?>">
 				<p>@<?= $instagrams[10]["username"] ?></p>
@@ -230,9 +226,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				</li>
 			</ul>
 		</li>
-	</ul>
 
-	<ul class="grid">
 		<li class="instagram twenty">
 			<div class="image image_id:<?= $instagrams[14]["item_id"] ?> image_format:<?= $instagrams[14]["image"] ?><?= $instagrams[14]["video"] ? " video_format:".$instagrams[14]["video"] : "" ?>">
 				<p>@<?= $instagrams[14]["username"] ?></p>
