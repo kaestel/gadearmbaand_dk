@@ -5969,6 +5969,7 @@ u.gotoBuy = function() {
 
 /*i-page-mobile_touch.js*/
 u.bug_console_only = true;
+u.bug_force = true;
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
 		if(u.hc(page, "i:page")) {
@@ -5979,6 +5980,7 @@ Util.Objects["page"] = new function() {
 			page.fN = u.qs("#footer");
 			page.videoPlayer = u.videoPlayer();
 			page.resized = function(event) {
+				u.bug("page.resized");
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 				// 	
