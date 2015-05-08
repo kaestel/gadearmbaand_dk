@@ -29,18 +29,11 @@ Util.Objects["page"] = new function() {
 			// global resize handler 
 			page.resized = function(event) {
 //				u.bug("page.resized:" + u.nodeId(this));
-				console.log("resized")
+
 				// update global values
 				page.browser_w = u.browserW();
 				page.browser_h = u.browserH();
 
-
-				if(page.browser_w >= 1200) {
-					u.ac(page, "fixed");
-				}
-				else {
-					u.rc(page, "fixed");
-				}
 
 				// navigation adjustments
 				// var i, item;
@@ -237,7 +230,7 @@ Util.Objects["page"] = new function() {
 				page.bn_nav = u.qs("ul.servicenavigation li.navigation", page.hN);
 				page.bn_nav.a = u.qs("a", page.bn_nav);
 				page.nN.items = u.qsa("ul li h4",page.nN);
-				console.log("first: "+u.browserH())
+
 				// very simple navigation toggle
 				u.ce(page.bn_nav);
 				page.bn_nav.clicked = function() {
@@ -324,34 +317,11 @@ Util.Objects["page"] = new function() {
 					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
 
 					node.mousedover = function() {
-
 						u.ac(this.vp, "show");
-						// u.ae(this.vp, page.videoPlayer);
-						// page.videoPlayer.ended = function() {
-						// 	this.play();
-						// }
-						// page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
-						//
-						// if(this.offsetWidth/this.offsetHeight > 480/270) {
-						// 	var height = (this.offsetWidth / (480/270));
-						// 	u.as(this.vp, "height", height + "px");
-						// 	u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-						// 	u.as(this.vp, "width", "100%");
-						// 	u.as(this.vp, "marginLeft", 0);
-						// }
-						// else {
-						// 	var width = (this.offsetHeight / (270/480));
-						// 	u.as(this.vp, "width", width + "px");
-						// 	u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-						// 	u.as(this.vp, "height", "100%");
-						// 	u.as(this.vp, "marginTop", 0);
-						// }
 					}
 					
 					node.mousedout = function() {
 						u.rc(this.vp, "show");
-						// page.videoPlayer.stop();
-						// page.videoPlayer.parentNode.removeChild(page.videoPlayer);
 					}
 
 					u.e.addEvent(node, "touchstart", node.mousedover);
@@ -372,11 +342,54 @@ Util.Objects["page"] = new function() {
 
 					page.intro.loaded = function() {
 
-						this.transitioned = function() {
-							this.sq = u.ae(this, "div", {"class":"intro_logo"});
+						u.as(this, "perspectiveOrigin", "50% 50%");
+						u.as(this, "perspective", (this.offsetWidth) + "px");
+
+						this.sq = u.ae(this, "div", {"class":"intro_logo"});
+						this.sq.intro = this;
+
+						u.as(this.sq, u.a.vendor("transform"), "rotateX(-720deg) scale(0)");
+						u.a.setOpacity(this.sq, 1);
+
+
+						this.step1 = function(event) {
+//							u.bug("step1")
+
+							u.as(this.sq, "transformOrigin", "50% 52%");
+
+							u.a.transition(this.sq, "all 1s cubic-bezier(0.320, 1.640, 0.700, 0.140) 0.5s", "step1");
+							u.as(this.sq, u.a.vendor("transform"), "rotateX(0) scale(1)");
+						}
+
+						this.sq.ended = function() {
+//							u.bug("sq ended")
+
+
+							this.intro.transitioned = function() {
+								page.intro.clicked();
+							}
+
+							u.a.transition(this.intro, "opacity 0.3s ease-in");
+							u.a.setOpacity(this.intro, 0);
+						}
+
+
+
+						this.sq.step1 = function() {
+//							u.bug("sq step1")
+
+							u.a.transition(this, "none");
+							u.as(this, u.a.vendor("transform"), "rotateX(0) scale(1)");
+
+
+							u.a.transition(this, "all 0.5s ease-in 1.5s", "ended");
+							u.as(this, u.a.vendor("transform"), "rotateX(720deg) scale(3)");
+
 
 						}
-						u.a.transition(this, "all 1s ease-in");
+
+
+						u.a.transition(this, "all 1s ease-in", "step1");
 						u.a.setOpacity(this, 1);
 					}
 					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
@@ -388,7 +401,6 @@ Util.Objects["page"] = new function() {
 					page.intro.clicked = function() {
 //						u.bug("cliecked intro")
 
-						u.t.resetTimer(this.t_click);
 						this.parentNode.removeChild(this);
 						page.intro = false;
 
