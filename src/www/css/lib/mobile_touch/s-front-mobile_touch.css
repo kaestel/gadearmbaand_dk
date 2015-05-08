@@ -26,14 +26,18 @@
 
 /* instagram */
 .scene.front ul li.instagram {overflow: hidden; position: relative; opacity: 0;}
-.scene.front ul li.instagram div.image {width: 100%; height: 100%; position: relative;}
-.scene.front ul li.instagram div.image img {width: 102%; height: 102%; margin: -1%;}
+.scene.front ul li.instagram div.image {}
+.scene.front ul li.instagram div.image img {}
 .scene.front ul li.instagram p {position: absolute; bottom: 0px; left: 0px; width: 100%; text-align: center; padding: 5px 5px; color: #6eb951; font-size: 14px; font-weight: 800;}
 
 
 /* tweet */
 .scene.front ul li.tweet {background-color:#6eb951; width: 100%; display: block; opacity: 0;}
-.scene.front ul li.tweet .card {padding: 15px 15px 20px; background-color: #6eb951; box-sizing: border-box;}
+.scene.front ul li.tweet .card {padding: 15px 15px 20px; background-color: #6eb951; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 .scene.front ul li.tweet .card:nth-child(2) {display: none;}
 .scene.front ul li.tweet h3 {color:#19051a;}
 .scene.front ul li.tweet p {color:#ffffff; font-size: 22px;}
@@ -43,7 +47,11 @@
 /* article */
 .scene.front ul li.article {opacity: 0;}
 
-.scene.front ul li.article .card {padding: 15px 15px 20px; background: #19051a; box-sizing: border-box;}
+.scene.front ul li.article .card {padding: 15px 15px 20px; background: #19051a;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
 .scene.front ul li.article h2 {color: #ffffff; padding-bottom: 22px;}
 .scene.front ul li.article h3 {color: #6eb951;}
 
