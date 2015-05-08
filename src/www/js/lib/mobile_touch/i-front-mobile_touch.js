@@ -3,46 +3,66 @@ Util.Objects["front"] = new function() {
 
 		// global resize handler
 		scene.resized = function() {
-			u.bug("scene.resized:" + u.nodeId(this));
+//			u.bug("scene.resized:" + u.nodeId(this));
 
-			var block_height = Math.ceil(this.offsetWidth/5);
 
 		}
 
 		// global scroll handler
 		scene.scrolled = function() {
-			u.bug("page.scrolled:" + u.nodeId(this))
+//			u.bug("page.scrolled:" + u.nodeId(this));
+
+
+			if(this.is_built) {
+
+				var i, li;
+				for (i = 0; li = this.lis[i]; i++) {
+
+//					u.bug("check render:" + li.is_built + ", " + li.i  + "==" + this.rendered + ", " + u.nodeId(li))
+
+					// only consider unbuilt lis which are next in line for rendering
+					if(!li.is_built && li.i == this.rendered) {
+
+						// get position on screen
+						var li_y = u.absY(li);
+						if(li._blank ||
+							(li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h)) || 
+							(li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h))
+						) {
+
+//							u.bug("go render:" + li.is_built)
+							this.renderNode(li);
+							break;
+
+						}
+					}
+
+					// avoid loop without purpose
+					else if(li.i > this.rendered) {
+						break;
+					}
+				}
+			}
 
 		}
 
 		// Page is ready
 		scene.ready = function() {
-			u.bug("scene.ready:" + u.nodeId(this));
-
-
-			// create padding rule for grid
-			this.style_tag = document.createElement("style");
-			this.style_tag.setAttribute("media", "all")
-			this.style_tag.setAttribute("type", "text/css")
-			this.style_tag = u.ae(document.head, this.style_tag);
-
-			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
-			this.article_rule = this.style_tag.sheet.cssRules[0];
-
-			this.style_tag.sheet.insertRule("#content .scene.front li.tweet {}", 0);
-			this.tweet_rule = this.style_tag.sheet.cssRules[0];
+//			u.bug("scene.ready:" + u.nodeId(this));
 
 
 			this.h1 = u.qs("h1", this);
-
-
-			//this.ul = u.qs(".grid");
 			this.lis = u.qsa("ul.grid > li", this);
+
 			var i, li;
+			for(i = 0; li = this.lis[i]; i++) {
 
-			for (i = 0; li = this.lis[i]; i++) {
+				li.scene = this;
 
-//				u.a.scale(li, 15);
+				// save order (to control rendering)
+				li.i = i;
+				u.ac(li, "i"+i);
+
 
 				// pre-index
 				if(u.hc(li, "forty")) {
@@ -59,29 +79,24 @@ Util.Objects["front"] = new function() {
 				// handle instagram images
 				if(u.hc(li, "instagram")) {
 
-					// img
-					var node = u.qs("div.image", li);
-					if(node) {
-						node.li = li;
-						node.image_id = u.cv(node, "image_id");
-						node.format = u.cv(node, "format");
+					// get elements
+					li.image = u.qs("div.image", li);
+					li.image.li = li;
+					li.image.p = u.qs("div.image p", li);
 
-						if(node.image_id && node.format) {
-							node.loaded = function(queue) {
-								u.ae(this, "img", {"src": queue[0].image.src});
-
-							}
-							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
-							u.preloader(node, [node._image_src])
-						}
+					// get image src if information is available
+					li.image.image_id = u.cv(li.image, "image_id");
+					li.image.image_format = u.cv(li.image, "image_format");
+					if(li.image.image_id && li.image.image_format) {
+						li.image._image_src = "/images/" + li.image.image_id + "/image/300x." + li.image.image_format;
 					}
 				}
 
 				// handle tweet
-				if(u.hc(li, "tweet")) {}
+				else if(u.hc(li, "tweet")) {}
 
 				// handle article page
-				if(u.hc(li, "article")) {
+				else if(u.hc(li, "article")) {
 
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
@@ -94,21 +109,22 @@ Util.Objects["front"] = new function() {
 
 
 				// handle ambassador
-				if(u.hc(li, "ambassador")) {
+				else if(u.hc(li, "ambassador")) {
 					//u.as(li, "height", li.offsetWidth+"px");
 
+
+					// get elements
 					li.li_article = u.qs("li.article", li);
-
 					li.li_article.card = u.qs(".card", li.li_article);
-
 					li.li_article.link = u.qs(".card a", li.li_article);
+
 
 					if(!li.li_article.link.target) {
 						u.ce(li.li_article, {"type":"link"});
 					}
 
 
-					// video
+					// get elements
 					li.li_video = u.qs("li.video", li);
 					li.video = u.qs("div.video", li.li_video);
 					li.image = u.qs("div.image", li.li_video);
@@ -118,48 +134,70 @@ Util.Objects["front"] = new function() {
 					li.image.li = li;
 
 
-
-					li.video_id = u.cv(li.video, "video_id");
-					li.video_format = u.cv(li.video, "video_format");
-
+					// get image src if information is available
 					li.image_id = u.cv(li.image, "image_id");
 					li.image_format = u.cv(li.image, "image_format");
-
-
 					if(li.image_id && li.image_format) {
-						li.image.loaded = function(queue) {
-							u.ae(this, "img", {"src": queue[0].image.src});
-						}
-
 						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
-						u.preloader(li.image, [li._image_src])
 					}
 
 
+					// get video src if information is available
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
 					if(li.video_id && li.video_format) {
-
 						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
+
+						// add play button
 						li.bn_play = u.ae(li.image, "div", {"class": "play"});
 
+						// add play handler
 						u.e.click(li.image);
 						li.image.clicked = function(event) {
 
-							//u.as(this.play_bn, "display", "none");
+							// reset video (if playback is started elsewhere)
+							this.li.resetPlayer = function() {
+
+								u.as(this.video, "zIndex", 1);
+							}
+
+							// if video player is currently used, make sure to reset existing instance
+							if(page.videoPlayer.current_node) {
+								page.videoPlayer.current_node.resetPlayer();
+							}
+
+							// reset video when playback is dont
 							page.videoPlayer.ended = function(event) {
 
+								this.current_node.resetPlayer();
+								this.current_node = false;
 							}
-							
-//							this.li.video.ended;
 
+							// move video to top
 							u.as(this.li.video, "zIndex", 3);
+							// add video player
 							u.ae(this.li.video, page.videoPlayer);
+							// remember current position in hierarchy
 							page.videoPlayer.current_node = this.li;
+
+							// load and start playback as fast as posible
 							page.videoPlayer.loadAndPlay(this.li._video_url, {"playpause":true});
 
 						}
 
 					}
+
 				}
+				
+				else if(u.hc(li, "blank")) {
+					li._blank = true;
+				}
+
+				// li is ready
+				li.is_ready = true;
+
+				// resize grid
+				this.resized();
 
 			}
 
@@ -172,6 +210,125 @@ Util.Objects["front"] = new function() {
 
 		}
 
+		// render timestamp
+		scene.next_render = new Date().getTime();
+
+		// render controller - calculates delays for rendering
+		scene.renderControl = function() {
+			var now = new Date().getTime();
+
+			// delay rendering for a minimum of 150ms between each render
+			this.next_render = now - this.next_render > 150 ? now : now + (150 - (now - this.next_render));
+
+			return this.next_render-now;
+		}
+
+
+		// render a node - invoked by scene.scrolled
+		scene.renderNode = function(li) {
+//			u.bug("renderNode:" + u.nodeId(li) + ", " + li.is_built);
+
+
+			// set build state
+			li.is_built = true;
+
+
+			// instagram
+			if(u.hc(li, "instagram")) {
+
+				// do we have information
+				if(li.image._image_src) {
+
+					// load image
+					li.image.loaded = function(queue) {
+
+						this.img = u.ae(this, "img", {"src": queue[0].image.src});
+
+						u.a.transition(this.li, "opacity 0.5s ease-in "+(this.li.scene.renderControl())+"ms");
+						u.a.setOpacity(this.li, 1);
+
+
+						// continue rendering
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+
+					}
+					u.preloader(li.image, [li.image._image_src])
+				}
+				// skip element on missing information
+				else {
+
+					// continue rendering
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
+
+			}
+
+			// ambassador
+			else if(u.hc(li, "ambassador")) {
+
+				// do we have enough information
+				if(li._image_src) {
+
+					// load image
+					li.image.loaded = function(queue) {
+
+						u.ae(this, "img", {"src": queue[0].image.src});
+
+						u.a.transition(this.li, "opacity 0.5s ease-in "+(this.li.scene.renderControl())+"ms");
+						u.a.setOpacity(this.li, 1);
+
+
+						// continue rendering
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+
+					}
+					u.preloader(li.image, [li._image_src])
+
+				}
+				// skip element on missing information
+				else {
+
+					// continue rendering
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
+
+			}
+
+			// article
+			else if(u.hc(li, "article")) {
+
+				u.a.transition(li, "opacity 0.5s ease-in "+(li.scene.renderControl())+"ms");
+				u.a.setOpacity(li, 1);
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+
+			// tweet
+			else if(u.hc(li, "tweet")) {
+
+				u.a.transition(li, "opacity 0.5s ease-in "+(li.scene.renderControl())+"ms");
+				u.a.setOpacity(li, 1);
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+
+			// blank
+			else if(u.hc(li, "blank")) {
+
+				// continue rendering
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+
+		}
 
 		// build scene - start actual rendering of scene
 		scene.build = function() {
@@ -181,9 +338,16 @@ Util.Objects["front"] = new function() {
 
 				this.is_built = true;
 
+				// show header
+				u.a.transition(this.h1, "all 0.5s ease-in");
+				u.a.setOpacity(this.h1, 1);
 
-				u.a.transition(this, "all 1s linear");
-				u.a.setOpacity(this, 1);
+				// set render control counter
+				this.rendered = 0;
+				this.is_built = true;
+
+				// scroll handler handles rendering when is_built is set
+				this.scrolled();
 
 			}
 		}
@@ -201,10 +365,6 @@ Util.Objects["front"] = new function() {
 			// to continue building the new scene
 			this.finalizeDestruction = function() {
 
-				// remove style tag
-				this.style_tag.parentNode.removeChild(this.style_tag);
-
-
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 
@@ -218,16 +378,12 @@ Util.Objects["front"] = new function() {
 			for(i = 0; li = this.lis[i]; i++) {
 				var li_y = u.absY(li);
 				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-					u.bug("move:" + u.nodeId(li))
-					u.as(li, "zIndex", 100-j);
 					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
-					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
-					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
 					u.a.setOpacity(li, 0);
 				}
 			}
 
-			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
+			u.t.setTimer(this, this.finalizeDestruction, (100*j)+300);
 
 		}
 

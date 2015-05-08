@@ -30,6 +30,8 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
+				u.as(document.body, "background-image", "url(/img/bg_manifest.jpg)");
+
 
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
@@ -50,6 +52,8 @@ Util.Objects["manifest"] = new function() {
 			// to continue building the new scene
 			this.finalizeDestruction = function() {
 
+				u.as(document.body, "background-image", "none");
+
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 
@@ -57,7 +61,7 @@ Util.Objects["manifest"] = new function() {
 
 			
 
-			var lines = 50;
+			var lines = 10;
 			var svg_object = {
 				"name":"destruction",
 				"width":page.browser_w,
@@ -78,8 +82,6 @@ Util.Objects["manifest"] = new function() {
 					"x2":x1,
 					"y1":-10,
 					"y2":-8,
-					// "y1":i%2 ? -10 : page.browser_h + 10-2,
-					// "y2":i%2 ? -8 : page.browser_h + 10,
 					"stroke-width":2
 				}
 				svg_object.shapes.push(shape);
@@ -123,21 +125,6 @@ Util.Objects["manifest"] = new function() {
 					u.a.to(line, "all 0.3s linear", new_coords[i]);
 					new_coords.splice(i, 1);
 
-					// let content node fall down
-					if(j == 15) {
-						u.a.transition(this._c, "all 0.2s ease-out");
-						u.a.scaleRotateTranslate(this._c, 1, 5, 5, 100);
-					}
-
-					if(j == 20) {
-						u.a.transition(this._c, "all 0.3s ease-out");
-						u.a.scaleRotateTranslate(this._c, 0.8, -13, -5, 300);
-					}
-
-					if(j == 27) {
-						u.a.transition(this._c, "all 0.3s ease-out");
-						u.a.scaleRotateTranslate(this._c, 0.7, -3, 0, 1000);
-					}
 
 					// continue animation
 					u.t.setTimer(this, "_animate", 10);

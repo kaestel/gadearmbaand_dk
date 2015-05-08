@@ -6167,26 +6167,35 @@ u.e.addDOMReadyEvent(static_init);
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
-			u.bug("scene.resized:" + u.nodeId(this));
-			var block_height = Math.ceil(this.offsetWidth/5);
 		}
 		scene.scrolled = function() {
-			u.bug("page.scrolled:" + u.nodeId(this))
+			if(this.is_built) {
+				var i, li;
+				for (i = 0; li = this.lis[i]; i++) {
+					if(!li.is_built && li.i == this.rendered) {
+						var li_y = u.absY(li);
+						if(li._blank ||
+							(li_y > page.scroll_y && li_y < page.scroll_y + (page.browser_h)) || 
+							(li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + (page.browser_h))
+						) {
+							this.renderNode(li);
+							break;
+						}
+					}
+					else if(li.i > this.rendered) {
+						break;
+					}
+				}
+			}
 		}
 		scene.ready = function() {
-			u.bug("scene.ready:" + u.nodeId(this));
-			this.style_tag = document.createElement("style");
-			this.style_tag.setAttribute("media", "all")
-			this.style_tag.setAttribute("type", "text/css")
-			this.style_tag = u.ae(document.head, this.style_tag);
-			this.style_tag.sheet.insertRule("#content .scene.front li.article {}", 0);
-			this.article_rule = this.style_tag.sheet.cssRules[0];
-			this.style_tag.sheet.insertRule("#content .scene.front li.tweet {}", 0);
-			this.tweet_rule = this.style_tag.sheet.cssRules[0];
 			this.h1 = u.qs("h1", this);
 			this.lis = u.qsa("ul.grid > li", this);
 			var i, li;
-			for (i = 0; li = this.lis[i]; i++) {
+			for(i = 0; li = this.lis[i]; i++) {
+				li.scene = this;
+				li.i = i;
+				u.ac(li, "i"+i);
 				if(u.hc(li, "forty")) {
 					li._forty = true;
 				}
@@ -6197,29 +6206,24 @@ Util.Objects["front"] = new function() {
 					li._twenty = true;
 				}
 				if(u.hc(li, "instagram")) {
-					var node = u.qs("div.image", li);
-					if(node) {
-						node.li = li;
-						node.image_id = u.cv(node, "image_id");
-						node.format = u.cv(node, "format");
-						if(node.image_id && node.format) {
-							node.loaded = function(queue) {
-								u.ae(this, "img", {"src": queue[0].image.src});
-							}
-							node._image_src = "/images/" + node.image_id + "/image/400x." + node.format;
-							u.preloader(node, [node._image_src])
-						}
+					li.image = u.qs("div.image", li);
+					li.image.li = li;
+					li.image.p = u.qs("div.image p", li);
+					li.image.image_id = u.cv(li.image, "image_id");
+					li.image.image_format = u.cv(li.image, "image_format");
+					if(li.image.image_id && li.image.image_format) {
+						li.image._image_src = "/images/" + li.image.image_id + "/image/300x." + li.image.image_format;
 					}
 				}
-				if(u.hc(li, "tweet")) {}
-				if(u.hc(li, "article")) {
+				else if(u.hc(li, "tweet")) {}
+				else if(u.hc(li, "article")) {
 					li.card = u.qs(".card", li);
 					li.link = u.qs(".card a", li);
 					if(!li.link.target) {
 						u.ce(li, {"type":"link"});
 					}
 				}
-				if(u.hc(li, "ambassador")) {
+				else if(u.hc(li, "ambassador")) {
 					li.li_article = u.qs("li.article", li);
 					li.li_article.card = u.qs(".card", li.li_article);
 					li.li_article.link = u.qs(".card a", li.li_article);
@@ -6232,23 +6236,27 @@ Util.Objects["front"] = new function() {
 					li.li_video.li = li;
 					li.video.li = li;
 					li.image.li = li;
-					li.video_id = u.cv(li.video, "video_id");
-					li.video_format = u.cv(li.video, "video_format");
 					li.image_id = u.cv(li.image, "image_id");
 					li.image_format = u.cv(li.image, "image_format");
 					if(li.image_id && li.image_format) {
-						li.image.loaded = function(queue) {
-							u.ae(this, "img", {"src": queue[0].image.src});
-						}
 						li._image_src = "/images/" + li.image_id + "/image/720x." + li.image_format;
-						u.preloader(li.image, [li._image_src])
 					}
+					li.video_id = u.cv(li.video, "video_id");
+					li.video_format = u.cv(li.video, "video_format");
 					if(li.video_id && li.video_format) {
 						li._video_url = "/videos/" + li.video_id + "/video/720x." + li.video_format;
 						li.bn_play = u.ae(li.image, "div", {"class": "play"});
 						u.e.click(li.image);
 						li.image.clicked = function(event) {
+							this.li.resetPlayer = function() {
+								u.as(this.video, "zIndex", 1);
+							}
+							if(page.videoPlayer.current_node) {
+								page.videoPlayer.current_node.resetPlayer();
+							}
 							page.videoPlayer.ended = function(event) {
+								this.current_node.resetPlayer();
+								this.current_node = false;
 							}
 							u.as(this.li.video, "zIndex", 3);
 							u.ae(this.li.video, page.videoPlayer);
@@ -6257,22 +6265,86 @@ Util.Objects["front"] = new function() {
 						}
 					}
 				}
+				else if(u.hc(li, "blank")) {
+					li._blank = true;
+				}
+				li.is_ready = true;
+				this.resized();
 			}
 			this.resized();
 			this.is_ready = true;
 			page.cN.ready();
 		}
+		scene.next_render = new Date().getTime();
+		scene.renderControl = function() {
+			var now = new Date().getTime();
+			this.next_render = now - this.next_render > 150 ? now : now + (150 - (now - this.next_render));
+			return this.next_render-now;
+		}
+		scene.renderNode = function(li) {
+			li.is_built = true;
+			if(u.hc(li, "instagram")) {
+				if(li.image._image_src) {
+					li.image.loaded = function(queue) {
+						this.img = u.ae(this, "img", {"src": queue[0].image.src});
+						u.a.transition(this.li, "opacity 0.5s ease-in "+(this.li.scene.renderControl())+"ms");
+						u.a.setOpacity(this.li, 1);
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+					}
+					u.preloader(li.image, [li.image._image_src])
+				}
+				else {
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
+			}
+			else if(u.hc(li, "ambassador")) {
+				if(li._image_src) {
+					li.image.loaded = function(queue) {
+						u.ae(this, "img", {"src": queue[0].image.src});
+						u.a.transition(this.li, "opacity 0.5s ease-in "+(this.li.scene.renderControl())+"ms");
+						u.a.setOpacity(this.li, 1);
+						this.li.scene.rendered++;
+						this.li.scene.scrolled();
+					}
+					u.preloader(li.image, [li._image_src])
+				}
+				else {
+					li.scene.rendered++;
+					li.scene.scrolled();
+				}
+			}
+			else if(u.hc(li, "article")) {
+				u.a.transition(li, "opacity 0.5s ease-in "+(li.scene.renderControl())+"ms");
+				u.a.setOpacity(li, 1);
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+			else if(u.hc(li, "tweet")) {
+				u.a.transition(li, "opacity 0.5s ease-in "+(li.scene.renderControl())+"ms");
+				u.a.setOpacity(li, 1);
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+			else if(u.hc(li, "blank")) {
+				li.scene.rendered++;
+				li.scene.scrolled();
+			}
+		}
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
-				u.a.transition(this, "all 1s linear");
-				u.a.setOpacity(this, 1);
+				u.a.transition(this.h1, "all 0.5s ease-in");
+				u.a.setOpacity(this.h1, 1);
+				this.rendered = 0;
+				this.is_built = true;
+				this.scrolled();
 			}
 		}
 		scene.destroy = function() {
 			this.destroy = null;
 			this.finalizeDestruction = function() {
-				this.style_tag.parentNode.removeChild(this.style_tag);
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
@@ -6282,15 +6354,11 @@ Util.Objects["front"] = new function() {
 			for(i = 0; li = this.lis[i]; i++) {
 				var li_y = u.absY(li);
 				if((li_y > page.scroll_y && li_y < page.scroll_y + page.browser_h) || li_y+li.offsetHeight > page.scroll_y && li_y+li.offsetHeight < page.scroll_y + page.browser_h) {
-					u.bug("move:" + u.nodeId(li))
-					u.as(li, "zIndex", 100-j);
 					u.a.transition(li, "all 0.3s ease-in "+(150*j++)+"ms");
-					u.a.origin(li, li.offsetWidth/2, li.offsetWidth/2);
-					u.a.scaleRotateTranslate(li, 0.5, 15, 0, 2000);
 					u.a.setOpacity(li, 0);
 				}
 			}
-			u.t.setTimer(this, this.finalizeDestruction, (100*j)+500);
+			u.t.setTimer(this, this.finalizeDestruction, (100*j)+300);
 		}
 		scene.ready();
 	}
@@ -6585,6 +6653,7 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
+				u.as(document.body, "background-image", "url(/img/bg_manifest.jpg)");
 				u.a.transition(this, "all 1s linear");
 				u.a.setOpacity(this, 1);
 			}
@@ -6592,10 +6661,11 @@ Util.Objects["manifest"] = new function() {
 		scene.destroy = function() {
 			this.destroy = null;
 			this.finalizeDestruction = function() {
+				u.as(document.body, "background-image", "none");
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
-			var lines = 50;
+			var lines = 10;
 			var svg_object = {
 				"name":"destruction",
 				"width":page.browser_w,
@@ -6643,18 +6713,6 @@ Util.Objects["manifest"] = new function() {
 					new_coords[i]["stroke-width"] = u.random(2+j*0.5, 28+(Math.pow(j*0.5, 2)));
 					u.a.to(line, "all 0.3s linear", new_coords[i]);
 					new_coords.splice(i, 1);
-					if(j == 15) {
-						u.a.transition(this._c, "all 0.2s ease-out");
-						u.a.scaleRotateTranslate(this._c, 1, 5, 5, 100);
-					}
-					if(j == 20) {
-						u.a.transition(this._c, "all 0.3s ease-out");
-						u.a.scaleRotateTranslate(this._c, 0.8, -13, -5, 300);
-					}
-					if(j == 27) {
-						u.a.transition(this._c, "all 0.3s ease-out");
-						u.a.scaleRotateTranslate(this._c, 0.7, -3, 0, 1000);
-					}
 					u.t.setTimer(this, "_animate", 10);
 				}
 				else {
