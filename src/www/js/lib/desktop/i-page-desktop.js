@@ -242,8 +242,8 @@ Util.Objects["page"] = new function() {
 					u.e.addEvent(page.logo, "mouseleave", page.logo.mousedout);
 				}
 				else {
-					u.e.addEvent(node, "touchstart", node.mousedover);
-					u.e.addEvent(node, "touchend", node.mousedout);
+					u.e.addEvent(page.logo, "touchstart", node.mousedover);
+					u.e.addEvent(page.logo, "touchend", node.mousedout);
 				}
 
 
