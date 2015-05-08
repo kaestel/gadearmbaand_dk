@@ -4,7 +4,7 @@ Util.Objects["manifest"] = new function() {
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
-			u.as(this, "height", page.browser_h + "px");
+//			u.as(this, "height", page.browser_h + "px");
 
 		}
 

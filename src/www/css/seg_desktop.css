@@ -339,7 +339,4 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.manifest svg {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
 	stroke: #ffffff; stroke-linecap: round;
 }
-.scene.manifest .forgroundPerson {position: absolute; bottom: 0; left: -180px; width: 568px; height: 376px; z-index: 4;
-	background-repeat: no-repeat; background-size: 100%; background-position: left bottom;
-}
 

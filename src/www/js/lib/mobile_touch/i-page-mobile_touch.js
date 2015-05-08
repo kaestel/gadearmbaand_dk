@@ -74,7 +74,7 @@ Util.Objects["page"] = new function() {
 
 			// global orientation change handler
 			page.orientationchanged = function(event) {
-
+				page.resized();
 			}
 
 
@@ -244,7 +244,7 @@ Util.Objects["page"] = new function() {
 						page.nN.transitioned = function() {
 							u.rc(this, "open");
 						}
-						u.a.transition(page.nN, "all 0.3s linear");
+						u.a.transition(page.nN, "all 0.3s ease-in");
 						u.ass(page.nN, {"width":0, "height":0, "top": "40px", "right": "60px"});
 
 					}
@@ -264,7 +264,7 @@ Util.Objects["page"] = new function() {
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
 
-						u.a.transition(page.nN, "all 0.3s linear");
+						u.a.transition(page.nN, "all 0.3s ease-out");
 						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
 
 					}
@@ -279,6 +279,9 @@ Util.Objects["page"] = new function() {
 //				u.bug("initNavigation")
 
 				var i, node;
+
+				// no scrolling in navigation
+				u.e.drag(page.nN, page.nN);
 
 				// navigation nodes
 				page.nN.nodes = u.qsa("li", page.nN);
@@ -313,19 +316,19 @@ Util.Objects["page"] = new function() {
 
 					}
 
-					node.vp = u.ae(node, "div", {"class":"vp"});
-					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
-
-					node.mousedover = function() {
-						u.ac(this.vp, "show");
-					}
-					
-					node.mousedout = function() {
-						u.rc(this.vp, "show");
-					}
-
-					u.e.addEvent(node, "touchstart", node.mousedover);
-					u.e.addEvent(node, "touchend", node.mousedout);
+					// node.vp = u.ae(node, "div", {"class":"vp"});
+					// u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
+					//
+					// node.mousedover = function() {
+					// 	u.ac(this.vp, "show");
+					// }
+					//
+					// node.mousedout = function() {
+					// 	u.rc(this.vp, "show");
+					// }
+					//
+					// u.e.addEvent(node, "touchstart", node.mousedover);
+					// u.e.addEvent(node, "touchend", node.mousedout);
 
 				}
 

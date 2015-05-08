@@ -5995,6 +5995,7 @@ Util.Objects["page"] = new function() {
 				page.offsetHeight;
 			}
 			page.orientationchanged = function(event) {
+				page.resized();
 			}
 			page.ready = function() {
 				if(!this.is_ready) {
@@ -6070,7 +6071,7 @@ Util.Objects["page"] = new function() {
 						page.nN.transitioned = function() {
 							u.rc(this, "open");
 						}
-						u.a.transition(page.nN, "all 0.3s linear");
+						u.a.transition(page.nN, "all 0.3s ease-in");
 						u.ass(page.nN, {"width":0, "height":0, "top": "40px", "right": "60px"});
 					}
 					else {
@@ -6083,13 +6084,14 @@ Util.Objects["page"] = new function() {
 						u.ac(page.nN, "open");
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
-						u.a.transition(page.nN, "all 0.3s linear");
+						u.a.transition(page.nN, "all 0.3s ease-out");
 						u.ass(page.nN, {"width":page.browser_w+"px", "height":u.browserH()+"px", "top": 0, "right": 0});
 					}
 				}
 			}
 			page.initNavigation = function() {
 				var i, node;
+				u.e.drag(page.nN, page.nN);
 				page.nN.nodes = u.qsa("li", page.nN);
 				for(i = 0; node = page.nN.nodes[i]; i++) {
 					if(!u.hc(node, "buy")) {
@@ -6109,16 +6111,6 @@ Util.Objects["page"] = new function() {
 							page.bn_nav.clicked();
 						}
 					}
-					node.vp = u.ae(node, "div", {"class":"vp"});
-					u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
-					node.mousedover = function() {
-						u.ac(this.vp, "show");
-					}
-					node.mousedout = function() {
-						u.rc(this.vp, "show");
-					}
-					u.e.addEvent(node, "touchstart", node.mousedover);
-					u.e.addEvent(node, "touchend", node.mousedout);
 				}
 			}
 			page.initIntro = function() {
@@ -6582,7 +6574,6 @@ Util.Objects["events"] = new function() {
 Util.Objects["manifest"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
-			u.as(this, "height", page.browser_h + "px");
 		}
 		scene.scrolled = function() {
 		}
