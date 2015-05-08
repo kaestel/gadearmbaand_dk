@@ -262,8 +262,6 @@ Util.Objects["page"] = new function() {
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
 
-						u.bug("in:" + window.innerHeight + ", " + page.browser_h);
-
 						u.a.transition(page.nN, "all 0.3s ease-out");
 						u.ass(page.nN, {"width":page.browser_w+"px", "height":window.innerHeight+"px", "top": 0, "right": 0});
 

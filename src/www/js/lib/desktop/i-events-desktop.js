@@ -24,7 +24,7 @@ Util.Objects["events"] = new function() {
 
 
 		// perform filtering (days, tags, search)
-		scene._filter = function() {
+		scene.filterEvents = function() {
 
 			// reset selected event
 			if(this.selected_event) {
@@ -36,16 +36,10 @@ Util.Objects["events"] = new function() {
 			var i, node;
 			for(i = 0; node = this.events[i]; i++) {
 
-				// close all open events
-// 				if(u.hc(node, "selected")) {
-// //					u.a.transition(node, "all 0.3s ease-out");
-// 					u.rc(node, "selected");
-// //					u.as(node, "height", this.event_height + "px");
-// 				}
-
 				if(this.checkDays(node) && this.checkTags(node) && this.checkSearch(node)) {
 					
 					if(!node._shown) {
+						node.transitioned = null;
 						u.a.transition(node, "all 0.3s ease-out");
 						u.as(node, "display", "block");
 						u.as(node, "height", this.event_height + "px");
@@ -73,9 +67,10 @@ Util.Objects["events"] = new function() {
 
 		// check if event matches day
 		scene.checkDays = function(event_node) {
+//			u.bug("selected_day:" + this.selected_day);
 
 			// if no day is selected or event matched selected day
-			if(!this._selected_day || this._selected_day == event_node._day) {
+			if(!this.selected_day || this.selected_day == event_node._day) {
 				return true;
 			}
 			return false;
@@ -85,7 +80,7 @@ Util.Objects["events"] = new function() {
 		scene.checkTags = function(event_node) {
 
 			// no tags are selected - all events are valid
-			if(this._selected_tags.length == 0) {
+			if(this.selected_tags.length == 0) {
 
 				return true;
 			} 
@@ -93,7 +88,7 @@ Util.Objects["events"] = new function() {
 			else {
 
 				var i, tag;
-				for(i = 0; tag = this._selected_tags[i]; i++) {
+				for(i = 0; tag = this.selected_tags[i]; i++) {
 
 					// check if node dosen't have tag
 					if(event_node.tags_array.indexOf(tag) == -1) {
@@ -109,7 +104,7 @@ Util.Objects["events"] = new function() {
 		scene.checkSearch = function(event_node) {
 
 			// if no search or event matches search-string
-			if(!this._selected_search || event_node._host._string.match(this._selected_search) || event_node._name._string.match(this._selected_search) || event_node._location._string.match(this._selected_search)) {
+			if(!this.selected_search || event_node._host._string.match(this.selected_search) || event_node._name._string.match(this.selected_search) || event_node._location._string.match(this.selected_search)) {
 				return true;
 			}
 			return false;
@@ -144,16 +139,13 @@ Util.Objects["events"] = new function() {
 				}
 
 				node._shown = true;
-				node._height = node.offsetHeight;
+				node.org_height = node.offsetHeight;
 
 				node._day = u.cv(node, "day").toLowerCase();
 				node._name = u.qs(".name", node);
 				node._host = u.qs(".host", node);
 				node._location = u.qs(".location a", node);
-				node._location_p = u.qs(".location", node);
-
 				node._facebook = u.qs(".text .action a", node);
-				node._facebook_action = u.qs(".text .action", node);
 
 
 				if(u.e.event_pref == "mouse") {
@@ -161,9 +153,11 @@ Util.Objects["events"] = new function() {
 				}
 
 
-				u.e.click(node._facebook_action);
-				u.e.click(node._location_p);
-				node._location_p.clicked = node._facebook_action.clicked = function(event) {
+				u.ce(node._facebook);
+				u.ce(node._location);
+				node._location.clicked = node._facebook.clicked = function(event) {
+					window.open(this.url);
+					this.blur();
 					u.e.kill(event);
 				}
 
@@ -189,7 +183,7 @@ Util.Objects["events"] = new function() {
 						u.a.transition(this, "all 0.5s ease-out");
 						u.ac(this, "selected");
 						this.scene.selected_event = this;
-						u.as(this, "height", this._height + "px");
+						u.as(this, "height", this.org_height + "px");
 					}
 
 					var i, node;
@@ -211,27 +205,29 @@ Util.Objects["events"] = new function() {
 		// initalized all days
 		scene.initDays = function() {
 
-			this._days_list = u.qs("ul.days", this);
-			this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"Alle dage"});
-			this._days = u.qsa("li", this._days_list);
+			this.days_list = u.qs("ul.days", this);
+			this.all_days = u.ie(this.days_list, "li", {"class":"all selected","html":"Alle dage"});
+			this.days = u.qsa("li", this.days_list);
 
 			var i, day;
-			for(i = 0; day = this._days[i]; i++) {
+			for(i = 0; day = this.days[i]; i++) {
 
 				day.scene = this;
+				day.day_string = day.innerHTML.toLowerCase();
 
 				// add link scrambling
-				u.linkScrambler(day);
-
+				if(u.e.event_pref == "mouse") {
+					u.linkScrambler(day);
+				}
 
 				day.clicked = function() {
 
 					// unselection and not "alle dage"
-					if(u.hc(this, "selected") && this != this.scene._all_days) {
+					if(u.hc(this, "selected") && this != this.scene.all_days) {
 
 						u.rc(this, "selected");
-						u.ac(this.scene._all_days, "selected");
-						this.scene._selected_day = "";
+						u.ac(this.scene.all_days, "selected");
+						this.scene.selected_day = "";
 
 					} 
 					// selection
@@ -239,17 +235,17 @@ Util.Objects["events"] = new function() {
 
 						// reset all days
 						var i, day;
-						for(i = 0; day = this.scene._days[i]; i++) {
+						for(i = 0; day = this.scene.days[i]; i++) {
 							u.rc(day, "selected");
 						}
 
 						// "alle dage" selected
-						if(this == this.scene._all_days) {
-							this.scene._selected_day = "";
+						if(this == this.scene.all_days) {
+							this.scene.selected_day = "";
 						}
 						// single day selected
 						else {
-							this.scene._selected_day = this.innerHTML.toLowerCase();
+							this.scene.selected_day = this.day_string;
 						}
 
 						u.ac(this, "selected");
@@ -257,7 +253,7 @@ Util.Objects["events"] = new function() {
 					}
 
 					// perform filtering
-					this.scene._filter();
+					this.scene.filterEvents();
 				}
 				u.ce(day)
 
@@ -275,17 +271,19 @@ Util.Objects["events"] = new function() {
 			for(i = 0; tag = this.tags[i]; i++) {
 
 				tag.scene = this;
+				tag.tag_string = tag.innerHTML;
 
 				// add text scrambler
-				u.linkScrambler(tag);
-
+				if(u.e.event_pref == "mouse") {
+					u.linkScrambler(tag);
+				}
 
 				tag.clicked = function() {
 
 					// reset the search field
-					if(this.scene._search_input) {
-						this.scene._search_input.value = this.scene._search_input._default;
-						this.scene._selected_search = "";
+					if(this.scene.input_search) {
+						this.scene.input_search.value = this.scene.input_search.default_value;
+						this.scene.selected_search = "";
 					}
 
 
@@ -302,7 +300,7 @@ Util.Objects["events"] = new function() {
 						u.ac(this.scene.all_tags, "selected")
 
 						// empty tag scope
-						this.scene._selected_tags = [];
+						this.scene.selected_tags = [];
 
 					} 
 					// selected tag clicked
@@ -312,11 +310,11 @@ Util.Objects["events"] = new function() {
 						u.rc(this, "selected");
 
 						// remove tag from tag scope
-						this.scene._selected_tags.splice(this.scene._selected_tags.indexOf(this.innerHTML), 1);
+						this.scene.selected_tags.splice(this.scene.selected_tags.indexOf(this.tag_string), 1);
 
 						// no more node selected? highlight ALL again
-						if(this.scene._selected_tags.length == 0) {
-							u.ac(this.scene._all_tags, "selected");
+						if(this.scene.selected_tags.length == 0) {
+							u.ac(this.scene.all_tags, "selected");
 						}
 
 					}
@@ -324,17 +322,17 @@ Util.Objects["events"] = new function() {
 					else {
 
 						// unselect "all"-tag
-						u.rc(this.scene._all_tags, "selected")
+						u.rc(this.scene.all_tags, "selected")
 
 						// select this tag
 						u.ac(this, "selected");
 
 						// add tag to tag scope
-						this.scene._selected_tags.push(this.innerHTML)
+						this.scene.selected_tags.push(this.tag_string)
 					}
 
 					// perform filtering
-					this.scene._filter();
+					this.scene.filterEvents();
 
 				}
 				u.ce(tag)
@@ -345,42 +343,42 @@ Util.Objects["events"] = new function() {
 		// initialize search
 		scene.initSearch = function() {
 
-			this._search = u.qs("form.search", this);
-			this._search_input = u.qs("input", this._search);
-			this._search_input._default = "Skriv her";
-			this._search_input.scene = this;
+			this.form_search = u.qs("form.search", this);
+			this.input_search = u.qs("input", this.form_search);
+			this.input_search.default_value = "Skriv her";
+			this.input_search.scene = this;
 
 			// setting default value
-			this._search_input.value = this._search_input._default;
+			this.input_search.value = this.input_search.default_value;
 
 			// remove default value
-			this._search_input.focused = function() {
+			this.input_search.focused = function() {
 
-				if(this.value == this._default) {
+				if(this.value == this.default_value) {
 					this.value = "";
 				} 
 			}
 
 			// restore default value if no custom value is present
-			this._search_input.blurred = function() {
+			this.input_search.blurred = function() {
 
 				if(this.value == "") {
-					this.value = this._default;
+					this.value = this.default_value;
 				} 
 			}
 
 			// perform search
-			this._search_input.keySearch = function() {
+			this.input_search.keySearch = function() {
 
 				// update seach-string
-				this.scene._selected_search = this.value.toLowerCase();
+				this.scene.selected_search = this.value.toLowerCase();
 
 				// perform filtering
-				this.scene._filter();
+				this.scene.filterEvents();
 			}
 
 			// listen for key-up
-			this._search_input.keyUp = function(event) {
+			this.input_search.keyUp = function(event) {
 
 				u.t.resetTimer(this.t_search)
 
@@ -388,113 +386,119 @@ Util.Objects["events"] = new function() {
 				this.t_search = u.t.setTimer(this, this.keySearch, 300);
 			}
 
+			// listen for key-down (kill enter)
+			this.input_search.keyDown = function(event) {
+				if(event.keyCode == 13) {
+					u.e.kill(event);
+				}
+			}
+
 			// add event listeners
-			u.e.addEvent(this._search_input, "focus", this._search_input.focused);
-			u.e.addEvent(this._search_input, "blur", this._search_input.blurred);
-			u.e.addEvent(this._search_input, "keyup", this._search_input.keyUp);
+			u.e.addEvent(this.input_search, "focus", this.input_search.focused);
+			u.e.addEvent(this.input_search, "blur", this.input_search.blurred);
+			u.e.addEvent(this.input_search, "keyup", this.input_search.keyUp);
+			u.e.addEvent(this.input_search, "keydown", this.input_search.keyDown);
 		}
 
 		// initialize filter panel
 		scene.initFilters = function() {
 
 			// open close advanced search
-			this._tag_filter = u.qs(".filter", this);
-			this._tag_filter.scene = this;
+			this.filter = u.qs(".filter", this);
+			this.filter.scene = this;
 
-			this._tag_filter._title = u.qs("h2", this._tag_filter);
-			this._tag_filter._title.innerHTML = "Søg";
-			this._tag_filter._title.scene = this;
+			this.filter.h2 = u.qs("h2", this.filter);
+			this.filter.h2.filter = this.filter;
+
+			this.filter.tag_list = u.qs("ul.tag_list", this.filter);
+
 
 			// add scramble for title
-			this._tag_filter._title.fixed_width = true;
-			u.linkScrambler(this._tag_filter._title);
+			if(u.e.event_pref == "mouse") {
+				this.filter.h2.fixed_width = true;
+				u.linkScrambler(this.filter.h2);
+			}
 
 			// get initial height
-			this._tag_filter._height = this._tag_filter.offsetHeight;
+			this.filter.org_height = this.filter.offsetHeight;
 
 			// set initial width and height
-			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
+			u.ass(this.filter, {"height" : "32px", "width" : "100px"});
+			u.as(this.filter.tag_list, "display", "none");
+			u.as(this.form_search, "display", "none");
 
 
-			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
-			this._tag_filter._search = u.qs(".search", this._tag_filter);
+			// open/close filter
+			this.filter.h2.clicked = function() {
 
-			u.as(this._tag_filter._tag_list, "display", "none");
-			u.as(this._tag_filter._search, "display", "none");
-
-
-			this._tag_filter.open = false;
-
-			this._tag_filter._title.clicked = function() {
-
-				this.unscramble();
+				if(typeof(this.unscramble) == "function") {
+					this.unscramble();
+				}
 
 				// open filter
-				if(!this.scene._tag_filter.open) {
+				if(!this.filter.open) {
 
-					this.scene._tag_filter.transitioned = function() {
+					this.filter.transitioned = function() {
 
-						u.as(this.scene._tag_filter._tag_list, "display", "block");
-						u.as(this.scene._tag_filter._search, "display", "block");
+						u.as(this.tag_list, "display", "block");
+						u.as(this.scene.form_search, "display", "block");
 
-						u.a.transition(this.scene._tag_filter._tag_list, "all 0.5s ease-out");
-						u.as(this.scene._tag_filter._tag_list, "opacity", 1);
+						u.a.transition(this.tag_list, "all 0.5s ease-out");
+						u.as(this.tag_list, "opacity", 1);
 
-						u.a.transition(this.scene._tag_filter._search, "all 0.5s ease-out");
-						u.as(this.scene._tag_filter._search, "opacity", 1);
+						u.a.transition(this.scene.form_search, "all 0.5s ease-out");
+						u.as(this.scene.form_search, "opacity", 1);
 
-						this.scene._tag_filter._title.innerHTML = "Luk";
-						this.scene._tag_filter._title.default_text = this.scene._tag_filter._title.innerHTML;
-
+						this.h2.innerHTML = "Luk";
+						this.h2.scramble_text = this.h2.innerHTML;
 					}
 
-					u.ac(this.scene._tag_filter, "open");
-					u.a.transition(this.scene._tag_filter, "all 0.5s ease-out");
-					u.ass(this.scene._tag_filter, {"width" : "100%", "height" : this.scene._tag_filter._height + "px"});
+					u.ac(this.filter, "open");
+					u.a.transition(this.filter, "all 0.5s ease-out");
+					u.ass(this.filter, {"width" : "100%", "height" : this.filter.org_height + "px"});
 
-					this.scene._tag_filter.open = true;
+					this.filter.open = true;
 
 				}
 
 				// close filter
 				else {
 
-					this.scene._tag_filter._tag_list.transitioned = function() {
+					this.filter.transitioned = function() {
 
-						u.as(this.scene._tag_filter._tag_list, "display", "none");
-						u.as(this.scene._tag_filter._search, "display", "none");
+						u.as(this.tag_list, "display", "none");
+						u.as(this.scene.form_search, "display", "none");
 
-						this.scene._tag_filter._title.innerHTML = "Søg";
-						this.scene._tag_filter._title.default_text = this.scene._tag_filter._title.innerHTML;
-
+						this.h2.innerHTML = "Søg";
+						this.h2.scramble_text = this.h2.innerHTML;
 					}
 
-					u.rc(this.scene._tag_filter, "open");
+					u.rc(this.filter, "open");
 
-					u.a.transition(this.scene._tag_filter._tag_list, "all 0.3s ease-out");
-					u.as(this.scene._tag_filter._tag_list, "opacity", 0);
+					u.a.transition(this.filter.tag_list, "all 0.3s ease-out");
+					u.as(this.filter.tag_list, "opacity", 0);
 
-					u.a.transition(this.scene._tag_filter._search, "all 0.3s ease-out");
-					u.as(this.scene._tag_filter._search, "opacity", 0);
+					u.a.transition(this.filter.scene.form_search, "all 0.3s ease-out");
+					u.as(this.filter.scene.form_search, "opacity", 0);
 
-					u.a.transition(this.scene._tag_filter, "all 0.3s ease-out");
-					u.ass(this.scene._tag_filter, {"width" : "100px", "height" : "32px"});
+					u.a.transition(this.filter, "all 0.3s ease-out");
+					u.ass(this.filter, {"width" : "100px", "height" : "32px"});
 
-					this.scene._tag_filter.open = false;
+					this.filter.open = false;
 
 				}
 			}
 
-			u.ce(this._tag_filter._title);
+			u.ce(this.filter.h2);
 		}
 
 		// get scene ready
 		scene.ready = function() {
 
 			// global variables
-			this._selected_day = "";
-			this._selected_tags = [];
-			this._selected_search = "";
+			this.selected_day = "";
+			this.selected_tags = [];
+			this.selected_search = "";
 
 
 			// initializing events

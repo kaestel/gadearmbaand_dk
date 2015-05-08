@@ -2,7 +2,7 @@
 u.linkScrambler = function(link) {
 //	u.bug("linkScrambler:" + u.nodeId(link, true));
 
-	link.default_text = link.innerHTML;
+	link.scramble_text = link.innerHTML;
 	link.scrambled_count = 0;
 	link.randomizer = function() {
 //		u.bug("randomizer")
@@ -65,7 +65,7 @@ u.linkScrambler = function(link) {
 			this.t_scrambler = u.t.setTimer(this, this.scramble, 50);
 		}
 		else {
-			this.innerHTML = this.default_text;
+			this.innerHTML = this.scramble_text;
 		}
 
 	}
@@ -73,7 +73,7 @@ u.linkScrambler = function(link) {
 //		u.bug("unscramble")
 
 		u.t.resetTimer(this.t_scrambler);
-		this.innerHTML = this.default_text;
+		this.innerHTML = this.scramble_text;
 		if(!this.fixed_width) {
 			u.as(this, "width", "auto");
 		}
@@ -86,8 +86,8 @@ u.linkScrambler = function(link) {
 
 		if(!this.scrambled_count) {
 
-			this.default_text = this.innerHTML;
-			this.scrambled_sequence = this.default_text.split("");
+			this.scramble_text = this.innerHTML;
+			this.scrambled_sequence = this.scramble_text.split("");
 
 			if(!this.fixed_width) {
 				u.as(this, "width", u.actualWidth(this) + "px");

@@ -262,13 +262,15 @@ Util.Objects["page"] = new function() {
 				u.ce(page.bn_nav);
 				page.bn_nav.clicked = function() {
 
-					this.a.unscramble();
+					if(this.a && typeof(this.a.unscramble) == "function") {
+						this.a.unscramble();
+					}
 
 					// close navigation
 					if(u.hc(page.nN, "open")) {
 
 						this.a.innerHTML = "Menu";
-						this.a.default_text = this.a.innerHTML;
+						this.a.scramble_text = this.a.innerHTML;
 						u.rc(this, "open");
 
 						page.nN.transitioned = function() {
@@ -283,7 +285,7 @@ Util.Objects["page"] = new function() {
 						u.ac(page.nN, "open");
 
 						this.a.innerHTML = "Luk";
-						this.a.default_text = this.a.innerHTML;
+						this.a.scramble_text = this.a.innerHTML;
 						u.ac(this, "open");
 
 						u.a.transition(page.nN, "all 0.3s linear");

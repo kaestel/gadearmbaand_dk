@@ -5815,7 +5815,7 @@ u.easings = new function() {
 
 /*u-extensions.js*/
 u.linkScrambler = function(link) {
-	link.default_text = link.innerHTML;
+	link.scramble_text = link.innerHTML;
 	link.scrambled_count = 0;
 	link.randomizer = function() {
 		var indexes = [];
@@ -5849,12 +5849,12 @@ u.linkScrambler = function(link) {
 			this.t_scrambler = u.t.setTimer(this, this.scramble, 50);
 		}
 		else {
-			this.innerHTML = this.default_text;
+			this.innerHTML = this.scramble_text;
 		}
 	}
 	link.unscramble = function() {
 		u.t.resetTimer(this.t_scrambler);
-		this.innerHTML = this.default_text;
+		this.innerHTML = this.scramble_text;
 		if(!this.fixed_width) {
 			u.as(this, "width", "auto");
 		}
@@ -5863,8 +5863,8 @@ u.linkScrambler = function(link) {
 	link.mousedover = function() {
 		u.t.resetTimer(this.t_unscrambler);
 		if(!this.scrambled_count) {
-			this.default_text = this.innerHTML;
-			this.scrambled_sequence = this.default_text.split("");
+			this.scramble_text = this.innerHTML;
+			this.scrambled_sequence = this.scramble_text.split("");
 			if(!this.fixed_width) {
 				u.as(this, "width", u.actualWidth(this) + "px");
 			}
@@ -6083,7 +6083,6 @@ Util.Objects["page"] = new function() {
 						u.ac(page.nN, "open");
 						this.a.innerHTML = "Luk";
 						u.ac(this, "open");
-						u.bug("in:" + window.innerHeight + ", " + page.browser_h);
 						u.a.transition(page.nN, "all 0.3s ease-out");
 						u.ass(page.nN, {"width":page.browser_w+"px", "height":window.innerHeight+"px", "top": 0, "right": 0});
 					}
@@ -6374,15 +6373,16 @@ Util.Objects["events"] = new function() {
 		}
 		scene.scrolled = function() {
 		}
-		scene._filter = function() {
+		scene.filterEvents = function() {
 			if(this.selected_event) {
 				u.rc(this.selected_event, "selected");
 				this.selected_event = false;
 			}
 			var i, node;
 			for(i = 0; node = this.events[i]; i++) {
-				if(this.checkDays(node) && this.checkTags(node) && this.checkSearch(node)) {
+				if(this.checkDays(node)) {
 					if(!node._shown) {
+						node.transitioned = null;
 						u.a.transition(node, "all 0.3s ease-out");
 						u.as(node, "display", "block");
 						u.as(node, "height", this.event_height + "px");
@@ -6402,27 +6402,7 @@ Util.Objects["events"] = new function() {
 			}
 		}
 		scene.checkDays = function(event_node) {
-			if(!this._selected_day || this._selected_day == event_node._day) {
-				return true;
-			}
-			return false;
-		}
-		scene.checkTags = function(event_node) {
-			if(this._selected_tags.length == 0) {
-				return true;
-			} 
-			else {
-				var i, tag;
-				for(i = 0; tag = this._selected_tags[i]; i++) {
-					if(event_node.tags_array.indexOf(tag) == -1) {
-						return false;
-					}
-				}
-			}
-			return true;	
-		}
-		scene.checkSearch = function(event_node) {
-			if(!this._selected_search || event_node._host._string.match(this._selected_search) || event_node._name._string.match(this._selected_search) || event_node._location._string.match(this._selected_search)) {
+			if(!this.selected_day || this.selected_day == event_node._day) {
 				return true;
 			}
 			return false;
@@ -6453,13 +6433,14 @@ Util.Objects["events"] = new function() {
 				node._location_p = u.qs(".location", node);
 				node._location = u.qs(".location a", node);
 				node._text = u.qs(".text", node);
+				node._facebook = u.qs(".text .action a", node);
 				u.ae(node._text, node._tags_ul);
 				u.ie(node._text, node._location_p);
-				node._facebook = u.qs(".text .action a", node);
-				node._facebook_action = u.qs(".text .action", node);
-				u.e.click(node._facebook_action);
-				u.e.click(node._location_p);
-				node._location_p.clicked = node._facebook_action.clicked = function(event) {
+				u.ce(node._facebook);
+				u.ce(node._location);
+				node._location.clicked = node._facebook.clicked = function(event) {
+					window.open(this.url);
+					this.blur();
 					u.e.kill(event);
 				}
 				node._host._string = node._host.innerHTML.toLowerCase()
@@ -6492,158 +6473,39 @@ Util.Objects["events"] = new function() {
 			}
 		}
 		scene.initDays = function() {
-			this._days_list = u.qs("ul.days", this);
-			this._all_days = u.ie(this._days_list, "li", {"class":"all selected","html":"Alle dage"});
-			this._days = u.qsa("li", this._days_list);
+			this.days_list = u.qs("ul.days", this);
+			this.all_days = u.ie(this.days_list, "li", {"class":"all selected","html":"Alle dage"});
+			this.days = u.qsa("li", this.days_list);
 			var i, day;
-			for(i = 0; day = this._days[i]; i++) {
+			for(i = 0; day = this.days[i]; i++) {
 				day.scene = this;
+				day.day_string = day.innerHTML.toLowerCase();
 				day.clicked = function() {
-					if(u.hc(this, "selected") && this != this.scene._all_days) {
+					if(u.hc(this, "selected") && this != this.scene.all_days) {
 						u.rc(this, "selected");
-						u.ac(this.scene._all_days, "selected");
-						this.scene._selected_day = "";
+						u.ac(this.scene.all_days, "selected");
+						this.scene.selected_day = "";
 					} 
 					else {
 						var i, day;
-						for(i = 0; day = this.scene._days[i]; i++) {
+						for(i = 0; day = this.scene.days[i]; i++) {
 							u.rc(day, "selected");
 						}
-						if(this == this.scene._all_days) {
-							this.scene._selected_day = "";
+						if(this == this.scene.all_days) {
+							this.scene.selected_day = "";
 						}
 						else {
-							this.scene._selected_day = this.innerHTML.toLowerCase();
+							this.scene.selected_day = this.day_string;
 						}
 						u.ac(this, "selected");
 					}
-					this.scene._filter();
+					this.scene.filterEvents();
 				}
 				u.ce(day)
 			}
 		}
-		scene.initTags = function() {
-			this.tags_list = u.qs(".tag_list", this);
-			this.all_tags = u.ie(this.tags_list, "li", {"class":"all selected","html":"Alle"});
-			this.tags = u.qsa("li", this.tags_list);
-			var i, tag;
-			for(i = 0; tag = this.tags[i]; i++) {
-				tag.scene = this;
-				u.linkScrambler(tag);
-				tag.clicked = function() {
-					if(this.scene._search_input) {
-						this.scene._search_input.value = this.scene._search_input._default;
-						this.scene._selected_search = "";
-					}
-					if(u.hc(this, "all")) {
-						var i, tag;
-						for(i = 0; tag = this.scene.tags[i]; i++) {
-							u.rc(tag, "selected");
-						}
-						u.ac(this.scene.all_tags, "selected")
-						this.scene._selected_tags = [];
-					} 
-					else if(u.hc(this, "selected")){
-						u.rc(this, "selected");
-						this.scene._selected_tags.splice(this.scene._selected_tags.indexOf(this.innerHTML), 1);
-						if(this.scene._selected_tags.length == 0) {
-							u.ac(this.scene._all_tags, "selected");
-						}
-					}
-					else {
-						u.rc(this.scene._all_tags, "selected")
-						u.ac(this, "selected");
-						this.scene._selected_tags.push(this.innerHTML)
-					}
-					this.scene._filter();
-				}
-				u.ce(tag)
-			}
-		}
-		scene.initSearch = function() {
-			this._search = u.qs("form.search", this);
-			this._search_input = u.qs("input", this._search);
-			this._search_input._default = "Skriv her";
-			this._search_input.scene = this;
-			this._search_input.value = this._search_input._default;
-			this._search_input.focused = function() {
-				if(this.value == this._default) {
-					this.value = "";
-				} 
-			}
-			this._search_input.blurred = function() {
-				if(this.value == "") {
-					this.value = this._default;
-				} 
-			}
-			this._search_input.keySearch = function() {
-				this.scene._selected_search = this.value.toLowerCase();
-				this.scene._filter();
-			}
-			this._search_input.keyUp = function(event) {
-				u.t.resetTimer(this.t_search)
-				this.t_search = u.t.setTimer(this, this.keySearch, 300);
-			}
-			u.e.addEvent(this._search_input, "focus", this._search_input.focused);
-			u.e.addEvent(this._search_input, "blur", this._search_input.blurred);
-			u.e.addEvent(this._search_input, "keyup", this._search_input.keyUp);
-		}
-		scene.initFilters = function() {
-			this._tag_filter = u.qs(".filter", this);
-			this._tag_filter.scene = this;
-			this._tag_filter._title = u.qs("h2", this._tag_filter);
-			this._tag_filter._title.innerHTML = "Søg";
-			this._tag_filter._title.scene = this;
-			this._tag_filter._title.fixed_width = true;
-			u.linkScrambler(this._tag_filter._title);
-			this._tag_filter._height = this._tag_filter.offsetHeight;
-			u.ass(this._tag_filter, {"height" : "32px", "width" : "100px"});
-			this._tag_filter._tag_list = u.qs("ul.tag_list", this._tag_filter);
-			this._tag_filter._search = u.qs(".search", this._tag_filter);
-			u.as(this._tag_filter._tag_list, "display", "none");
-			u.as(this._tag_filter._search, "display", "none");
-			this._tag_filter.open = false;
-			this._tag_filter._title.clicked = function() {
-				this.unscramble();
-				if(!this.scene._tag_filter.open) {
-					this.scene._tag_filter.transitioned = function() {
-						u.as(this.scene._tag_filter._tag_list, "display", "block");
-						u.as(this.scene._tag_filter._search, "display", "block");
-						u.a.transition(this.scene._tag_filter._tag_list, "all 0.5s ease-out");
-						u.as(this.scene._tag_filter._tag_list, "opacity", 1);
-						u.a.transition(this.scene._tag_filter._search, "all 0.5s ease-out");
-						u.as(this.scene._tag_filter._search, "opacity", 1);
-						this.scene._tag_filter._title.innerHTML = "Luk";
-						this.scene._tag_filter._title.default_text = this.scene._tag_filter._title.innerHTML;
-					}
-					u.ac(this.scene._tag_filter, "open");
-					u.a.transition(this.scene._tag_filter, "all 0.5s ease-out");
-					u.ass(this.scene._tag_filter, {"width" : "100%", "height" : this.scene._tag_filter._height + "px"});
-					this.scene._tag_filter.open = true;
-				}
-				else {
-					this.scene._tag_filter._tag_list.transitioned = function() {
-						u.as(this.scene._tag_filter._tag_list, "display", "none");
-						u.as(this.scene._tag_filter._search, "display", "none");
-						this.scene._tag_filter._title.innerHTML = "Søg";
-						this.scene._tag_filter._title.default_text = this.scene._tag_filter._title.innerHTML;
-					}
-					u.rc(this.scene._tag_filter, "open");
-					u.a.transition(this.scene._tag_filter._tag_list, "all 0.3s ease-out");
-					u.as(this.scene._tag_filter._tag_list, "opacity", 0);
-					u.a.transition(this.scene._tag_filter._search, "all 0.3s ease-out");
-					u.as(this.scene._tag_filter._search, "opacity", 0);
-					u.a.transition(this.scene._tag_filter, "all 0.3s ease-out");
-					u.ass(this.scene._tag_filter, {"width" : "100px", "height" : "32px"});
-					this.scene._tag_filter.open = false;
-				}
-			}
-			u.ce(this._tag_filter._title);
-		}
 		scene.ready = function() {
-			this._selected_day = "";
-			this._selected_tags = [];
-			this._selected_search = "";
+			this.selected_day = "";
 			this.initEvents();
 			this.initDays();
 			this.h1 = u.qs("h1", this);
