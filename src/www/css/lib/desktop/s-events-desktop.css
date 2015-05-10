@@ -137,8 +137,8 @@
 
 .scene.event div.gmapInfo .text {padding-top: 10px; padding-left: 10px;}
 .scene.event div.gmapInfo .text p {color: #000000;}
-.scene.event div.gmapInfo .text ul.action {margin: 20px 0 50px;}
-.scene.event div.gmapInfo .text ul.action li {padding: 4px 20px 6px; border: 2px solid #70B857;}
+.scene.event div.gmapInfo .text ul.action {margin: 20px 0 10px;}
+.scene.event div.gmapInfo .text ul.action li {padding: 4px 20px 6px; border: 2px solid #70B857; display: inline-block;}
 .scene.event div.gmapInfo .text ul.action li a {color: #000000; font-weight: 800; white-space: nowrap;}
 
 .scene.event div.gmapInfo ul.action li:hover {background-color: #70B857;}

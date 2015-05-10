@@ -5122,8 +5122,7 @@ if(u.a.vendor() == "ms") {
 /*ga.js*/
 u.ga_account = 'UA-62479513-1';
 u.ga_domain = 'gadearmbaand.dk';
-u.gapi_key = '';
-
+u.gapi_key = 'AIzaSyDDcI1nS5XiY3pfMQnlGVU4Ev2aAQZ8Wog';
 
 /*u-googleanalytics.js*/
 if(u.ga_account) {
@@ -5358,13 +5357,21 @@ Util.videoPlayer = function(_options) {
 		}
 		player.volume = function(value) {
 			this.video.volume = value;
+			if(value === 0) {
+				u.ac(this, "muted");
+			}
+			else {
+				u.rc(this, "muted");
+			}
 		}
 		player.toggleVolume = function() {
 			if(this.video.volume) {
 				this.video.volume = 0;
+				u.ac(this, "muted");
 			}
 			else {
 				this.video.volume = 1;
+				u.rc(this, "muted");
 			}
 		}
 		player.setup = function() {
@@ -5596,6 +5603,7 @@ Util.videoPlayer = function(_options) {
 					this.controls.volume.player = this;
 					u.e.click(this.controls.volume);
 					this.controls.volume.clicked = function(event) {
+						u.bug("volume toggle")
 						this.player.toggleVolume();
 					}
 				}
@@ -6196,6 +6204,132 @@ u.easings = new function() {
 		return Math.pow((progress*this.duration) / this.duration, 3);
 	}
 }
+
+/*beta-u-googlemaps.js*/
+u.googlemaps = new function() {
+	this.api_loaded = false;
+	this.map = function(map, center, _options) {
+		map._maps_streetview = false;
+		map._maps_zoom = 10;
+		map._maps_scrollwheel = true;
+		map._maps_zoom = 10;
+		map._center_latitude = center[0];
+		map._center_longitude = center[1];
+		if(typeof(_options) == "object") {
+			var _argument;
+			for(_argument in _options) {
+				switch(_argument) {
+					case "zoom"           : map._maps_zoom               = _options[_argument]; break;
+					case "scrollwheel"    : map._maps_scrollwheel        = _options[_argument]; break;
+					case "streetview"     : map._maps_streetview         = _options[_argument]; break;
+				}
+			}
+		}
+		var map_key = u.randomString(8);
+		(window[map_key] = function() {
+			var mapOptions = {center: new google.maps.LatLng(center[0], center[1]), zoom: map._maps_zoom, scrollwheel: map._maps_scrollwheel, streetViewControl: map._maps_streetview, zoomControlOptions: {position: google.maps.ControlPosition.LEFT_TOP}};
+			map.g_map = new google.maps.Map(map, mapOptions);
+			if(typeof(map.APIloaded) == "function") {
+				map.APIloaded();
+			}
+			google.maps.event.addListener(map.g_map, 'tilesloaded', function() {
+				if(typeof(map.loaded) == "function") {
+					map.loaded();
+				}
+			});
+		});
+		if(!this.api_loaded) {
+			u.ae(document.head, "script", {"src":"https://maps.googleapis.com/maps/api/js?callback="+map_key+(u.gapi_key ? "&key="+u.gapi_key : "")});
+			this.api_loaded = true;
+		}
+		else {
+			window[map_key]();
+		}
+	}
+	this.addMarker = function(map, coords, _options) {
+		var _info = false;
+		if(typeof(_options) == "object") {
+			var _argument;
+			for(_argument in _options) {
+				switch(_argument) {
+					case "info"           : _info               = _options[_argument]; break;
+				}
+			}
+		}
+		var marker = new google.maps.Marker({position: new google.maps.LatLng(coords[0], coords[1]), animation:google.maps.Animation.DROP, InfoWindow: {content:"hest"}});
+		marker.setMap(map);
+		marker.g_map = map;
+		google.maps.event.addListener(marker, 'click', function() {
+			if(typeof(this.clicked) == "function") {
+				this.clicked();
+			}
+		});
+		google.maps.event.addListener(marker, 'mouseover', function() {
+			if(typeof(this.entered) == "function") {
+				this.entered();
+			}
+		});
+		google.maps.event.addListener(marker, 'mouseout', function() {
+			if(typeof(this.exited) == "function") {
+				this.exited();
+			}
+		});
+		return marker;
+	}
+	this.removeMarker = function(map, marker, _options) {
+		marker._animation = true;
+		if(typeof(_options) == "object") {
+			var _argument;
+			for(_argument in _options) {
+				switch(_argument) {
+					case "animation"      : marker._animation            = _options[_argument]; break;
+				}
+			}
+		}
+		if(marker._animation) {
+			var key = u.randomString(8);
+			marker.pick_step = 0;
+			marker.c_zoom = (1 << map.getZoom());
+			marker.c_projection = map.getProjection();
+			marker.c_exit = map.getBounds().getNorthEast().lat();
+			marker._pickUp = function() {
+				var new_position = this.c_projection.fromLatLngToPoint(this.getPosition());
+				new_position.y -= (20*this.pick_step) / this.c_zoom; 
+				new_position = this.c_projection.fromPointToLatLng(new_position);
+				this.setPosition(new_position);
+				if(this.c_exit < new_position.lat()) {
+					this.setMap(null);
+					if(typeof(this.removed) == "function") {
+						this.removed();
+					}
+				}
+				else{
+					this.pick_step++;
+					u.t.setTimer(this, this._pickUp, 20);
+				}
+			}
+			marker._pickUp();
+		}
+		else {
+			marker.setMap(null);
+		}
+	}
+	this.infoWindow = function(map) {
+		map.g_infowindow = new google.maps.InfoWindow({"maxWidth":250});
+	}
+	this.showInfoWindow = function(map, marker, content) {
+		map.g_infowindow.setContent(content);
+		map.g_infowindow.open(map, marker);
+	}
+	this.hideInfoWindow = function(map) {
+		map.g_infowindow.close();
+	}
+	this.zoom = function() {
+	}
+	this.center = function() {
+	}
+}
+
 
 /*u-extensions.js*/
 u.linkScrambler = function(link) {
@@ -6950,6 +7084,9 @@ Util.Objects["front"] = new function() {
 								this.video_player.img = this.img;
 								u.ae(this, this.video_player);
 								this.video_player.playing = function() {
+									this.img.transitioned = function() {
+										u.as(this, "display", "none");
+									}
 									u.a.transition(this.img, "all 0.3s linear");
 									u.a.setOpacity(this.img, 0);
 								}
@@ -7369,8 +7506,8 @@ Util.Objects["events"] = new function() {
 		scene.initMap = function() {
 			this.view_options = u.ie(this.div_events, "ul", {"class":"view_options"});
 			this.insertBefore(this.view_options, this.div_events);
-			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"map"});
-			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"list"});
+			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"Kort"});
+			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"Liste"});
 			this.view_map.scene = this;
 			this.view_list.scene = this;
 			this.current_view = "list";
@@ -7465,7 +7602,7 @@ Util.Objects["events"] = new function() {
 		scene.showDelayed = function() {
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
-				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + (i*50));
+				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
 			}
 		}
 		scene._showDelayed = function() {
@@ -7539,8 +7676,14 @@ Util.Objects["events"] = new function() {
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.a.transition(this.div_filters, "all 0.6s ease-in-out");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
-			u.a.transition(this.div_events, "all 0.6s ease-in-out");
-			u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			if(this.current_view == "list") {
+				u.a.transition(this.div_events, "all 0.6s ease-in-out");
+				u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
+			else {
+				u.a.transition(this.map, "all 0.6s ease-in-out");
+				u.as(this.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
 		}
 		scene.ready();
 	}

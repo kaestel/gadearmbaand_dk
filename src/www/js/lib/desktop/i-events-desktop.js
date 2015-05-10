@@ -152,8 +152,6 @@ Util.Objects["events"] = new function() {
 				node._infowindow_content = document.createElement("div");
 				u.ac(node._infowindow_content, "gmapInfo");
 				u.ae(node._infowindow_content, node._name.cloneNode(true));
-//				u.ae(node._infowindow_content, node._host.cloneNode(true));
-//				u.ae(node._infowindow_content, node._location_p.cloneNode(true));
 				u.ae(node._infowindow_content, node._text.cloneNode(true));
 
 
@@ -512,8 +510,8 @@ Util.Objects["events"] = new function() {
 			this.view_options = u.ie(this.div_events, "ul", {"class":"view_options"});
 			this.insertBefore(this.view_options, this.div_events);
 
-			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"map"});
-			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"list"});
+			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"Kort"});
+			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"Liste"});
 
 			this.view_map.scene = this;
 			this.view_list.scene = this;
@@ -668,11 +666,11 @@ Util.Objects["events"] = new function() {
 
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
-				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + (i*50));
+				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
 			}
-			
 
 		}
+
 		// mapped to node
 		scene._showDelayed = function() {
 			this.marker = u.googlemaps.addMarker(this.scene.map.g_map, [this._latitude, this._longitude]);
@@ -683,10 +681,6 @@ Util.Objects["events"] = new function() {
 				u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content);
 
 			}
-			// this.marker.exited = function() {
-			//
-			//
-			// }
 		}
 
 		// mapped to node
@@ -797,8 +791,14 @@ Util.Objects["events"] = new function() {
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.a.transition(this.div_filters, "all 0.6s ease-in-out");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
-			u.a.transition(this.div_events, "all 0.6s ease-in-out");
-			u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			if(this.current_view == "list") {
+				u.a.transition(this.div_events, "all 0.6s ease-in-out");
+				u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
+			else {
+				u.a.transition(this.map, "all 0.6s ease-in-out");
+				u.as(this.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
 
 		}
 

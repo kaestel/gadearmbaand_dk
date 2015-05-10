@@ -4738,8 +4738,7 @@ Util.videoPlayer = function(_options) {
 /*ga.js*/
 u.ga_account = 'UA-62479513-1';
 u.ga_domain = 'gadearmbaand.dk';
-u.gapi_key = '';
-
+u.gapi_key = 'AIzaSyDDcI1nS5XiY3pfMQnlGVU4Ev2aAQZ8Wog';
 
 /*u-googleanalytics.js*/
 if(u.ga_account) {
@@ -4974,13 +4973,21 @@ Util.videoPlayer = function(_options) {
 		}
 		player.volume = function(value) {
 			this.video.volume = value;
+			if(value === 0) {
+				u.ac(this, "muted");
+			}
+			else {
+				u.rc(this, "muted");
+			}
 		}
 		player.toggleVolume = function() {
 			if(this.video.volume) {
 				this.video.volume = 0;
+				u.ac(this, "muted");
 			}
 			else {
 				this.video.volume = 1;
+				u.rc(this, "muted");
 			}
 		}
 		player.setup = function() {
@@ -5212,6 +5219,7 @@ Util.videoPlayer = function(_options) {
 					this.controls.volume.player = this;
 					u.e.click(this.controls.volume);
 					this.controls.volume.clicked = function(event) {
+						u.bug("volume toggle")
 						this.player.toggleVolume();
 					}
 				}
@@ -5815,6 +5823,7 @@ u.easings = new function() {
 
 /*beta-u-googlemaps.js*/
 u.googlemaps = new function() {
+	this.api_loaded = false;
 	this.map = function(map, center, _options) {
 		map._maps_streetview = false;
 		map._maps_zoom = 10;
@@ -5845,7 +5854,13 @@ u.googlemaps = new function() {
 				}
 			});
 		});
-		u.ae(document.head, "script", {"src":"https://maps.googleapis.com/maps/api/js?callback="+map_key});
+		if(!this.api_loaded) {
+			u.ae(document.head, "script", {"src":"https://maps.googleapis.com/maps/api/js?callback="+map_key+(u.gapi_key ? "&key="+u.gapi_key : "")});
+			this.api_loaded = true;
+		}
+		else {
+			window[map_key]();
+		}
 	}
 	this.addMarker = function(map, coords, _options) {
 		var _info = false;
@@ -5916,7 +5931,7 @@ u.googlemaps = new function() {
 		}
 	}
 	this.infoWindow = function(map) {
-		map.g_infowindow = new google.maps.InfoWindow();		
+		map.g_infowindow = new google.maps.InfoWindow({"maxWidth":250});
 	}
 	this.showInfoWindow = function(map, marker, content) {
 		map.g_infowindow.setContent(content);
@@ -6685,6 +6700,9 @@ Util.Objects["front"] = new function() {
 								this.video_player.img = this.img;
 								u.ae(this, this.video_player);
 								this.video_player.playing = function() {
+									this.img.transitioned = function() {
+										u.as(this, "display", "none");
+									}
 									u.a.transition(this.img, "all 0.3s linear");
 									u.a.setOpacity(this.img, 0);
 								}
@@ -7104,8 +7122,8 @@ Util.Objects["events"] = new function() {
 		scene.initMap = function() {
 			this.view_options = u.ie(this.div_events, "ul", {"class":"view_options"});
 			this.insertBefore(this.view_options, this.div_events);
-			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"map"});
-			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"list"});
+			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"Kort"});
+			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"Liste"});
 			this.view_map.scene = this;
 			this.view_list.scene = this;
 			this.current_view = "list";
@@ -7200,7 +7218,7 @@ Util.Objects["events"] = new function() {
 		scene.showDelayed = function() {
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
-				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + (i*50));
+				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
 			}
 		}
 		scene._showDelayed = function() {
@@ -7274,8 +7292,14 @@ Util.Objects["events"] = new function() {
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.a.transition(this.div_filters, "all 0.6s ease-in-out");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
-			u.a.transition(this.div_events, "all 0.6s ease-in-out");
-			u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			if(this.current_view == "list") {
+				u.a.transition(this.div_events, "all 0.6s ease-in-out");
+				u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
+			else {
+				u.a.transition(this.map, "all 0.6s ease-in-out");
+				u.as(this.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+			}
 		}
 		scene.ready();
 	}
