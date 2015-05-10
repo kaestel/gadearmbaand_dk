@@ -10,6 +10,8 @@
 .scene.event .events ul.items li.item:active p.location {color: #FFFFFF;}
 .scene.event .events ul.items li.item:active ul.tags li {color: #FFFFFF;}
 
+.scene.event .events ul.items li.item .description ul.action li:active {background-color: #70B857;}
+.scene.event .events ul.items li.item .description ul.action li:active a {color: #FFFFFF;}
 
 #header .servicenavigation li.navigation:active a,
 #header .servicenavigation li.navigation.open:active a {color: #FFFFFF;}

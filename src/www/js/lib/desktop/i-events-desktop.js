@@ -26,6 +26,9 @@ Util.Objects["events"] = new function() {
 		// perform filtering (days, tags, search)
 		scene.filterEvents = function() {
 
+			this._show_markers = [];
+			this._hide_marker_count = 0;
+
 			// reset selected event
 			if(this.selected_event) {
 				u.rc(this.selected_event, "selected");
@@ -37,31 +40,17 @@ Util.Objects["events"] = new function() {
 			for(i = 0; node = this.events[i]; i++) {
 
 				if(this.checkDays(node) && this.checkTags(node) && this.checkSearch(node)) {
-					
-					if(!node._shown) {
-						node.transitioned = null;
-						u.a.transition(node, "all 0.3s ease-out");
-						u.as(node, "display", "block");
-						u.as(node, "height", this.event_height + "px");
-						
-						node._shown = true;
-					}
 
+					this.showEvent(node);
 				} 
 				else {
 
-					if(node._shown) {
-
-						node.transitioned = function() {
-							u.as(this, "display", "none");
-						}
-						u.a.transition(node, "all 0.3s ease-out");
-						u.as(node, "height", "0px");
-
-						node._shown = false;
-					}
+					this.hideEvent(node);
 				}
 			}
+
+			// filtering is done - we have enough info to calculate marker animation
+			this.showDelayed();
 		}
 
 
@@ -123,6 +112,8 @@ Util.Objects["events"] = new function() {
 				node.scene = this;
 
 				node._tags = u.qsa("ul.tags li", node);
+				node._tags_ul = u.qs("ul.tags", node);
+				node._description = u.qs("div.description", node);
 				node._media = u.qs("div.media", node);
 				node._media._item_id = u.cv(node._media, "item_id")
 				node._media._format = u.cv(node._media, "format")
@@ -139,13 +130,31 @@ Util.Objects["events"] = new function() {
 				}
 
 				node._shown = true;
+				node._marker_shown = false;
+
 				node.org_height = node.offsetHeight;
 
 				node._day = u.cv(node, "day").toLowerCase();
 				node._name = u.qs(".name", node);
 				node._host = u.qs(".host", node);
 				node._location = u.qs(".location a", node);
+				node._location_p = u.qs(".location", node);
+
+				node._latitude = node._location.parentNode.getAttribute("data-latitude");
+				node._longitude = node._location.parentNode.getAttribute("data-longitude");
+
+				node._text = u.qs(".text", node);
+
 				node._facebook = u.qs(".text .action a", node);
+
+
+				// prepare content for map infoWindow
+				node._infowindow_content = document.createElement("div");
+				u.ac(node._infowindow_content, "gmapInfo");
+				u.ae(node._infowindow_content, node._name.cloneNode(true));
+//				u.ae(node._infowindow_content, node._host.cloneNode(true));
+//				u.ae(node._infowindow_content, node._location_p.cloneNode(true));
+				u.ae(node._infowindow_content, node._text.cloneNode(true));
 
 
 				if(u.e.event_pref == "mouse") {
@@ -164,6 +173,10 @@ Util.Objects["events"] = new function() {
 				node._host._string = node._host.innerHTML.toLowerCase()
 				node._name._string = node._name.innerHTML.toLowerCase()
 				node._location._string = node._location.innerHTML.toLowerCase()
+
+
+//				u.ae(node._infowindow_content, node._facebook.cloneNode(true));
+
 
 				node.clicked = function(event) {
 
@@ -492,6 +505,117 @@ Util.Objects["events"] = new function() {
 			u.ce(this.filter.h2);
 		}
 
+
+		// initialize map
+		scene.initMap = function() {
+
+			this.view_options = u.ie(this.div_events, "ul", {"class":"view_options"});
+			this.insertBefore(this.view_options, this.div_events);
+
+			this.view_map = u.ae(this.view_options, "li", {"class":"map", "html":"map"});
+			this.view_list = u.ae(this.view_options, "li", {"class":"list selected", "html":"list"});
+
+			this.view_map.scene = this;
+			this.view_list.scene = this;
+			this.current_view = "list";
+
+			u.e.click(this.view_map);
+			this.view_map.clicked = function() {
+
+				if(this.scene.current_view == "list") {
+
+					this.scene.current_view = "map";
+					u.ac(this.scene.view_map, "selected");
+					u.rc(this.scene.view_list, "selected");
+
+					this.scene.div_events.transitioned = function() {
+
+						u.as(this, "display", "none");
+
+						if(!this.scene.map) {
+							this.scene.map = u.ae(this.scene, "div", {"class":"map"});
+							this.scene.map.scene = this.scene;
+						}
+
+
+						u.as(this.scene.map, "display", "block");
+						u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+
+
+
+						this.scene.map.APIloaded = function() {
+							u.bug("map API loaded")
+							this._map_loaded = true;
+							u.googlemaps.infoWindow(this.g_map);
+
+						}
+						this.scene.map.loaded = function() {
+							u.bug("map loaded")
+
+
+							u.rc(this.scene, "loading");
+
+							this.transitioned = function() {
+
+								this.scene.filterEvents();
+
+							}
+
+							u.a.transition(this, "all 0.5s ease-in");
+							u.as(this, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
+
+
+						}
+
+						if(!this.scene.map._map_loaded) {
+							u.ac(this.scene, "loading");
+							u.googlemaps.map(this.scene.map, [55.67667,12.56678], {"zoom":13, "scrollwheel":false});
+						}
+						else {
+							this.scene.map.loaded();
+						}
+
+					}
+
+					u.a.transition(this.scene.div_events, "all 0.5s ease-in");
+					u.as(this.scene.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(10deg)");
+
+
+					
+				}
+			}
+
+			u.e.click(this.view_list);
+			this.view_list.clicked = function() {
+
+				if(this.scene.current_view == "map") {
+
+					this.scene.current_view = "list";
+					u.rc(this.scene.view_map, "selected");
+					u.ac(this.scene.view_list, "selected");
+
+					this.scene.map.transitioned = function() {
+						u.as(this, "display", "none");
+
+						this.scene.hideAllMarkers();
+
+						u.as(this.scene.div_events, "display", "block");
+						u.a.transition(this.scene.div_events, "all 0.5s ease-in");
+						u.as(this.scene.div_events, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
+
+
+					}
+					u.a.transition(this.scene.map, "all 0.5s ease-in");
+					u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+
+				}
+			}
+
+
+		}
+
+
+
 		// get scene ready
 		scene.ready = function() {
 
@@ -500,6 +624,13 @@ Util.Objects["events"] = new function() {
 			this.selected_tags = [];
 			this.selected_search = "";
 
+			this.h1 = u.qs("h1", this);
+			this.h1.scene = this;
+			this.div_events = u.qs("div.events", this);
+			this.div_events.scene = this;
+
+			this.div_filters = u.qs("div.filters", this);
+
 
 			// initializing events
 			this.initEvents();
@@ -507,12 +638,8 @@ Util.Objects["events"] = new function() {
 			this.initTags();
 			this.initSearch();
 			this.initFilters();
+			this.initMap();
 
-
-			this.h1 = u.qs("h1", this);
-			this.h1.scene = this;
-			this.div_events = u.qs("div.events", this);
-			this.div_filters = u.qs("div.filters", this);
 
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
@@ -521,6 +648,105 @@ Util.Objects["events"] = new function() {
 			this.is_ready = true;
 			page.cN.ready();
 
+		}
+
+		// hide all markers on exit to be ready for re-entry animation
+		scene.hideAllMarkers = function() {
+
+			var i, node;
+			for(i = 0; node = this.events[i]; i++) {
+				if(node._marker_shown) {
+					u.googlemaps.removeMarker(node.marker.g_map, node.marker, {"animation":false});
+					node._marker_shown = false;
+				}
+			}
+
+		}
+
+		// show markers (after hiding is done)
+		scene.showDelayed = function() {
+
+			var i, node;
+			for(i = 0; node = this._show_markers[i]; i++) {
+				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + (i*50));
+			}
+			
+
+		}
+		// mapped to node
+		scene._showDelayed = function() {
+			this.marker = u.googlemaps.addMarker(this.scene.map.g_map, [this._latitude, this._longitude]);
+			this.marker._node = this;
+			this.marker.entered = function() {
+				
+				u.googlemaps.hideInfoWindow(this.g_map);
+				u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content);
+
+			}
+			// this.marker.exited = function() {
+			//
+			//
+			// }
+		}
+
+		// mapped to node
+		scene._hideDelayed = function() {
+
+			u.googlemaps.removeMarker(this.marker.g_map, this.marker);
+
+		}
+
+		// show event
+		scene.showEvent = function(node) {
+
+			if(this.current_view == "map" && !node._marker_shown) {
+
+				this._show_markers.push(node);
+				node._marker_shown = true;
+			}
+
+			if(!node._shown) {
+
+				node.transitioned = null;
+				if(this.current_view == "list") {
+					u.a.transition(node, "all 0.3s ease-out");
+				}
+				u.as(node, "display", "block");
+				u.as(node, "height", this.event_height + "px");
+			
+				node._shown = true;
+			}
+
+		}
+
+		// hide event
+		scene.hideEvent = function(node) {
+
+
+			if(this.current_view == "map" && node._marker_shown) {
+				this._hide_marker_count++;
+
+				u.t.setTimer(node, this._hideDelayed, this._hide_marker_count*50);
+				node._marker_shown = false;
+			}
+
+			if(node._shown) {
+
+				if(this.current_view == "map") {
+					u.as(node, "display", "none");
+				}
+				else {
+					u.a.transition(node, "all 0.3s ease-out");
+					node.transitioned = function() {
+						u.as(this, "display", "none");
+					}
+				}
+
+				u.as(node, "height", "0px");
+
+				node._shown = false;
+			}
+			
 		}
 
 

@@ -17,6 +17,8 @@
 .scene.event .events ul.items li.item p.location a:hover {text-decoration: underline;}
 
 
+.scene.event .events ul.items li.item .description ul.action li:hover {background-color: #70B857;}
+.scene.event .events ul.items li.item .description ul.action li:hover a {color: #FFFFFF;}
 
 
 .scene.front ul li.article ul.actions li a:hover {background-color: #70B857;}
