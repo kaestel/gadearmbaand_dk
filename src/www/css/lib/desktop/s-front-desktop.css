@@ -85,3 +85,12 @@
 	background-image: url(/img/gx_play.png)
 }
 
+
+.scene.front ul li.instagram .videoplayer .controls {z-index: 3; position: absolute; top: 0; right: 0; width: 60px; height: 60px;}
+.scene.front ul li.instagram .videoplayer .controls .volume {width: 100%; height: 100%; display: block;
+	background: transparent url(/img/gx_audio_on.png) no-repeat center center;
+}
+.scene.front ul li.instagram .videoplayer.muted .controls .volume {
+	background-image: url(/img/gx_audio_off.png)
+}
+

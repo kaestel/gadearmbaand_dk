@@ -580,6 +580,10 @@ Util.Objects["front"] = new function() {
 								u.ae(this, this.video_player);
 
 								this.video_player.playing = function() {
+
+									this.img.transitioned = function() {
+										u.as(this, "display", "none");
+									}
 									u.a.transition(this.img, "all 0.3s linear");
 									u.a.setOpacity(this.img, 0);
 								}
