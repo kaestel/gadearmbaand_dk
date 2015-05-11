@@ -664,7 +664,7 @@ Util.Objects["events"] = new function() {
 
 			var i, node;
 			for(i = 0; node = this.events[i]; i++) {
-				if(node._marker_shown) {
+				if(node._marker_shown && node.marker) {
 					u.googlemaps.removeMarker(node.marker.g_map, node.marker, {"animation":false});
 					node._marker_shown = false;
 				}
@@ -675,7 +675,7 @@ Util.Objects["events"] = new function() {
 		// show markers (after hiding is done)
 		scene.showDelayed = function() {
 
-			u.bug("show delayed")
+//			u.bug("show delayed")
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
 				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
