@@ -154,6 +154,10 @@ Util.Objects["events"] = new function() {
 				u.ae(node._infowindow_content, node._name.cloneNode(true));
 				u.ae(node._infowindow_content, node._text.cloneNode(true));
 
+				node._infowindow_content_simple = document.createElement("div");
+				u.ac(node._infowindow_content_simple, "gmapInfo");
+				u.ae(node._infowindow_content_simple, node._name.cloneNode(true));
+
 
 				if(u.e.event_pref == "mouse") {
 					u.linkScrambler(node._facebook);
@@ -688,11 +692,43 @@ Util.Objects["events"] = new function() {
 			this.marker = u.googlemaps.addMarker(this.scene.map.g_map, [this._latitude, this._longitude]);
 			this.marker._node = this;
 			this.marker.entered = function() {
+
+				if(this.g_map.g_infowindow._marker != this) {
+					u.googlemaps.hideInfoWindow(this.g_map);
+					u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content_simple);
+				}
+
+			}
+
+			this.marker.exited = function() {
+//				u.bug("marker exited:" + this._clicked_to_open);
 				
+				if(!this._clicked_to_open) {
+					u.googlemaps.hideInfoWindow(this.g_map);
+				}
+
+			}
+
+			this.marker.clicked = function() {
+//				u.bug("marker opened");
+
 				u.googlemaps.hideInfoWindow(this.g_map);
 				u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content);
 
+
+				var link = u.qs(".action a", this._node.scene.map);
+				u.linkScrambler(link);
+
+
+				this._clicked_to_open = true;
+
 			}
+
+			this.marker.closed = function() {
+//				u.bug("marker closed");
+				this._clicked_to_open = false;
+			}
+
 		}
 
 		// mapped to node
@@ -705,7 +741,7 @@ Util.Objects["events"] = new function() {
 		// show event
 		scene.showEvent = function(node) {
 
-			u.bug("show event:" + u.nodeId(node))
+//			u.bug("show event:" + u.nodeId(node))
 
 			if(this.current_view == "map" && !node._marker_shown) {
 

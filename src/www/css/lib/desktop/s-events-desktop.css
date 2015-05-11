@@ -120,27 +120,27 @@
 
 
 
-.scene.event div.gmapInfo h3.host {font-size: 14px; font-weight: 800; padding: 10px 0 0 10px; line-height: 1em;
+.scene.event div.gmapInfo h3.host {font-size: 14px; font-weight: 800; padding: 10px 0 0; line-height: 1em;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event div.gmapInfo h2.name {font-size: 18px; font-weight: 800; padding: 10px 0 0 10px;
+.scene.event div.gmapInfo h2.name {font-size: 18px; font-weight: 800; padding: 4px 0 0;
 	font-family: "DINPro", Verdana, Arial, sans-serif;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
-.scene.event div.gmapInfo p.location {line-height: 1em; font-size: 14px; padding: 10px 0 10px 10px; font-weight: 800;}
+.scene.event div.gmapInfo p.location {line-height: 1em; font-size: 14px; padding: 10px 0 10px; font-weight: 800;}
 .scene.event div.marker_info p.location a {cursor: text;}
 
-.scene.event div.gmapInfo .text {padding-top: 10px; padding-left: 10px;}
+.scene.event div.gmapInfo .text {padding-top: 10px;}
 .scene.event div.gmapInfo .text p {color: #000000;}
-.scene.event div.gmapInfo .text ul.action {margin: 20px 0 10px;}
+.scene.event div.gmapInfo .text ul.action {margin: 20px 0 4px;}
 .scene.event div.gmapInfo .text ul.action li {padding: 4px 20px 6px; border: 2px solid #70B857; display: inline-block;}
 .scene.event div.gmapInfo .text ul.action li a {color: #000000; font-weight: 800; white-space: nowrap;}
 
 .scene.event div.gmapInfo ul.action li:hover {background-color: #70B857;}
-.scene.event div.gmapInfo ul.action li:hover a {color: #000000;}
+.scene.event div.gmapInfo ul.action li:hover a {color: #ffffff;}

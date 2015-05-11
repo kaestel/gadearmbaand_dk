@@ -5932,13 +5932,25 @@ u.googlemaps = new function() {
 	}
 	this.infoWindow = function(map) {
 		map.g_infowindow = new google.maps.InfoWindow({"maxWidth":250});
+		google.maps.event.addListener(map.g_infowindow, 'closeclick', function() {
+			if(this._marker && typeof(this._marker.closed) == "function") {
+				this._marker.closed();
+				this._marker = false;
+			}
+		});
 	}
 	this.showInfoWindow = function(map, marker, content) {
 		map.g_infowindow.setContent(content);
 		map.g_infowindow.open(map, marker);
+		map.g_infowindow._marker = marker;
 	}
 	this.hideInfoWindow = function(map) {
 		map.g_infowindow.close();
+		if(map.g_infowindow._marker && typeof(map.g_infowindow._marker.closed) == "function") {
+			map.g_infowindow._marker.closed();
+			map.g_infowindow._marker = false;
+		}
+		map.g_infowindow._marker = false;
 	}
 	this.zoom = function() {
 	}
@@ -6913,6 +6925,9 @@ Util.Objects["events"] = new function() {
 				u.ac(node._infowindow_content, "gmapInfo");
 				u.ae(node._infowindow_content, node._name.cloneNode(true));
 				u.ae(node._infowindow_content, node._text.cloneNode(true));
+				node._infowindow_content_simple = document.createElement("div");
+				u.ac(node._infowindow_content_simple, "gmapInfo");
+				u.ae(node._infowindow_content_simple, node._name.cloneNode(true));
 				if(u.e.event_pref == "mouse") {
 					u.linkScrambler(node._facebook);
 				}
@@ -7232,15 +7247,31 @@ Util.Objects["events"] = new function() {
 			this.marker = u.googlemaps.addMarker(this.scene.map.g_map, [this._latitude, this._longitude]);
 			this.marker._node = this;
 			this.marker.entered = function() {
+				if(this.g_map.g_infowindow._marker != this) {
+					u.googlemaps.hideInfoWindow(this.g_map);
+					u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content_simple);
+				}
+			}
+			this.marker.exited = function() {
+				if(!this._clicked_to_open) {
+					u.googlemaps.hideInfoWindow(this.g_map);
+				}
+			}
+			this.marker.clicked = function() {
 				u.googlemaps.hideInfoWindow(this.g_map);
 				u.googlemaps.showInfoWindow(this.g_map, this, this._node._infowindow_content);
+				var link = u.qs(".action a", this._node.scene.map);
+				u.linkScrambler(link);
+				this._clicked_to_open = true;
+			}
+			this.marker.closed = function() {
+				this._clicked_to_open = false;
 			}
 		}
 		scene._hideDelayed = function() {
 			u.googlemaps.removeMarker(this.marker.g_map, this.marker);
 		}
 		scene.showEvent = function(node) {
-			u.bug("show event:" + u.nodeId(node))
 			if(this.current_view == "map" && !node._marker_shown) {
 				this._show_markers.push(node);
 				node._marker_shown = true;
