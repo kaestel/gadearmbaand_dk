@@ -531,13 +531,15 @@ Util.Objects["events"] = new function() {
 						u.as(this, "display", "none");
 
 						if(!this.scene.map) {
-							this.scene.map = u.ae(this.scene, "div", {"class":"map"});
+							this.scene.map_div = u.ae(this.scene, "div", {"class":"mapwrap"});
+							this.scene.map = u.ae(this.scene.map_div, "div", {"class":"map"});
 							this.scene.map.scene = this.scene;
+							this.scene.map_div.scene = this.scene;
 						}
 
 
-						u.as(this.scene.map, "display", "block");
-						u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+						u.as(this.scene.map_div, "display", "block");
+						u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
 
 
 
@@ -553,14 +555,14 @@ Util.Objects["events"] = new function() {
 
 							u.rc(this.scene, "loading");
 
-							this.transitioned = function() {
+							this.scene.map_div.transitioned = function() {
 
 								this.scene.filterEvents();
 
 							}
 
-							u.a.transition(this, "all 0.5s ease-in");
-							u.as(this, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
+							u.a.transition(this.scene.map_div, "all 0.5s ease-in");
+							u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
 
 
 						}
@@ -592,7 +594,7 @@ Util.Objects["events"] = new function() {
 					u.rc(this.scene.view_map, "selected");
 					u.ac(this.scene.view_list, "selected");
 
-					this.scene.map.transitioned = function() {
+					this.scene.map_div.transitioned = function() {
 						u.as(this, "display", "none");
 
 						this.scene.hideAllMarkers();
@@ -603,8 +605,8 @@ Util.Objects["events"] = new function() {
 
 
 					}
-					u.a.transition(this.scene.map, "all 0.5s ease-in");
-					u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+					u.a.transition(this.scene.map_div, "all 0.5s ease-in");
+					u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
 
 				}
 			}
@@ -664,6 +666,7 @@ Util.Objects["events"] = new function() {
 		// show markers (after hiding is done)
 		scene.showDelayed = function() {
 
+			u.bug("show delayed")
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
 				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
@@ -692,6 +695,8 @@ Util.Objects["events"] = new function() {
 
 		// show event
 		scene.showEvent = function(node) {
+
+			u.bug("show event:" + u.nodeId(node))
 
 			if(this.current_view == "map" && !node._marker_shown) {
 

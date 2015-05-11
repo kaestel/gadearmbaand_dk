@@ -6281,17 +6281,17 @@ Util.Objects["page"] = new function() {
 					node.mousedover = function() {
 						if(this.offsetWidth/this.offsetHeight > 480/270) {
 							var height = (this.offsetWidth / (480/270));
-							u.as(this.vp, "height", height + "px");
-							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-							u.as(this.vp, "width", "100%");
-							u.as(this.vp, "marginLeft", 0);
+							u.as(this.vp, "height", height + "px", false);
+							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px", false);
+							u.as(this.vp, "width", "100%", false);
+							u.as(this.vp, "marginLeft", 0, false);
 						}
 						else {
 							var width = (this.offsetHeight / (270/480));
-							u.as(this.vp, "width", width + "px");
-							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-							u.as(this.vp, "height", "100%");
-							u.as(this.vp, "marginTop", 0);
+							u.as(this.vp, "width", width + "px", false);
+							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px", false);
+							u.as(this.vp, "height", "100%", false);
+							u.as(this.vp, "marginTop", 0, false);
 						}
 						u.ac(this.vp, "show");
 						if(!u.hc(this, "buy")) {
@@ -7136,11 +7136,13 @@ Util.Objects["events"] = new function() {
 					this.scene.div_events.transitioned = function() {
 						u.as(this, "display", "none");
 						if(!this.scene.map) {
-							this.scene.map = u.ae(this.scene, "div", {"class":"map"});
+							this.scene.map_div = u.ae(this.scene, "div", {"class":"mapwrap"});
+							this.scene.map = u.ae(this.scene.map_div, "div", {"class":"map"});
 							this.scene.map.scene = this.scene;
+							this.scene.map_div.scene = this.scene;
 						}
-						u.as(this.scene.map, "display", "block");
-						u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+						u.as(this.scene.map_div, "display", "block");
+						u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
 						this.scene.map.APIloaded = function() {
 							u.bug("map API loaded")
 							this._map_loaded = true;
@@ -7149,11 +7151,11 @@ Util.Objects["events"] = new function() {
 						this.scene.map.loaded = function() {
 							u.bug("map loaded")
 							u.rc(this.scene, "loading");
-							this.transitioned = function() {
+							this.scene.map_div.transitioned = function() {
 								this.scene.filterEvents();
 							}
-							u.a.transition(this, "all 0.5s ease-in");
-							u.as(this, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
+							u.a.transition(this.scene.map_div, "all 0.5s ease-in");
+							u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
 						}
 						if(!this.scene.map._map_loaded) {
 							u.ac(this.scene, "loading");
@@ -7173,15 +7175,15 @@ Util.Objects["events"] = new function() {
 					this.scene.current_view = "list";
 					u.rc(this.scene.view_map, "selected");
 					u.ac(this.scene.view_list, "selected");
-					this.scene.map.transitioned = function() {
+					this.scene.map_div.transitioned = function() {
 						u.as(this, "display", "none");
 						this.scene.hideAllMarkers();
 						u.as(this.scene.div_events, "display", "block");
 						u.a.transition(this.scene.div_events, "all 0.5s ease-in");
 						u.as(this.scene.div_events, u.a.vendor("transform"), "translate(0, 0) rotate(0)");
 					}
-					u.a.transition(this.scene.map, "all 0.5s ease-in");
-					u.as(this.scene.map, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
+					u.a.transition(this.scene.map_div, "all 0.5s ease-in");
+					u.as(this.scene.map_div, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(-10deg)");
 				}
 			}
 		}
@@ -7216,6 +7218,7 @@ Util.Objects["events"] = new function() {
 			}
 		}
 		scene.showDelayed = function() {
+			u.bug("show delayed")
 			var i, node;
 			for(i = 0; node = this._show_markers[i]; i++) {
 				u.t.setTimer(node, this._showDelayed, (this._hide_marker_count*50) + 100 + (i*150));
@@ -7233,6 +7236,7 @@ Util.Objects["events"] = new function() {
 			u.googlemaps.removeMarker(this.marker.g_map, this.marker);
 		}
 		scene.showEvent = function(node) {
+			u.bug("show event:" + u.nodeId(node))
 			if(this.current_view == "map" && !node._marker_shown) {
 				this._show_markers.push(node);
 				node._marker_shown = true;

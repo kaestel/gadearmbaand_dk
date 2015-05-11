@@ -350,17 +350,17 @@ Util.Objects["page"] = new function() {
 
 						if(this.offsetWidth/this.offsetHeight > 480/270) {
 							var height = (this.offsetWidth / (480/270));
-							u.as(this.vp, "height", height + "px");
-							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-							u.as(this.vp, "width", "100%");
-							u.as(this.vp, "marginLeft", 0);
+							u.as(this.vp, "height", height + "px", false);
+							u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px", false);
+							u.as(this.vp, "width", "100%", false);
+							u.as(this.vp, "marginLeft", 0, false);
 						}
 						else {
 							var width = (this.offsetHeight / (270/480));
-							u.as(this.vp, "width", width + "px");
-							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-							u.as(this.vp, "height", "100%");
-							u.as(this.vp, "marginTop", 0);
+							u.as(this.vp, "width", width + "px", false);
+							u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px", false);
+							u.as(this.vp, "height", "100%", false);
+							u.as(this.vp, "marginTop", 0, false);
 						}
 
 						u.ac(this.vp, "show");
@@ -373,7 +373,6 @@ Util.Objects["page"] = new function() {
 								this.play();
 							}
 							page.videoPlayer.loadAndPlay("/assets/nav_"+this.className.replace(/link/, "").trim()+"_640x360.mp4");
-
 
 						}
 					}
