@@ -328,7 +328,7 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.event .events ul.items li.item.selected ul.tags {}
 .scene.event .events ul.items li.item.selected ul.tags li {color: #FFFFFF;}
 .scene.event ul.view_options {text-align: right; padding: 0 0 20px;}
-.scene.event ul.view_options li {display: inline-block; vertical-align: top; margin-left: 20px;}
+.scene.event ul.view_options li {display: inline-block; vertical-align: top; margin-left: 20px; cursor: pointer;}
 .scene.event ul.view_options li.selected {color: #70B857;}
 .scene.event div.mapwrap {height: 500px; margin-bottom: 100px; display: none; width: 100%;}
 .scene.event div.mapwrap div.map {height: 100%; width: 100%;}

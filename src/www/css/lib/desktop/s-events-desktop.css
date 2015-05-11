@@ -106,7 +106,7 @@
 
 /* MAP */
 .scene.event ul.view_options {text-align: right; padding: 0 0 20px;}
-.scene.event ul.view_options li {display: inline-block; vertical-align: top; margin-left: 20px;}
+.scene.event ul.view_options li {display: inline-block; vertical-align: top; margin-left: 20px; cursor: pointer;}
 .scene.event ul.view_options li.selected {color: #70B857;}
 
 

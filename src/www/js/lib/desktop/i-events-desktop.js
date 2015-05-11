@@ -594,6 +594,15 @@ Util.Objects["events"] = new function() {
 					u.rc(this.scene.view_map, "selected");
 					u.ac(this.scene.view_list, "selected");
 
+
+					var i, node;
+					for(i = 0; node = this.scene.events[i]; i++) {
+
+						u.rc(node, "selected", false);
+						u.as(node, "height", this.scene.event_height+"px", false);
+					}
+
+
 					this.scene.map_div.transitioned = function() {
 						u.as(this, "display", "none");
 
