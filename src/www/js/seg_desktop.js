@@ -7314,7 +7314,6 @@ Util.Objects["events"] = new function() {
 Util.Objects["manifest"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
-			u.as(this, "height", page.browser_h + "px", false);
 		}
 		scene.scrolled = function() {
 		}
@@ -7326,6 +7325,7 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
+				u.as(this, "opacity", 1);
 				this.finalizeBuild = function() {
 					this.removeChild(this.svg);
 				}

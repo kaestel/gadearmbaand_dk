@@ -361,7 +361,7 @@ li {font-size: 14px; line-height: 1.25em;}
 
 
 /*s-manifest-desktop.css*/
-#content .scene.manifest {opacity: 1;}
+#content .scene.manifest {opacity: 0;}
 .scene.manifest {width: 100%; overflow: scroll;
 	background-image: url(/img/bg_manifest.jpg); background-attachment: fixed; background-repeat: no-repeat;
 	-webkit-background-size: cover;

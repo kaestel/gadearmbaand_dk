@@ -14,7 +14,7 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-g
 document.write('<script type="text/javascript" src="/js/lib/u-extensions.js"></script>');
 
 
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-page-desktop.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-front-desktop.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-events-desktop.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-manifest-desktop.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-page-desktop_ie.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-front-desktop_ie.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-events-desktop_ie.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-manifest-desktop_ie.js"></script>');

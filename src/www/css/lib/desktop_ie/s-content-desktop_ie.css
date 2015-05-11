@@ -1,0 +1,3 @@
+.scene.front ul.grid > li {opacity: 0;}
+
+.scene.front ul li.tweet .card:nth-child(2) {display: none;}

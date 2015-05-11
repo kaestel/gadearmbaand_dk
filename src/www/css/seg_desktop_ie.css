@@ -361,7 +361,7 @@ li {font-size: 14px; line-height: 1.25em;}
 
 
 /*s-manifest-desktop.css*/
-#content .scene.manifest {opacity: 1;}
+#content .scene.manifest {opacity: 0;}
 .scene.manifest {width: 100%; overflow: scroll;
 	background-image: url(/img/bg_manifest.jpg); background-attachment: fixed; background-repeat: no-repeat;
 	-webkit-background-size: cover;
@@ -388,4 +388,8 @@ li {font-size: 14px; line-height: 1.25em;}
 	stroke: #ffffff; stroke-linecap: round;
 }
 
+
+/*s-content-desktop_ie.css*/
+.scene.front ul.grid > li {opacity: 0;}
+.scene.front ul li.tweet .card:nth-child(2) {display: none;}
 
