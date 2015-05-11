@@ -4,7 +4,7 @@ Util.Objects["manifest"] = new function() {
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
-			u.as(this, "height", page.browser_h + "px", false);
+			// u.as(this, "height", page.browser_h + "px", false);
 
 		}
 
@@ -35,6 +35,8 @@ Util.Objects["manifest"] = new function() {
 //				u.bug("scene.build:" + u.nodeId(this));
 
 				this.is_built = true;
+
+				u.as(this, "opacity", 1);
 
 				// wrap up building by removing svg
 				this.finalizeBuild = function() {
