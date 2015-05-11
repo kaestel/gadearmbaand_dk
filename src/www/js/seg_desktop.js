@@ -7349,6 +7349,22 @@ Util.Objects["events"] = new function() {
 Util.Objects["manifest"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
+			if(this.bg_manifest && this.bg_manifest.vp) {
+				if(page.browser_w/page.browser_h > 960/540) {
+					var height = Math.ceil(page.browser_w / (960/540));
+					u.as(this.bg_manifest.vp, "height", height + "px", false);
+					u.as(this.bg_manifest.vp, "marginTop", Math.ceil((page.browser_h - height) / 2) + "px", false);
+					u.as(this.bg_manifest.vp, "width", "100%", false);
+					u.as(this.bg_manifest.vp, "marginLeft", 0, false);
+				}
+				else {
+					var width = Math.ceil(page.browser_h / (540/960));
+					u.as(this.bg_manifest.vp, "width", width + "px", false);
+					u.as(this.bg_manifest.vp, "marginLeft", Math.ceil((page.browser_w - width) / 2) + "px", false);
+					u.as(this.bg_manifest.vp, "height", "100%", false);
+					u.as(this.bg_manifest.vp, "marginTop", 0, false);
+				}
+			}
 		}
 		scene.scrolled = function() {
 		}
@@ -7360,9 +7376,17 @@ Util.Objects["manifest"] = new function() {
 		scene.build = function() {
 			if(!this.is_built) {
 				this.is_built = true;
+				this.bg_manifest = u.ae(page, "div", {"class":"bg_manifest"});
+				this.bg_manifest.vp = u.videoPlayer();
+				u.ae(this.bg_manifest, this.bg_manifest.vp);
+				page.resized();
 				u.as(this, "opacity", 1);
 				this.finalizeBuild = function() {
 					this.removeChild(this.svg);
+					this.bg_manifest.vp.ended = function() {
+						this.play();
+					}
+					this.bg_manifest.vp.loadAndPlay("/assets/manifest/960x540.mp4");
 				}
 				this.content = u.qs(".content", this);
 				// 
@@ -7429,6 +7453,7 @@ Util.Objects["manifest"] = new function() {
 		scene.destroy = function() {
 			this.destroy = null;
 			this.finalizeDestruction = function() {
+				this.bg_manifest.parentNode.removeChild(this.bg_manifest);
 				this.parentNode.removeChild(this);
 				page.cN.ready();
 			}
