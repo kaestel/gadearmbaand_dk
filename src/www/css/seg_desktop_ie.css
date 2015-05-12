@@ -369,6 +369,7 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.manifest .content p {color: #ffffff; padding-bottom: 1.2em; font-size: 22px; font-weight: 400;}
 .scene.manifest .content a {text-decoration: underline;}
 .bg_manifest {position: fixed; top: 0; left: 0; width: 100%; z-index: 8;
+	-webkit-transform: translateZ(-62px);
 	background-color: #ccbbc4;
 	background-position: center center;
 	background-repeat: no-repeat;

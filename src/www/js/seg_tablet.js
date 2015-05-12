@@ -6308,6 +6308,10 @@ Util.Objects["page"] = new function() {
 						u.ac(this.vp, "show");
 						if(!u.hc(this, "buy")) {
 							u.ae(this.vp, page.videoPlayer);
+							u.as(page.videoPlayer, "opacity", 0);
+							page.videoPlayer.playing = function() {
+								u.as(this, "opacity", 1);
+							}
 							page.videoPlayer.ended = function() {
 								this.play();
 							}
@@ -7381,10 +7385,14 @@ Util.Objects["manifest"] = new function() {
 				u.ae(this.bg_manifest, this.bg_manifest.vp);
 				page.resized();
 				u.as(this, "opacity", 1);
+				u.as(this.bg_manifest.vp, "opacity", 0);
 				this.finalizeBuild = function() {
 					this.removeChild(this.svg);
 					this.bg_manifest.vp.ended = function() {
 						this.play();
+					}
+					this.bg_manifest.vp.playing = function() {
+						u.a.setOpacity(this, 1);
 					}
 					this.bg_manifest.vp.loadAndPlay("/assets/manifest/960x540.mp4");
 				}
