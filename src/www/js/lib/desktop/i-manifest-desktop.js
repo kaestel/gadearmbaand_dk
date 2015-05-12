@@ -63,6 +63,7 @@ Util.Objects["manifest"] = new function() {
 				page.resized();
 
 				u.as(this, "opacity", 1);
+				u.as(this.bg_manifest.vp, "opacity", 0);
 
 				// wrap up building by removing svg
 				this.finalizeBuild = function() {
@@ -70,6 +71,9 @@ Util.Objects["manifest"] = new function() {
 
 					this.bg_manifest.vp.ended = function() {
 						this.play();
+					}
+					this.bg_manifest.vp.playing = function() {
+						u.a.setOpacity(this, 1);
 					}
 
 					// start playback

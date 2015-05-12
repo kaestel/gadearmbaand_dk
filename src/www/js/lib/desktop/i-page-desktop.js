@@ -369,6 +369,10 @@ Util.Objects["page"] = new function() {
 						if(!u.hc(this, "buy")) {
 
 							u.ae(this.vp, page.videoPlayer);
+							u.as(page.videoPlayer, "opacity", 0);
+							page.videoPlayer.playing = function() {
+								u.as(this, "opacity", 1);
+							}
 							page.videoPlayer.ended = function() {
 								this.play();
 							}
