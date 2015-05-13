@@ -194,6 +194,8 @@ Util.Objects["front"] = new function() {
 			this.lis = u.qsa("ul.grid > li", this);
 
 
+
+
 			// prepare all nodes
 			var i, li;
 			for (i = 0; li = this.lis[i]; i++) {
@@ -207,12 +209,16 @@ Util.Objects["front"] = new function() {
 
 				// pre-index for resizing
 				if(u.hc(li, "forty")) {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5) * 2;
+
 					li._forty = true;
 				}
 				else if(u.hc(li, "sixty")) {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5) * 3;
 					li._sixty = true;
 				}
 				else {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5);
 					li._twenty = true;
 				}
 
@@ -228,11 +234,13 @@ Util.Objects["front"] = new function() {
 
 					// add 3d settings
 					u.as(li, "perspectiveOrigin", "50% 50%");
-					u.as(li, "perspective", (li.offsetWidth) + "px");
+					u.as(li, "perspective", (li.perspective_depth) + "px");
+					u.as(li, u.a.vendor("transformStyle"), "preserve-3d");
 
 					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
+					u.as(li.image, u.a.vendor("transformStyle"), "preserve-3d");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
-					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.perspective_depth)+"px");
 
 
 					// get image src if information is available
@@ -372,11 +380,11 @@ Util.Objects["front"] = new function() {
 
 					// add 3d settings
 					u.as(li.li_video, "perspectiveOrigin", "50% 50%");
-					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
+					u.as(li.li_video, "perspective", (li.perspective_depth) + "px");
 
 					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
-					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.perspective_depth)+"px");
 
 					u.as(li.video, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
@@ -599,6 +607,10 @@ Util.Objects["front"] = new function() {
 
 						}
 						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+
+						if(u.browser("safari")) {
+							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+						}
 						u.as(this, u.a.vendor("transform"), "rotateX(0)");
 
 
@@ -643,6 +655,9 @@ Util.Objects["front"] = new function() {
 
 						}
 						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+						if(u.browser("safari")) {
+							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+						}
 						u.as(this, u.a.vendor("transform"), "rotateX(0)");
 
 

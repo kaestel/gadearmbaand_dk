@@ -6507,12 +6507,15 @@ Util.Objects["front"] = new function() {
 				li.i = i;
 				u.ac(li, "i"+i);
 				if(u.hc(li, "forty")) {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5) * 2;
 					li._forty = true;
 				}
 				else if(u.hc(li, "sixty")) {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5) * 3;
 					li._sixty = true;
 				}
 				else {
+					li.perspective_depth = Math.ceil(this.grid.offsetWidth/5);
 					li._twenty = true;
 				}
 				if(u.hc(li, "instagram")) {
@@ -6520,10 +6523,12 @@ Util.Objects["front"] = new function() {
 					li.image.li = li;
 					li.image.p = u.qs("div.image p", li);
 					u.as(li, "perspectiveOrigin", "50% 50%");
-					u.as(li, "perspective", (li.offsetWidth) + "px");
+					u.as(li, "perspective", (li.perspective_depth) + "px");
+					u.as(li, u.a.vendor("transformStyle"), "preserve-3d");
 					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
+					u.as(li.image, u.a.vendor("transformStyle"), "preserve-3d");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
-					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.offsetWidth)+"px");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.perspective_depth)+"px");
 					li.image.image_id = u.cv(li.image, "image_id");
 					li.image.image_format = u.cv(li.image, "image_format");
 					if(li.image.image_id && li.image.image_format) {
@@ -6594,10 +6599,10 @@ Util.Objects["front"] = new function() {
 					li.video.li = li;
 					li.image.li = li;
 					u.as(li.li_video, "perspectiveOrigin", "50% 50%");
-					u.as(li.li_video, "perspective", (li.li_video.offsetWidth) + "px");
+					u.as(li.li_video, "perspective", (li.perspective_depth) + "px");
 					u.as(li.image, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.image, u.a.vendor("transform"), "rotateX(-180deg)");
-					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.li_video.offsetWidth)+"px");
+					u.as(li.image, u.a.vendor("transformOrigin"), "50% 50% -"+(li.perspective_depth)+"px");
 					u.as(li.video, u.a.vendor("backfaceVisibility"), "hidden");
 					u.as(li.video, u.a.vendor("transform"), "rotateX(-180deg)");
 					li.image_id = u.cv(li.image, "image_id");
@@ -6730,6 +6735,9 @@ Util.Objects["front"] = new function() {
 							}
 						}
 						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+						if(u.browser("safari")) {
+							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+						}
 						u.as(this, u.a.vendor("transform"), "rotateX(0)");
 						this.li.scene.rendered++;
 						this.li.scene.scrolled();
@@ -6754,6 +6762,9 @@ Util.Objects["front"] = new function() {
 							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
 						}
 						u.a.transition(this, "all 1s ease-in-out "+(this.li.scene.renderControl())+"ms");
+						if(u.browser("safari")) {
+							u.as(this, u.a.vendor("transformOrigin"), "50% 50% 0");
+						}
 						u.as(this, u.a.vendor("transform"), "rotateX(0)");
 						this.li.scene.rendered++;
 						this.li.scene.scrolled();
