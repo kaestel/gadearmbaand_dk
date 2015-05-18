@@ -455,6 +455,8 @@ Util.Objects["events"] = new function() {
 
 					this.filter.transitioned = function() {
 
+						u.as(this, "height", "auto");
+
 						u.as(this.tag_list, "display", "block");
 						u.as(this.scene.form_search, "display", "block");
 
@@ -495,6 +497,9 @@ Util.Objects["events"] = new function() {
 
 					u.a.transition(this.filter.scene.form_search, "all 0.3s ease-out");
 					u.as(this.filter.scene.form_search, "opacity", 0);
+
+					// return to pixal state to be able to animate
+					u.as(this.filter, "height", this.filter.org_height + "px");
 
 					u.a.transition(this.filter, "all 0.3s ease-out");
 					u.ass(this.filter, {"width" : "100px", "height" : "32px"});
@@ -657,6 +662,10 @@ Util.Objects["events"] = new function() {
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(10deg)");
+
+			// resize grid
+			this.resized();
+
 
 			this.is_ready = true;
 			page.cN.ready();

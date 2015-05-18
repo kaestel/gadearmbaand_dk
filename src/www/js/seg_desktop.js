@@ -7116,6 +7116,7 @@ Util.Objects["events"] = new function() {
 				}
 				if(!this.filter.open) {
 					this.filter.transitioned = function() {
+						u.as(this, "height", "auto");
 						u.as(this.tag_list, "display", "block");
 						u.as(this.scene.form_search, "display", "block");
 						u.a.transition(this.tag_list, "all 0.5s ease-out");
@@ -7142,6 +7143,7 @@ Util.Objects["events"] = new function() {
 					u.as(this.filter.tag_list, "opacity", 0);
 					u.a.transition(this.filter.scene.form_search, "all 0.3s ease-out");
 					u.as(this.filter.scene.form_search, "opacity", 0);
+					u.as(this.filter, "height", this.filter.org_height + "px");
 					u.a.transition(this.filter, "all 0.3s ease-out");
 					u.ass(this.filter, {"width" : "100px", "height" : "32px"});
 					this.filter.open = false;
@@ -7240,6 +7242,7 @@ Util.Objects["events"] = new function() {
 			u.as(this.h1, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.as(this.div_filters, u.a.vendor("transform"), "translate(0, -300px) rotate(10deg)");
 			u.as(this.div_events, u.a.vendor("transform"), "translate(0, "+page.browser_h+"px) rotate(10deg)");
+			this.resized();
 			this.is_ready = true;
 			page.cN.ready();
 		}
