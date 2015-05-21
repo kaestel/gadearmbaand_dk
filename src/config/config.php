@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 * Site name
 */
 define("SITE_UID", "gade");
-define("SITE_NAME", "Distortion gade armbånd");
+define("SITE_NAME", "Distortion gadearmbånd");
 define("SITE_URL", (isset($_SERVER["HTTPS"]) ? "https" : "http")."://".$_SERVER["SERVER_NAME"]);
 define("SITE_EMAIL", "friedlistephan@gmail.com");
 

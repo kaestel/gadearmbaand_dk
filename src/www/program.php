@@ -12,7 +12,7 @@ $IC = new Items();
 $itemtype = "event";
 
 $page->bodyClass("event");
-$page->pageTitle("Events");
+$page->pageTitle("Program");
 
 
 $page->page(array(

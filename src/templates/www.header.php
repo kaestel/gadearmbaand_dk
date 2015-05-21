@@ -5,7 +5,7 @@
 	<!-- Code: Martin Kæstel, Robin Isaksson, Stefan Friedli - thanks for the beers //-->
 	<!-- Design/PM: Great Works //-->
 	<!-- All material protected by copyrightlaws, as if you didnt know //-->
-	<title><?= SITE_URL ?> - <?= $this->pageTitle() ?></title>
+	<title><?= SITE_NAME ?> - <?= $this->pageTitle() ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="keywords" content="Distortion støtte festival musik gade københavn vesterbro nørrebro refshaleøen" />
 	<meta name="description" content="<?= $this->pageDescription() ?>" />
