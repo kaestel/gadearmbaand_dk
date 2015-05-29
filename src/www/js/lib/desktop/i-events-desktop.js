@@ -542,6 +542,8 @@ Util.Objects["events"] = new function() {
 						if(!this.scene.map) {
 							this.scene.map_div = u.ae(this.scene, "div", {"class":"mapwrap"});
 							this.scene.map = u.ae(this.scene.map_div, "div", {"class":"map"});
+
+							u.ae(this.scene.map_div, u.qs(".downloadmap", this).cloneNode(true));
 							this.scene.map.scene = this.scene;
 							this.scene.map_div.scene = this.scene;
 						}

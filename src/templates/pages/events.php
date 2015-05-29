@@ -97,6 +97,14 @@ $days = $IC->getTags(array("context" => "day", "order" => "value DESC"));
 		</ul>
 <?	endif; ?>
 
+		<div class="downloadmap">
+			<h3>Download kort</h3>
+			<ul class="maps">
+				<li><a href="/assets/maps/2015-street-parties-vesterbro.jpg" target="_blank">Vesterbro</a></li>
+				<li><a href="/assets/maps/2015-street-parties-noerrebro.jpg" target="_blank">Nørrebro</a></li>
+				<li><a href="/assets/maps/2015-street-parties-chr-borg.jpg" target="_blank">Christiansborg</a></li>
+			</ul>
+		</div>
 	</div>
 
 </div>

@@ -5727,6 +5727,7 @@ u.textscaler = function(node, _settings) {
 		}
 	}
 	u.a.to = function(node, transition, attributes) {
+		u.bug("to:" + u.nodeId(node) + ", " + transition + ", " + attributes);
 		var transition_parts = transition.split(" ");
 		if(transition_parts.length >= 3) {
 			node._target = transition_parts[0];
@@ -5755,6 +5756,7 @@ u.textscaler = function(node, _settings) {
 				node._end[attribute] = attributes[attribute].toString().replace(node._unit[attribute], "");
 			}
 		}
+		u.bug(node._ease + ", " + u.easings[node._ease]);
 		node.easing = u.easings[node._ease];
 		node.transitionTo = function(progress) {
 			var easing = node.easing(progress);
@@ -5806,6 +5808,9 @@ u.textscaler = function(node, _settings) {
 u.easings = new function() {
 	this["ease-in"] = function(progress) {
 		return Math.pow((progress*this.duration) / this.duration, 3);
+	}
+	this["linear"] = function(progress) {
+		return progress;
 	}
 	this["ease-out"] = function(progress) {
 		return 1 - Math.pow(1 - ((progress*this.duration) / this.duration), 3);
