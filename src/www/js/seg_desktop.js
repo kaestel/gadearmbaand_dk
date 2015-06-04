@@ -5727,7 +5727,6 @@ u.textscaler = function(node, _settings) {
 		}
 	}
 	u.a.to = function(node, transition, attributes) {
-		u.bug("to:" + u.nodeId(node) + ", " + transition + ", " + attributes);
 		var transition_parts = transition.split(" ");
 		if(transition_parts.length >= 3) {
 			node._target = transition_parts[0];
@@ -5756,7 +5755,6 @@ u.textscaler = function(node, _settings) {
 				node._end[attribute] = attributes[attribute].toString().replace(node._unit[attribute], "");
 			}
 		}
-		u.bug(node._ease + ", " + u.easings[node._ease]);
 		node.easing = u.easings[node._ease];
 		node.transitionTo = function(progress) {
 			var easing = node.easing(progress);
@@ -6274,7 +6272,6 @@ Util.Objects["page"] = new function() {
 				var i, node;
 				page.nN.nodes = u.qsa("li", page.nN);
 				for(i = 0; node = page.nN.nodes[i]; i++) {
-					if(!u.hc(node, "buy")) {
 						u.ce(node);
 						node.clicked = function(event) {
 							page.nN.next_url = this.url;
@@ -6284,13 +6281,7 @@ Util.Objects["page"] = new function() {
 								page.navigate(this.next_url);
 							}
 						}
-					}
-					else {
-						u.e.click(node);
-						node.clicked = function(event) {
-							page.bn_nav.clicked();
-						}
-					}
+					// 
 					if(u.e.event_pref == "mouse") {
 						node.vp = u.ae(node, "div", {"class":"vp"});
 						u.as(node.vp, "backgroundImage", "url(/assets/nav_"+node.className.replace(/link/, "").trim()+".jpg)");
@@ -6684,7 +6675,6 @@ Util.Objects["front"] = new function() {
 					"max_size":22
 				}
 			});
-			u.bug("front ready")
 			this.is_ready = true;
 			page.cN.ready();
 		}
@@ -7394,6 +7384,8 @@ Util.Objects["manifest"] = new function() {
 		}
 		scene.ready = function() {
 			page.resized();
+			this.link = u.qs("a", this);
+			u.ce(this.link, {"type":"link"});
 			this.is_ready = true;
 			page.cN.ready();
 		}
@@ -7417,13 +7409,6 @@ Util.Objects["manifest"] = new function() {
 					this.bg_manifest.vp.loadAndPlay("/assets/manifest/960x540.mp4");
 				}
 				this.content = u.qs(".content", this);
-				// 
-				// 
-				// 
-				// 
-				// 	
-				// 	// 	
-				// 	
 				var lines = 25;
 				var svg_object = {
 					"name":"manifest_build",
@@ -7552,6 +7537,221 @@ Util.Objects["manifest"] = new function() {
 				}
 			}
 			this.svg._animate();
+		}
+		scene.ready();
+	}
+}
+
+
+/*i-buy-desktop.js*/
+Util.Objects["buy"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+			u.as(this, "height", page.browser_h + "px", false);
+			if(this.h2) {
+				u.as(this.h2, "paddingTop", ((page.browser_h - u.actualH(this.h2)) / 2) - 125 + "px", false);
+			}
+		}
+		scene.scrolled = function() {
+		}
+		scene.ready = function() {
+			u.textscaler(this, {
+				"min_width":768,
+				"max_width":1200,
+				"unit":"px",
+				"h2":{
+					"min_size":40,
+					"max_size":70
+				}
+			});
+			page.resized();
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				this.bg_buy = u.ae(page, "div", {"class":"bg_buy"});
+				this.h2 = u.qs("h2", this);
+				this.link = u.qs(".actions li a", this);
+				u.linkScrambler(this.link);
+				page.resized();
+				u.as(this, "opacity", 1);
+				this.finalizeBuild = function() {
+					this.removeChild(this.svg);
+				}
+				var svg_object = {
+					"name":"event_build",
+					"class":"buywristband",
+					"width":page.browser_w,
+					"height":page.browser_h,
+					"shapes":[]
+				};
+				this.svg = u.svg(svg_object);
+				this.svg = u.ae(this, this.svg);
+				x1 = 0;
+				y1 = 0;
+				x2 = page.browser_w;
+				y2 = Math.round(page.browser_h/2) - 150;
+				y3 = Math.round(page.browser_h/2) - 100;
+				y4 = page.browser_h;
+				f = page.browser_w/20;
+				var points_x = [x1, x1+f,  x1+f*2, x1+f*3, x1+f*4, x1+f*5, x1+f*6, x1+f*7, x1+f*8, x1+f*9, x1+f*10, x1+f*11, x1+f*12, x1+f*13, x1+f*14, x1+f*15, x1+f*16, x1+f*17, x1+f*18, x1+f*19, x2];
+				var points_y = [y2, y2+80, y2+20,  y2+170, y2+70,  y2+200, y2+120, y2+270, y2+180, y2+320,  y2+200,  y2+280,  y2+190,  y2+230,  y2+120,  y2+200,  y2+110,  y2+180,  y2+50,  y2+130,  y2];
+				var i;
+				var top_points, top_points2, top_flat, bottom_points, bottom_points2, bottom_flat;
+				var top_points = x1+","+y1+" ";
+				for(i = 0; i < points_x.length; i++) {
+					top_points += points_x[i]+","+points_y[i]+" ";
+				}
+				top_points += x2+","+y1;
+				this.svg.top_points = top_points;
+				top_points2 = x1+","+y1+" ";
+				for(i = 0; i < points_x.length; i++) {
+					top_points2 += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-10)+" ";
+				}
+				top_points2 += x2+","+y1;
+				this.svg.top_points2 = top_points2;
+				top_flat = x1+","+(y1-y4)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					top_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-y4)+" ";
+				}
+				top_flat += x2+","+(y1-y4);
+				this.svg.top_flat = top_flat;
+				bottom_points = x1+","+y4+" ";
+				for(i = 0; i < points_x.length; i++) {
+					bottom_points += points_x[i]+","+points_y[i]+" ";
+				}
+				bottom_points += x2+","+y4;
+				this.svg.bottom_points = bottom_points;
+				bottom_points2 = x1+","+y4+" ";
+				for(i = 0; i < points_x.length; i++) {
+					bottom_points2 += (points_x[i]-u.random(-10, 10))+","+points_y[i]+" ";
+				}
+				bottom_points2 += x2+","+y4;
+				this.svg.bottom_points2 = bottom_points2;
+				bottom_flat = x1+","+(y4+y4)+" ";
+				for(i = 0; i < points_x.length; i++) {
+					bottom_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]+y4)+" ";
+				}
+				bottom_flat += x2+","+(y4+y4);
+				this.svg.bottom_flat = bottom_flat;
+				this.svg._top = {"type":"polygon", "points": this.svg.top_points};
+				this.svg._top = u.svgShape(this.svg, this.svg._top);
+				this.svg._top.svg = this.svg;
+				this.svg._bottom = {"type":"polygon", "points": this.svg.bottom_points};
+				this.svg._bottom = u.svgShape(this.svg, this.svg._bottom);
+				this.svg._bottom.svg = this.svg;
+				this.svg._bottom.scene = this;
+				this.svg._bottom.transitioned = function() {
+					this.transitioned = null;
+					this.svg._bottom.transitioned = function() {
+						this.transitioned = null;
+						this.transitioned = function() {
+							this.transitioned = null;
+							this.transitioned = function() {
+								this.transitioned = null;
+								this.scene.removeChild(this.svg);
+							}
+							u.a.to(this.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
+							u.a.to(this.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
+						}
+						u.a.to(this.svg._top, "all 0.3s ease-in", {"points":this.svg.top_flat});
+						u.a.to(this.svg._bottom, "all 0.3s ease-in", {"points":this.svg.bottom_flat});
+					}
+					u.a.to(this.svg._top, "all 0.3s ease-in", {"points":this.svg.top_points2});
+					u.a.to(this.svg._bottom, "all 0.3s ease-in", {"points":this.svg.bottom_points2});
+				}
+				u.a.to(this.svg._top, "all 0.2s ease-in", {"stroke-width":"2px"});
+				u.a.to(this.svg._bottom, "all 0.2s ease-in", {"stroke-width":"2px"});
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.bg_buy.parentNode.removeChild(this.bg_buy);
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			var svg_object = {
+				"name":"event_build",
+				"class":"buywristband",
+				"width":page.browser_w,
+				"height":page.browser_h,
+				"shapes":[]
+			};
+			this.svg = u.svg(svg_object);
+			this.svg = u.ae(this, this.svg);
+			x1 = 0;
+			y1 = 0;
+			x2 = page.browser_w;
+			y2 = Math.round(page.browser_h/2) - 150;
+			y3 = Math.round(page.browser_h/2) - 100;
+			y4 = page.browser_h;
+			f = page.browser_w/20;
+			var points_x = [x1, x1+f,  x1+f*2, x1+f*3, x1+f*4, x1+f*5, x1+f*6, x1+f*7, x1+f*8, x1+f*9, x1+f*10, x1+f*11, x1+f*12, x1+f*13, x1+f*14, x1+f*15, x1+f*16, x1+f*17, x1+f*18, x1+f*19, x2];
+			var points_y = [y2, y2+80, y2+20,  y2+170, y2+70,  y2+200, y2+120, y2+270, y2+180, y2+320,  y2+200,  y2+280,  y2+190,  y2+230,  y2+120,  y2+200,  y2+110,  y2+180,  y2+50,  y2+130,  y2];
+			var i;
+			var top_points, top_points2, top_flat, bottom_points, bottom_points2, bottom_flat;
+			var top_points = x1+","+y1+" ";
+			for(i = 0; i < points_x.length; i++) {
+				top_points += points_x[i]+","+points_y[i]+" ";
+			}
+			top_points += x2+","+y1;
+			this.svg.top_points = top_points;
+			top_points2 = x1+","+y1+" ";
+			for(i = 0; i < points_x.length; i++) {
+				top_points2 += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-10)+" ";
+			}
+			top_points2 += x2+","+y1;
+			this.svg.top_points2 = top_points2;
+			top_flat = x1+","+(y1-y4)+" ";
+			for(i = 0; i < points_x.length; i++) {
+				top_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]-y4)+" ";
+			}
+			top_flat += x2+","+(y1-y4);
+			this.svg.top_flat = top_flat;
+			bottom_points = x1+","+y4+" ";
+			for(i = 0; i < points_x.length; i++) {
+				bottom_points += points_x[i]+","+points_y[i]+" ";
+			}
+			bottom_points += x2+","+y4;
+			this.svg.bottom_points = bottom_points;
+			bottom_points2 = x1+","+y4+" ";
+			for(i = 0; i < points_x.length; i++) {
+				bottom_points2 += (points_x[i]-u.random(-10, 10))+","+points_y[i]+" ";
+			}
+			bottom_points2 += x2+","+y4;
+			this.svg.bottom_points2 = bottom_points2;
+			bottom_flat = x1+","+(y4+y4)+" ";
+			for(i = 0; i < points_x.length; i++) {
+				bottom_flat += (points_x[i]-u.random(-10, 10))+","+(points_y[i]+y4)+" ";
+			}
+			bottom_flat += x2+","+(y4+y4);
+			this.svg.bottom_flat = bottom_flat;
+			this.svg._top = {"type":"polygon", "points": this.svg.top_flat, "stroke-width":"2px"};
+			this.svg._top = u.svgShape(this.svg, this.svg._top);
+			this.svg._top.svg = this.svg;
+			this.svg._bottom = {"type":"polygon", "points": this.svg.bottom_flat, "stroke-width":"2px"};
+			this.svg._bottom = u.svgShape(this.svg, this.svg._bottom);
+			this.svg._bottom.svg = this.svg;
+			this.svg._bottom.scene = this;
+			this.svg._bottom.transitioned = function() {
+				this.transitioned = null;
+				this.transitioned = function() {
+					this.transitioned = null;
+					this.transitioned = function() {
+						this.transitioned = null;
+						this.scene.finalizeDestruction()
+					}
+					u.a.to(this.svg._top, "all 0.3s ease-in", {"stroke-width":"0px"});
+					u.a.to(this.svg._bottom, "all 0.3s ease-in", {"stroke-width":"0px"});
+				}
+				u.a.to(this.svg._top, "all 0.3s ease-in", {"points":this.svg.top_points});
+				u.a.to(this.svg._bottom, "all 0.3s ease-in", {"points":this.svg.bottom_points});
+			}
+			u.a.to(this.svg._top, "all 0.5s ease-in", {"points":this.svg.top_points2});
+			u.a.to(this.svg._bottom, "all 0.5s ease-in", {"points":this.svg.bottom_points2});
 		}
 		scene.ready();
 	}

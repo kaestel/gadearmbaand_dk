@@ -35,8 +35,8 @@ Util.Objects["manifest"] = new function() {
 
 			page.resized();
 
-			// this.link = u.qs("a", this);
-			// u.ce(this.link);
+			this.link = u.qs("a", this);
+			u.ce(this.link, {"type":"link"});
 			// this.link.clicked = function(event) {
 			// 	u.gotoBuy();
 			// }
@@ -83,58 +83,6 @@ Util.Objects["manifest"] = new function() {
 
 				this.content = u.qs(".content", this);
 
-				// u.as(this.content, "marginTop", page.browser_h - 100 + "px")
-				//
-				// this.forgroundPerson = u.ie(this, "div", {"class":"forgroundPerson"});
-				// u.as(this.forgroundPerson, "backgroundImage", "url(/img/gx_manifest.png)");
-				//
-				// // this.forgroundPerson.transitioned = function() {
-				//
-				// // 	u.a.transition(this, "all 1s linear");
-				// // 	u.as(this, "opacity", 0)
-				// // }
-				//
-				// u.a.transition(this.forgroundPerson, "all 3s linear");
-				// u.ass(this.forgroundPerson, {"left" : "-300px", "width": "682px", "height": "451px", "opacity": 0})
-				//
-				//
-				// this.vp = u.ie(this, "div", {"class":"vp"});
-				// u.as(this.vp, "backgroundImage", "url(/assets/nav_manifest.jpg)");
-				//
-				// var player = u.videoPlayer();
-				// u.ae(this.vp, player);
-				//
-				// player.playing = function(event) {
-				// 	// this.transitioned = function() {
-				// 	// 	//scene.vp.parentNode.removeChild(scene.vp);
-				// 	// }
-				//
-				//
-				//
-				//
-				// }
-				//
-				// u.a.transition(scene.content, "all 3s linear");
-				// u.as(scene.content, "marginTop", "0px")
-				//
-				//
-				// if(this.offsetWidth/this.offsetHeight > 480/270) {
-				//
-				// 	var height = (this.offsetWidth / (480/270));
-				// 	u.as(this.vp, "height", height + "px");
-				// 	u.as(this.vp, "marginTop", ((this.offsetHeight - height) / 2) + "px");
-				// 	u.as(this.vp, "width", "100%");
-				// 	u.as(this.vp, "marginLeft", 0);
-				// }
-				// else {
-				// 	var width = (this.offsetHeight / (270/480));
-				// 	u.as(this.vp, "width", width + "px");
-				// 	u.as(this.vp, "marginLeft", ((this.offsetWidth - width) / 2) + "px");
-				// 	u.as(this.vp, "height", "100%");
-				// 	u.as(this.vp, "marginTop", 0);
-				// }
-
-				//player.loadAndPlay("/assets/nav_manifest_640x360.mp4");
 
 				var lines = 25;
 				var svg_object = {

@@ -391,7 +391,7 @@ Util.Objects["page"] = new function() {
 						u.a.setOpacity(this.sq, 1);
 						u.a.setOpacity(this, 1);
 
-						u.t.setTimer(page.intro, page.intro.clicked, 1500);
+						page.t_intro = u.t.setTimer(page.intro, page.intro.clicked, 1500);
 
 					}
 					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
@@ -403,8 +403,8 @@ Util.Objects["page"] = new function() {
 					page.intro.clicked = function() {
 						u.bug("clicked intro")
 
-						u.t.resetTimer(this.t_click);
-						this.parentNode.removeChild(this);
+						u.t.resetTimer(page.t_intro);
+						document.body.removeChild(page.intro);
 						page.intro = false;
 
 						// notify page.cN.ready to continue content rendering

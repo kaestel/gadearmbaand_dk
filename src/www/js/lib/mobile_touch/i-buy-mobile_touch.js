@@ -1,9 +1,10 @@
-Util.Objects["manifest"] = new function() {
+Util.Objects["buy"] = new function() {
 	this.init = function(scene) {
 
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
+//			u.as(this, "height", page.browser_h + "px");
 
 		}
 
@@ -15,12 +16,6 @@ Util.Objects["manifest"] = new function() {
 //			u.bug("scene.ready:" + u.nodeId(this));
 
 			page.resized();
-
-			// this.link = u.qs("a", this);
-			// u.ce(this.link);
-			// this.link.clicked = function(event) {
-			// 	u.gotoBuy();
-			// }
 
 			this.is_ready = true;
 			page.cN.ready();
@@ -35,10 +30,9 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
-				this.bg_manifest = u.ae(page, "div", {"class":"bg_manifest"});
 
-				u.a.transition(this, "all 0.5s ease-in");
-				u.as(this, "opacity", 1);
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
 
 			}
 		}
@@ -60,12 +54,14 @@ Util.Objects["manifest"] = new function() {
 				page.cN.ready();
 
 			}
-			this.transitioned = function(){
-				this.finalizeDestruction();
+			this.transitioned = function() {
+
+				u.t.setTimer(this, this.finalizeDestruction, 300);
+
 			}
 
-			u.a.transition(this, "all 0.5s ease-in");
-			u.as(this, "opacity", 1);
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
 
 		}
 

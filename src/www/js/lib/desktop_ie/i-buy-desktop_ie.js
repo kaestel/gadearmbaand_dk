@@ -1,9 +1,12 @@
-Util.Objects["manifest"] = new function() {
+Util.Objects["buy"] = new function() {
 	this.init = function(scene) {
 
 		scene.resized = function() {
 //			u.bug("scene.resized:" + u.nodeId(this));
 
+//			if(this.bg_buy) {
+				u.as(this, "height", page.browser_h + "px", false);
+//			}
 
 		}
 
@@ -35,7 +38,7 @@ Util.Objects["manifest"] = new function() {
 
 				this.is_built = true;
 
-				this.bg_manifest = u.ae(page, "div", {"class":"bg_manifest"});
+//				this.bg_buy = u.ae(page, "div", {"class":"bg_buy"});
 
 				u.a.transition(this, "all 0.5s ease-in");
 				u.as(this, "opacity", 1);

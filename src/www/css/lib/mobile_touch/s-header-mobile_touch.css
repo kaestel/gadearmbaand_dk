@@ -9,6 +9,7 @@
 #header .servicenavigation li.navigation {position: fixed; z-index: 160; top: 25px; right: 15px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
 .manifest #header .servicenavigation li.navigation a {color: #ffffff;}
+.buy #header .servicenavigation li.navigation a {color: #ffffff;}
 #header .servicenavigation li.navigation:active,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
 

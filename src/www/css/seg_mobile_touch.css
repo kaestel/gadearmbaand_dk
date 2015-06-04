@@ -112,6 +112,7 @@ li {font-size: 14px; line-height: 1.25em;}
 #header .servicenavigation li.navigation {position: fixed; z-index: 160; top: 25px; right: 15px; border: 2px solid #70B857;}
 #header .servicenavigation li.navigation a {font-weight: 800; color: #000000; padding: 4px 0 6px; display: block; text-align: center; width: 70px;}
 .manifest #header .servicenavigation li.navigation a {color: #ffffff;}
+.buy #header .servicenavigation li.navigation a {color: #ffffff;}
 #header .servicenavigation li.navigation:active,
 #header .servicenavigation li.navigation.open {background-color: #70B857;}
 #navigation {display: none; z-index: 150; position: fixed; top: 25px; right: 30px; height: 0; width: 0; opacity: 1; overflow: hidden;
@@ -308,4 +309,17 @@ li {font-size: 14px; line-height: 1.25em;}
 .scene.manifest .content h3 {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
 .scene.manifest .content p {color: #FFFFFF; padding-bottom: 1em; font-size: 22px; font-weight: 400;}
 .scene.manifest .content a {text-decoration: underline;}
+
+
+/*s-buy-mobile_touch.css*/
+.scene.buy {width: 100%; background: #19051a;}
+.scene.buy h1 {text-align: center; color: #FFFFFF;}
+.scene.buy h2 {color: #ffffff; font-size: 40px; line-height: 1.286em; font-weight: 800; text-align: center; padding: 0 20px 40px;}
+.scene.buy h2 br {display: none;}
+.scene.buy h3 {color: #ffffff; text-align: center; font-size: 30px;
+	font-family: "Flood", Verdana, Arial, sans-serif;
+}
+.scene.buy .actions {text-align: center; padding: 0 0 40px;}
+.scene.buy .actions li a {border: 2px solid #6eb951; color: #ffffff; display: block; font-family: "DINPro",sans-serif; font-size: 14px; font-weight: 800; padding: 10px 20px 9px; white-space: pre;}
+.scene.buy .actions li {display: inline-block; vertical-align: top;}
 

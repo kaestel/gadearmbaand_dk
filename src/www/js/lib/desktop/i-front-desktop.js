@@ -507,7 +507,7 @@ Util.Objects["front"] = new function() {
 			});
 
 
-			u.bug("front ready")
+//			u.bug("front ready")
 
 			// call middle step which checks for images loaded
 			this.is_ready = true;

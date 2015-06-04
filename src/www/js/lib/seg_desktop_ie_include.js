@@ -18,3 +18,4 @@ document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-page-de
 document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-front-desktop_ie.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-events-desktop_ie.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-manifest-desktop_ie.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-buy-desktop_ie.js"></script>');

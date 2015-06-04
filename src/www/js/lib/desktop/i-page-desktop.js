@@ -313,7 +313,7 @@ Util.Objects["page"] = new function() {
 				for(i = 0; node = page.nN.nodes[i]; i++) {
 
 					// all navigation nodes except "buy"
-					if(!u.hc(node, "buy")) {
+//					if(!u.hc(node, "buy")) {
 						u.ce(node);
 						node.clicked = function(event) {
 
@@ -329,17 +329,17 @@ Util.Objects["page"] = new function() {
 
 						}
 
-					}
-					// the external buy link
-					else {
-						u.e.click(node);
-						node.clicked = function(event) {
-
-							page.bn_nav.clicked();
-
-						}
-
-					}
+					// }
+					// // the external buy link
+					// else {
+					// 	u.e.click(node);
+					// 	node.clicked = function(event) {
+					//
+					// 		page.bn_nav.clicked();
+					//
+					// 	}
+					//
+					// }
 
 					if(u.e.event_pref == "mouse") {
 						node.vp = u.ae(node, "div", {"class":"vp"});

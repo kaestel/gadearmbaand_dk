@@ -17,3 +17,4 @@ document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-page-
 document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-front-mobile_touch.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-events-mobile_touch.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-manifest-mobile_touch.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/mobile_touch/i-buy-mobile_touch.js"></script>');

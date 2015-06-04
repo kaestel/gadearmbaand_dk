@@ -22,3 +22,7 @@
 
 
 .scene.front ul li.article ul.actions li a:hover {background-color: #70B857;}
+
+
+.scene.buy ul.actions li:hover {background-color: #70B857;}
+.scene.buy ul.actions li:hover a {color: #FFFFFF;}

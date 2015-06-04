@@ -17,7 +17,7 @@
 		<p>At så mange kan samles om en byfest - af ren motivation og skæv skaberlyst – er livsbekræftende. Magisk faktisk.</p>
 		<p>Det er den magi, du er med til at skabe rammerne for ved at købe gadearmbåndet.</p>
 
-		<p><a href="http://burl.nu/jbjpcu" target="_blank">Køb et gadearmbånd</a>.<br />Så tryller vi.</p>
+		<p><a href="/buy">Køb et gadearmbånd</a>.<br />Så tryller vi.</p>
 
 		<p>Tak for hjælpen.</p>
 		<p>Distortion</p>

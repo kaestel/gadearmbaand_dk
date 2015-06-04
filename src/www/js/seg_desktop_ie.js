@@ -6111,7 +6111,6 @@ u.textscaler = function(node, _settings) {
 		}
 	}
 	u.a.to = function(node, transition, attributes) {
-		u.bug("to:" + u.nodeId(node) + ", " + transition + ", " + attributes);
 		var transition_parts = transition.split(" ");
 		if(transition_parts.length >= 3) {
 			node._target = transition_parts[0];
@@ -6140,7 +6139,6 @@ u.textscaler = function(node, _settings) {
 				node._end[attribute] = attributes[attribute].toString().replace(node._unit[attribute], "");
 			}
 		}
-		u.bug(node._ease + ", " + u.easings[node._ease]);
 		node.easing = u.easings[node._ease];
 		node.transitionTo = function(progress) {
 			var easing = node.easing(progress);
@@ -6696,14 +6694,14 @@ Util.Objects["page"] = new function() {
 						this.sq.intro = this;
 						u.a.setOpacity(this.sq, 1);
 						u.a.setOpacity(this, 1);
-						u.t.setTimer(page.intro, page.intro.clicked, 1500);
+						page.t_intro = u.t.setTimer(page.intro, page.intro.clicked, 1500);
 					}
 					u.preloader(page.intro, ["/img/bg_intro.jpg"]);
 					u.ce(page.intro);
 					page.intro.clicked = function() {
 						u.bug("clicked intro")
-						u.t.resetTimer(this.t_click);
-						this.parentNode.removeChild(this);
+						u.t.resetTimer(page.t_intro);
+						document.body.removeChild(page.intro);
 						page.intro = false;
 						page.cN.ready();
 					}
@@ -7437,6 +7435,44 @@ Util.Objects["events"] = new function() {
 Util.Objects["manifest"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
+		}
+		scene.scrolled = function() {
+		}
+		scene.ready = function() {
+			page.resized();
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				this.bg_manifest = u.ae(page, "div", {"class":"bg_manifest"});
+				u.a.transition(this, "all 0.5s ease-in");
+				u.as(this, "opacity", 1);
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			this.transitioned = function(){
+				this.finalizeDestruction();
+			}
+			u.a.transition(this, "all 0.5s ease-in");
+			u.as(this, "opacity", 1);
+		}
+		scene.ready();
+	}
+}
+
+
+/*i-buy-desktop_ie.js*/
+Util.Objects["buy"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+				u.as(this, "height", page.browser_h + "px", false);
 		}
 		scene.scrolled = function() {
 		}

@@ -23,7 +23,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<h3>Gadearmbånd</h3>
 				<h2>Køb. Så tryller vi</h2>
 				<ul class="actions">
-					<li><a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a></li>
+					<li><a href="/buy">Køb nu</a></li>
 				</ul>
 			</div>
 		</li>
@@ -92,7 +92,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 						<h2>Master Fatman</h2>
 						<p>Om at gøre noget ved byen. Om Dronning Louises Bro der kan mærke det. Om 4/4-takter og om at tilbyde en masse forskelligt på hylderne.</p>
 						<ul class="actions">
-							<li><a href="http://burl.nu/jbjpcu" target="_blank">Køb Gadearmbånd</a></li>
+							<li><a href="/buy">Køb Gadearmbånd</a></li>
 						</ul>
 					</div>
 				</li>
@@ -119,7 +119,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<h3>Gadearmbånd</h3>
 				<h2>Hold festen skæv</h2>
 				<ul class="actions">
-					<li><a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a></li>
+					<li><a href="/buy">Køb nu</a></li>
 				</ul>
 			</div>
 		</li>
@@ -183,7 +183,7 @@ $mediae = $IC->getItems(array("itemtype" => $itemtype, "status" => 1, "order" =>
 				<h3>Gadearmbånd</h3>
 				<h2>Skab magien</h2>
 				<ul class="actions">
-					<li><a href="http://burl.nu/jbjpcu" target="_blank">Køb nu</a></li>
+					<li><a href="/buy">Køb nu</a></li>
 				</ul>
 			</div>
 		</li>

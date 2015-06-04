@@ -5727,7 +5727,6 @@ u.textscaler = function(node, _settings) {
 		}
 	}
 	u.a.to = function(node, transition, attributes) {
-		u.bug("to:" + u.nodeId(node) + ", " + transition + ", " + attributes);
 		var transition_parts = transition.split(" ");
 		if(transition_parts.length >= 3) {
 			node._target = transition_parts[0];
@@ -5756,7 +5755,6 @@ u.textscaler = function(node, _settings) {
 				node._end[attribute] = attributes[attribute].toString().replace(node._unit[attribute], "");
 			}
 		}
-		u.bug(node._ease + ", " + u.easings[node._ease]);
 		node.easing = u.easings[node._ease];
 		node.transitionTo = function(progress) {
 			var easing = node.easing(progress);
@@ -6554,6 +6552,42 @@ Util.Objects["events"] = new function() {
 
 /*i-manifest-mobile_touch.js*/
 Util.Objects["manifest"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+		}
+		scene.scrolled = function() {
+		}
+		scene.ready = function() {
+			page.resized();
+			this.is_ready = true;
+			page.cN.ready();
+		}
+		scene.build = function() {
+			if(!this.is_built) {
+				this.is_built = true;
+				u.a.transition(this, "all 1s linear");
+				u.a.setOpacity(this, 1);
+			}
+		}
+		scene.destroy = function() {
+			this.destroy = null;
+			this.finalizeDestruction = function() {
+				this.parentNode.removeChild(this);
+				page.cN.ready();
+			}
+			this.transitioned = function() {
+				u.t.setTimer(this, this.finalizeDestruction, 300);
+			}
+			u.a.transition(this, "all 1s linear");
+			u.a.setOpacity(this, 0);
+		}
+		scene.ready();
+	}
+}
+
+
+/*i-buy-mobile_touch.js*/
+Util.Objects["buy"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function() {
 		}
