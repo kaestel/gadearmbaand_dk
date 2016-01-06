@@ -24,7 +24,6 @@ document.write('<script type="text/javascript" src="/js/manipulator/v0_9_1/src/u
 document.write('<script type="text/javascript" src="/js/manipulator/v0_9_1/src/u-url.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/v0_9_1/src/u-video.js"></script>');
 
-document.write('<script type="text/javascript" src="/js/manipulator/v0_9_1/src/u-dom-desktop_ie10.js"></script>');
 
 
 document.write('<script type="text/javascript" src="/js/lib/ga.js"></script>');
@@ -37,8 +36,9 @@ document.write('<script type="text/javascript" src="/js/manipulator/v0_9_1/src/b
 
 document.write('<script type="text/javascript" src="/js/lib/u-extensions.js"></script>');
 
-document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-page.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-front.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-events.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-manifest.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop_ie/i-buy.js"></script>');
+
+document.write('<script type="text/javascript" src="/js/lib/smartphone/i-page.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/smartphone/i-front.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/smartphone/i-events.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/smartphone/i-manifest.js"></script>');
+document.write('<script type="text/javascript" src="/js/lib/smartphone/i-buy.js"></script>');
