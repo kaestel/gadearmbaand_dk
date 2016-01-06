@@ -18,7 +18,7 @@
 
 	<div id="footer">
 		<ul class="servicenavigation">
-			<li class="copyright">Janitor, Manipulator, Modulator - parentNode - Copyright 2015</li>
+			<li class="copyright">Janitor, Manipulator, Modulator - parentNode - Copyright 2016</li>
 		</ul>
 	</div>
 </div>

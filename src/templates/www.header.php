@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?= $this->language() ?>">
 <head>
-	<!-- (c) & (p) 2015 -->
+	<!-- (c) & (p) 2015-2016 -->
 	<!-- Code: Martin Kæstel, Robin Isaksson, Stefan Friedli - thanks for the beers //-->
 	<!-- Design/PM: Great Works //-->
 	<!-- All material protected by copyrightlaws, as if you didnt know //-->
@@ -18,8 +18,8 @@
 	<meta property="og:image" content="<?= SITE_URL ?>/img/share.jpg" />
 	<meta property="og:url" content="<?= SITE_URL ?>" />
 
-	<link rel="apple-touch-icon" href="touchicon.png" />
-	<link rel="icon" href="favicon.png" />
+	<link rel="apple-touch-icon" href="/touchicon.png" />
+	<link rel="icon" href="/favicon.png" />
 
 <? if(session()->value("dev")) { ?>
 	<link type="text/css" rel="stylesheet" media="all" href="/css/lib/seg_<?= $this->segment() ?>_include.css" />
